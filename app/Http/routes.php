@@ -26,6 +26,12 @@ Route::get('student/logout', 'StudentController@logout');
 	Route::group(['middleware' =>['studentauth']], function(){
 		Route::get('student/index', 'StudentController@index');
 		Route::get('student/recommendation', 'StudentController@recommendation');
+        Route::get('student/grade', 'StudentController@viewGrade');// added
+        
+        Route::get('student/module','StudentController@showModule'); // added 
+        Route::get('student/showdetails','StudentController@showDetailsFunction'); // added 
+
+
         Route::get('student/editdetails', 'StudentController@displayDetails');
         Route::post('student/editdetails', 'StudentController@updateDetails');
         Route::get('student/change', 'StudentController@displayPassword');
@@ -85,6 +91,10 @@ Route::get('lecturer/logout', 'LecturerController@logout');
 		
 		Route::get('lecturer/index', 'LecturerController@index');
         Route::get('lecturer/{id}/managegrade', ['as' => 'manage_grade', 'uses' => 'LecturerController@showManageGrade']);
+
+        Route::get('lecturer/editdetails', 'LecturerController@displayDetails');
+        Route::post('lecturer/editdetails', 'LecturerController@updateDetails');
+
         
         Route::get('lecturer/{moduleid}/{id}/addgrade', 'LecturerController@showAddGrade');
         Route::post('lecturer/{moduleid}/{id}/addgrade', 'LecturerController@addGrade');

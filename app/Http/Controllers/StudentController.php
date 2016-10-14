@@ -83,14 +83,21 @@ class StudentController extends Controller {
         return redirect('student/login');
     }
 
-    // public function viewGrade(){
-    //     $studentId = auth()->guard('student')->user()->studentid;
+     public function viewGrade(){
+         $studentId = auth()->guard('student')->user()->studentid;
 
-    //     $grades = DB::table('grades')
-    //             ->where('studentid',$studentId)
-    //             ->paginate(5);
+        $grades = DB::table('module')
+            ->join('grades', 'grades.moduleid', '=', 'module.id')
+            ->select('module.*','grades.*')
+            ->where('grades.publish', 1)
+            ->where('grades.studentid', $studentId)->paginate(5);    
 
-    // }
+
+        return view('student.grade')->with([
+            'grades' => $grades
+            ]);
+
+     }
 
     public function recommendation()
     {
@@ -123,6 +130,18 @@ class StudentController extends Controller {
             
             return view('student.editdetails',['student' => $student]);
     }
+
+
+    public function showDetailsFunction() // added
+    {
+            $id = auth()->guard('student')->user()->studentid;
+            
+            $student = DB::table('students')
+            ->where('studentid',$id)->first();  
+        
+            return view('student.showdetails',['student' => $student]);
+    }
+
 
     public function updateDetails(Request $request)
     {
@@ -174,5 +193,27 @@ class StudentController extends Controller {
             
         return redirect()->back();
     }
+
+
+
+    public function showModule(){
+    
+    $studentId = auth()->guard('student')->user()->studentid;
+
+
+       $modules = DB::table('module')
+            ->join('lecturer','lecturer.lecturerid', '=', 'module.lecturerid')
+            ->join('enroll','enroll.moduleid', '=', 'module.id')
+            ->join('students', 'students.studentid', '=', 'enroll.studentid')         
+            ->select('module.*','lecturer.*','students.*')
+            ->where('enroll.studentid', $studentId) 
+            ->paginate(5);
+            return view('student.module')->with([
+            'modules' => $modules
+            ]);
+    }
+
+
+
 }
 

@@ -31,11 +31,16 @@
                         <!-- Login Buttons (If not logged in) -->
                         <!-- Student -->
                         @if(auth()->guard('student')->check())
-                            <li><a href="{{URL::asset('student/index')}}">View Grade</a></li>
+                            <li><a href="{{URL::asset('student/grade')}}">View Grade</a></li><!--// added-->
+                            <li><a href="{{URL::asset('student/module')}}">View All Module</a></li> <!--// added-->
+
+
                             <li><a href="{{URL::asset('student/recommendation')}}">View Recommendation</a></li>
                             <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">{{ auth()->guard('student')->user()->studentname }} <span class="glyphicon glyphicon-cog"></span></a>
                                     <ul class="dropdown-menu">
                                         <li><a href="{{URL::asset('student/editdetails')}}">Edit Details</a></li>
+
+                                        <li><a href="{{URL::asset('student/showdetails')}}">View My Details</a></li><!--// added-->
                                         <li><a href="{{URL::asset('student/change')}}">Change Password</a></li>
                                         <li><a href="{{URL::asset('student/logout')}}">Log Out</a></li>
                                          
@@ -64,6 +69,7 @@
                          @elseif(auth()->guard('lecturer')->check())
                             <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">{{ auth()->guard('lecturer')->user()->lecturername }} <span class="glyphicon glyphicon-cog"></span></a>
                                     <ul class="dropdown-menu">
+                                        <li><a href="{{URL::asset('lecturer/editdetails')}}">Edit Details</a></li>
                                         <li><a href="{{URL::asset('lecturer/logout')}}">Log Out</a></li>
                                         <!-- <li><a href="{{URL::asset('pretest/change')}}">Change Password</a></li> -->
                                     </ul> 

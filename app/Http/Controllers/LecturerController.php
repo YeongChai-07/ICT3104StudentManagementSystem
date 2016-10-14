@@ -133,4 +133,30 @@ class LecturerController extends Controller {
 
     }
 
+
+    public function displayDetails()
+    {
+
+            $lecturerId = auth()->guard('lecturer')->user()->lecturerid;
+
+            $lecturer = Lecturer::where('lecturerid',$lecturerId)                              
+                                ->first();       
+            return view('lecturer.editdetails',['lecturer' => $lecturer]);
+    }
+
+
+    public function updateDetails(Request $request)
+    {
+             $lecturerId = auth()->guard('lecturer')->user()->lecturerid;
+
+            $input= $request->all();
+            DB::table('lecturer')
+                ->where('lecturerid', $lecturerId)
+                ->update(['contact' => $input['contact'],'address' => $input['address']]);          
+          
+                Session::set('success_message', "Profile updated sucessfully."); 
+               return redirect()->back();
+    
+
+    }
 }
