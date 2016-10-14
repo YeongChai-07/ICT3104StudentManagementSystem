@@ -77,6 +77,11 @@ Route::get('user/logout', 'UserController@logout');
         Route::get('/user/{id}/deletemodule', 'UserController@deleteModule');
         Route::get('/user/{id}/enrollstudent', 'UserController@displayStudent');
         Route::post('/user/{id}/enrollstudent', 'UserController@enrollStudent');
+		
+		//Routes for backing up the application files and DB
+		Route::get('user/backupsystem', 'UserController@backupSystem');
+		Route::get('user/processsystembackup', 'UserController@processSystemBackup');
+
     });
 });
 

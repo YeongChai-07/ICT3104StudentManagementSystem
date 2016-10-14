@@ -53,6 +53,12 @@ return [
         ],
 
         'mysql' => [
+			// Change the value of the dump_command_path Key/Value Pair to the path of the MySQL
+			// binary folder within your XAMPP installation folder
+			// e.g. C:/XAMPP/mysql/bin
+			'dump_command_path' => 'C:/misc_SW/XAMPP/mysql/bin', // only the path, so without 'mysqldump' or 'pg_dump'
+			'dump_command_timeout' => 60 * 5, // 5 minute timeout
+			'dump_using_single_transaction' => true, // perform dump using a single transaction
             'driver' => 'mysql',
             'host' => env('DB_HOST', 'localhost'),
             'port' => env('DB_PORT', '3306'),
