@@ -15,7 +15,7 @@
 <div class="generalHeader">
     Add Grade
 </div>
-<?php echo Form::open(array('url' => 'lecturer/'.$moduleid.'/'.$gradeid.'/addgrade', 'method' => 'post')) ?>
+<?php echo Form::open(array('url' => 'hod/'.$moduleid.'/'.$gradeid.'/addgrade', 'method' => 'post')) ?>
  <div class="form-group">
             {!!Form::label('grade','Grade')!!}
             {!!Form::text('grade',null,array('class' => 'form-control', 'required' => 'required'))!!}
@@ -24,7 +24,7 @@
             {!!Form::label('recommendation','Recommendation')!!}
             {!!Form::textarea('recommendation',null,array('class' => 'form-control'))!!}
         </div>
-       <a href="{{URL::asset('lecturer/index')}}" class="btn btn-danger" style="float:right;">Back to Grades list</a>
+       <a href="{{URL::asset('hod/index')}}" class="btn btn-danger" style="float:right;">Back to Grades list</a>
         {!!Form::submit('Add Grade', array('class' => 'btn btn-success'))!!}
         {!! Form::close() !!}
 @stop

@@ -6,7 +6,8 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use App\Hod;
-
+use App\Module;
+use App\Grade;
 use Auth;
 use Hash;
 use DB;
@@ -44,7 +45,7 @@ class HodController extends Controller {
             //return auth()->guard('hod')->user();
             Session::forget('error_message');
 
-            return redirect('hod/recommendation');
+            return redirect('hod/index');
         }
         else
         {
@@ -56,7 +57,19 @@ class HodController extends Controller {
 
     public function index()
     {
-        return view('hod.index');
+        $hodId = auth()->guard('hod')->user()->hodid;
+
+        // $grades = DB::table('grades')
+        //         ->where('studentid',$studentId)->paginate(5);
+
+
+        $modules = DB::table('module')
+            ->where('module.hodid', $hodId)->paginate(5);    
+
+
+        return view('hod.index')->with([
+            'modules' => $modules
+            ]);  
     }
 
 
@@ -65,6 +78,74 @@ class HodController extends Controller {
         auth()->guard('hod')->logout();
         $request->session()->flush();
         return redirect('hod/login');
+    }
+	
+	
+	    public function showManageGrade(Request $request, $id){
+
+            $moduleid = $id;
+
+            $module = Module::findorFail($id);
+
+
+            $grades = DB::table('module')
+            ->join('grades', 'grades.moduleid', '=', 'module.id')
+            ->join('students','students.studentid', '=', 'grades.studentid')
+            ->select('module.*','grades.*','students.*')
+            ->where('grades.moduleid', $moduleid)->paginate(5);    
+
+           
+        return view('hod.managegrade')->with([
+            'grades' => $grades,
+            'module' => $module
+            ]); 
+    }
+
+    public function showAddGrade(Request $request, $moduleid,$gradeid)
+    {
+        
+        return view('hod.addgrade')->with([
+            'moduleid' => $moduleid,
+            'gradeid' => $gradeid
+            ]); 
+    }
+
+    public function addGrade(Request $request, $moduleid,$gradeid)
+    {
+        $input= $request->all();
+        $student = Grade::findorFail($gradeid);
+        $recommendation = $request->only(['recommendation']);
+
+        //return $request->only(['recommendation']);
+        DB::table('grades')
+                ->where('id', $gradeid)
+                ->update(['grade' => $input['grade']]);          
+          
+
+            //if recommendation is empty dont run this insert into recommendation table
+            //else then run this code
+            // use isset
+            if (!isset($recommendationid)){
+            $recommendationid = DB::table('recommendation')->insertGetId([
+            'recommendation' => $input['recommendation'], 
+            'studentid' =>  $student->studentid,
+            'lecturerid' => $student->lecturerid,
+            'hodid' => $student->hodid,
+            'moduleid' => $moduleid
+            ]);
+
+        
+
+
+             Session::set('success_message', "Student Grade added sucessfully."); 
+             return redirect()->route('manage_grade_hod', $moduleid);
+            
+            
+
+
+
+            }
+
     }
 
 
