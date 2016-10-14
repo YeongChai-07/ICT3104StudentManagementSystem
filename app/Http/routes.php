@@ -99,7 +99,15 @@ Route::post('hod/login', 'HodController@login');
 Route::get('hod/logout', 'HodController@logout');
 
 	Route::group(['middleware' =>['hodauth']], function(){
+		
 		Route::get('hod/index', 'HodController@index');
-        Route::get('hod/recommendation', 'HodController@recommendation');
+		Route::get('hod/{id}/managegrade', ['as' => 'manage_grade_hod', 'uses' => 'HodController@showManageGrade']);
+		
+		Route::get('hod/{moduleid}/{id}/addgrade', 'HodController@showAddGrade');
+        Route::post('hod/{moduleid}/{id}/addgrade', 'HodController@addGrade');
+		
+		
+		
+       // Route::get('hod/recommendation', 'HodController@recommendation');
     });
 });
