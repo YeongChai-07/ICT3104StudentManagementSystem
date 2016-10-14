@@ -1,0 +1,73 @@
+.commentSection {
+    padding-bottom: 2em;
+}
+
+.commentSection .form-group * { 
+    margin-top:0.5em; 
+    margin-bottom:0.5em;
+    display: block;
+    width:100%;
+}
+
+.submitTextarea {
+    width:100%;
+    text-align: justify;
+}
+
+ul{
+    list-style-type: none;
+    padding:0;
+}
+
+.commentList { 
+    list-style-type:none;
+}
+
+.commentList li { 
+    margin:0;
+    border-top: 1px solid lightgrey;
+    padding-bottom: 1.5em;
+    padding-top: 1.5em;
+}
+
+.entryDate { 
+    color:#aaa; 
+    font-size:0.8em;
+}
+
+a.viewReplyLabel{
+    color: #337ab7;
+    text-decoration: none;
+}
+
+a.viewReplyLabel span {
+    color: #333;
+}
+
+.replyEntries {
+    margin-left: 1em;
+}
+
+.replyLink {
+    color: #337ab7;
+    text-decoration: none;
+}
+
+.replyText {
+    margin-top:2em;
+    margin-left:1em;
+}
+
+.replyForm .form-group *{
+    resize:none;
+    margin-top:0.5em;
+    margin-bottom:0.5em;
+    display: block;
+}
+
+.getCount{
+    display:none;
+}
+
+
+

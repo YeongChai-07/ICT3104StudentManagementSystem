@@ -1,0 +1,153 @@
+ body{
+         padding-top: 70px;  padding-bottom: 70px; 
+        }
+	.timerDiv.affix { top:63px; background-color:#FFF;  padding-top:5px; z-index:99; 
+	text-align:center;   }
+	.timerDiv .container div{ float:left; margin-right:5px; font-size:16px; font-weight:bold;  }
+	
+	#nav-wrapper { height:50px; }
+	
+		 .validation_errors li{ color:red !important; }
+		  .content {
+                text-align: center;
+                display: inline-block;
+            }
+			.title {
+                font-size: 25px;
+            }
+			table tr td { padding:5px; }
+			.page { padding:2%; }
+			.btn { margin:5px; }
+			.resultDiv { width:auto; height:20px;  color:#FFF; font-weight:bold; }
+			.correct { background-color:#22B420; } 
+			.fail { background-color:#E80D0D; } 
+			.attempsDiv { background-color:#ECA31B; }
+			.studentlink { color:#fff !important; margin:5px 2px; padding:10px 13px !important; }
+			.studentlink:hover {/* color:#000 !important;*/  background-color: #5bc0de !important; 
+			  border-color: #46b8da; }
+			#draggingContainer { min-width:300px; }
+			#draggingContainer tr{ width:100%; }
+			#draggingContainer tr td {
+   border: 1px solid #000; padding:10px; min-width:50px;
+}
+
+  .panel-heading .accordion-toggle:after {
+    /* symbol for "opening" panels */
+    font-family: 'Glyphicons Halflings';  /* essential for enabling glyphicon */
+    content: "\e114";    /* adjust as needed, taken from bootstrap.css */
+    float: right;        /* adjust as needed */
+    color: grey;         /* adjust as needed */
+}
+.panel-heading .accordion-toggle.collapsed:after {
+    /* symbol for "collapsed" panels */
+    content: "\e080";    /* adjust as needed, taken from bootstrap.css */
+}
+
+@-webkit-keyframes glowing {
+  0% { background-color: #d9534f; -webkit-box-shadow: 0 0 1px #d9534f; }
+  50% { background-color: #FF0000; -webkit-box-shadow: 0 0 10px #FF0000; }
+  100% { background-color: #d9534f; -webkit-box-shadow: 0 0 1px #d9534f; }
+}
+
+@-moz-keyframes glowing {
+  0% { background-color: #d9534f; -moz-box-shadow: 0 0 1px #d9534f; }
+  50% { background-color: #FF0000; -moz-box-shadow: 0 0 10px #FF0000; }
+  100% { background-color: #d9534f; -moz-box-shadow: 0 0 1px #d9534f; }
+}
+
+@-o-keyframes glowing {
+  0% { background-color: #d9534f; box-shadow: 0 0 1px #d9534f; }
+  50% { background-color: #FF0000; box-shadow: 0 0 10px #FF0000; }
+  100% { background-color: #d9534f; box-shadow: 0 0 1px #d9534f; }
+}
+
+@keyframes glowing {
+  0% { background-color: #d9534f; box-shadow: 0 0 1px #d9534f; }
+  50% { background-color: #FF0000; box-shadow: 0 0 10px #FF0000; }
+  100% { background-color: #d9534f; box-shadow: 0 0 1px #d9534f; }
+}
+
+.flashbtn {
+  -webkit-animation: glowing 1500ms infinite;
+  -moz-animation: glowing 1500ms infinite;
+  -o-animation: glowing 1500ms infinite;
+  animation: glowing 1500ms infinite;
+}			
+			
+			@media screen and (max-width: 1000px){
+  					.title_ext, .dasboard-title{ display:none; }
+			}
+			
+			@media screen and (max-width: 359px){
+  					body { padding-top: 112px; padding-bottom: 70px;  }
+					.timerDiv.affix { top:110px; }
+			}
+			@media screen and (max-width: 767px){
+  					#nav-wrapper { height:70px; }
+					
+					.dropdown:hover .dropdown-menu {
+					position: static;
+					float: none;
+					width: auto;
+					margin-top: 0;
+					background-color: transparent;
+					border: 0;
+					-webkit-box-shadow: none;
+					box-shadow: none;
+				}
+
+			}
+			
+			
+			.dropdown:hover .dropdown-menu {
+			display: block; 
+		}
+		.breadcrumb li {
+			margin-right: 1px;
+		}
+		
+		.form-control { display:inline !important; }
+		
+		.navbar-brand { background-image:url(../images/interlearn-logo.png); 
+			 background-repeat: no-repeat;
+			 background-position: left center; 
+			 width:195px;
+		 }
+		 .dasboard-title {
+			 font-size:1.5em; font-weight:bold; line-height:60px; padding-left:10px; text-decoration:none !important; }
+	
+	.modal {
+  text-align: center;
+  padding: 0!important;
+}
+
+.modal:before {
+  content: '';
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
+  margin-right: -4px;
+}
+
+.modal-dialog {
+  display: inline-block;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.panel-orange { 
+	border:1px solid #D57800;
+}
+.panel-orange .panel-heading, a.orange{ background-color:#D57800; color:#ffffff; } 
+
+.overlay {
+  position: fixed;
+ width:100%; height:100%;
+  background: #ffffff;
+  transition: opacity 500ms;
+ /* visibility: hidden;*/
+  opacity: 0.4;
+  z-index:9999;
+}
+
+.panel-title a.accordion-toggle { width:100%; display:block;}
