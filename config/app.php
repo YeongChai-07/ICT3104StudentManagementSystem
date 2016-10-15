@@ -156,7 +156,11 @@ return [
         App\Providers\AuthServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-
+		
+		/*
+         * Laravel-Backup Service Providers...
+         */
+		Spatie\Backup\BackupServiceProvider::class,
     ],
 
     /*

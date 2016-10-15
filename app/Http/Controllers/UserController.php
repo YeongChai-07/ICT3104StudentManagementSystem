@@ -16,6 +16,10 @@ use Hash;
 use DB;
 use Session;
 use DateTime;
+
+//Importing the Artisan Facade
+use Illuminate\Support\Facades\Artisan;
+
 class UserController extends Controller {
 
 
@@ -626,4 +630,14 @@ class UserController extends Controller {
         Session::set('success_message', "Student enrolled Successfully");  
         return redirect()->back();
     }
+	
+	public function backupSystem()
+	{
+		return view('user.backupsystem');
+	}
+	
+	public function processSystemBackup()
+	{
+		$artisanCall_Result = Artisan::call('backup:run', []);
+	}	
 }
