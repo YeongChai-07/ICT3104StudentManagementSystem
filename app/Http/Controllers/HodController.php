@@ -166,10 +166,55 @@ class HodController extends Controller {
              Session::set('success_message', "Student Grade added sucessfully."); 
              return redirect()->route('manage_grade_hod', $moduleid);
             
-            }       
+            }      
 
+}
+    public function displayPassword()
+    {
+       return view('hod.change');
     }
 
+    public function updatePassword(Request $request)
+    {   
+        $input= $request->all();
+        $hodid = auth()->guard('hod')->user();
+    
+        $validator = validator($request->all(),[
+        'old-password' => 'required',
+        'password' => 'required|min:3|confirmed',
+        'password_confirmation' => 'required|min:3'
+
+        ]);
+        //Validate inputs
+        if ($validator -> fails())
+        {
+            Session::set('error_message', "Password don't match");
+            return redirect()->back(); 
+        }
+        
+    
+        if (Hash::check($input['old-password'],$hodid->password)) {
+            $hash = Hash::make($input['password']);
+            $hodid->password = $hash;
+            $hodid->save();
+
+            Session::set('success_message', "Password updated sucessfully.");
+            } else {
+                Session::set('error_message', "Old Password is wrong.");
+            }
+            
+        return redirect()->back();
+    } 
+
+    
+    public function showDetailsFunction() // added
+    {
+            $hodid = auth()->guard('hod')->user()->hodid;
+
+            $hod = DB::table('hod')
+            ->where('hodid',$hodid)->first();  
+            return view('hod.showdetails',['hod' => $hod]);
+    }
 
     // public function recommendation()
     // {

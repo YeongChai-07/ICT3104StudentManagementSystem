@@ -46,6 +46,8 @@ Route::get('user/login', 'UserController@displayLogin');
 Route::post('user/login', 'UserController@login');
 Route::get('user/logout', 'UserController@logout');
 
+
+
 	Route::group(['middleware' =>['auth']], function(){
 
 		Route::get('user/index', 'UserController@index');
@@ -78,6 +80,15 @@ Route::get('user/logout', 'UserController@logout');
         Route::get('/user/{id}/enrollstudent', 'UserController@displayStudent');
         Route::post('/user/{id}/enrollstudent', 'UserController@enrollStudent');
 		
+        Route::get('user/change', 'UserController@displayPassword');
+        Route::post('user/change', 'UserController@updatePassword');
+
+        Route::get('user/editdetails', 'UserController@displayDetails');
+        Route::post('user/editdetails', 'UserController@updateDetails');
+
+        Route::get('user/showdetails','UserController@showDetailsFunction'); // added 
+
+
 		//Routes for backing up the application files and DB
 		Route::get('user/backupsystem', 'UserController@backupSystem');
 		Route::get('user/processsystembackup', 'UserController@processSystemBackup');
@@ -100,9 +111,15 @@ Route::get('lecturer/logout', 'LecturerController@logout');
         Route::get('lecturer/editdetails', 'LecturerController@displayDetails');
         Route::post('lecturer/editdetails', 'LecturerController@updateDetails');
 
+
+        Route::get('lecturer/change', 'LecturerController@displayPassword');
+        Route::post('lecturer/change', 'LecturerController@updatePassword');
         
         Route::get('lecturer/{moduleid}/{id}/addgrade', 'LecturerController@showAddGrade');
         Route::post('lecturer/{moduleid}/{id}/addgrade', 'LecturerController@addGrade');
+
+        Route::get('lecturer/showdetails','LecturerController@showDetailsFunction'); // added 
+
     });
 });
 
@@ -118,14 +135,18 @@ Route::get('hod/logout', 'HodController@logout');
 		Route::get('hod/index', 'HodController@index');
 		Route::get('hod/{id}/managegrade', ['as' => 'manage_grade_hod', 'uses' => 'HodController@showManageGrade']);
 
-         Route::get('hod/editdetails', 'LecturerController@displayDetails');
-        Route::post('hod/editdetails', 'LecturerController@updateDetails');
+        Route::get('hod/editdetails', 'HodController@displayDetails');
+        Route::post('hod/editdetails', 'HodController@updateDetails');
+
+        Route::get('hod/change', 'HodController@displayPassword');
+        Route::post('hod/change', 'HodController@updatePassword');
 		
 		Route::get('hod/{moduleid}/{id}/addgrade', 'HodController@showAddGrade');
         Route::post('hod/{moduleid}/{id}/addgrade', 'HodController@addGrade');
+
+               Route::get('hod/showdetails','HodController@showDetailsFunction'); // added 
+
 		
-		
-		
-       // Route::get('hod/recommendation', 'HodController@recommendation');
+
     });
 });

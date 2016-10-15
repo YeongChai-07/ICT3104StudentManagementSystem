@@ -20,18 +20,16 @@ textarea { width:250px !important; height:100px !important; }
         <table width="100%" cellpadding="5" cellspacing="5" id="hi" border="1"  class="table table-striped table-bordered dt-responsive" >
             <thead>
 
-                <tr><th>Id</th><th>Name</th><th>Email</th><th>Contact</th><th>Address</th></tr>
+                <tr><th>ID</th><th>Name</th><th>Email</th><th>Contact</th><th>Address</th></tr>
             </thead>
-          <tbody>
-               
-                <tr>
-                <td>{{   $students->studentid }}</td>
-                <td>{{   $students->studentname }}</td>
-                <td>{{   $students->studentemail }}</td>
-                <td>{{   $students->contact }}</td>
-                <td>{{   $students->address }}</td>
+          <tbody>    
+                 <tr>
+               <td>{{   $lecturer->lecturerid }}</td>
+                <td>{{   $lecturer->lecturername }}</td>
+                <td>{{   $lecturer->lectureremail }}</td>
+                <td>{{   $lecturer->contact }}</td>
+                <td>{{   $lecturer->address }}</td>
                 
-                </td>
                 </tr>  
                
             </tbody>

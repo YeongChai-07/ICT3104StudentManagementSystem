@@ -639,5 +639,81 @@ class UserController extends Controller {
 	public function processSystemBackup()
 	{
 		$artisanCall_Result = Artisan::call('backup:run', []);
-	}	
+	}
+
+
+    public function displayPassword()
+    {
+
+
+       return view('user.change');
+    }
+
+    public function updatePassword(Request $request)
+    {   
+        $input= $request->all();
+        $user = auth()->guard('web')->user();
+    
+        $validator = validator($request->all(),[
+        'old-password' => 'required',
+        'password' => 'required|min:3|confirmed',
+        'password_confirmation' => 'required|min:3'
+
+        ]);
+        //Validate inputs
+        if ($validator -> fails())
+        {
+            Session::set('error_message', "Password don't match");
+            return redirect()->back(); 
+        }
+        
+    
+        if (Hash::check($input['old-password'], $user->password)) {
+            $hash = Hash::make($input['password']);
+            $user->password = $hash;
+            $user->save();
+
+            Session::set('success_message', "Password updated sucessfully.");
+            } else {
+                Session::set('error_message', "Old Password is wrong.");
+            }
+            
+        return redirect()->back();
+    }
+
+    public function displayDetails()
+    {
+
+            $userid = auth()->guard('web')->user()->id; 
+
+              $user = User::where('id',$userid)                              
+                                ->first();  
+
+            return view('user.editdetails',['user' => $user]);
+    
+}
+
+
+    public function updateDetails(Request $request)
+    {
+        $userid  = auth()->guard('web')->user()->id;
+        $input= $request->all();
+       DB::table('users')
+                ->where('id', $userid)
+                ->update(['contact' => $input['contact'],'address' => $input['address']]);           
+                Session::set('success_message', "Profile updated sucessfully."); 
+               return redirect()->back();
+    }
+
+
+    public function showDetailsFunction() // added
+    {
+           $id = auth()->guard('web')->user()->id;
+
+            $users = DB::table('users')
+            ->where('id',$id)->first();  
+            return view('user.showdetail',['users' => $users]);
+    }
+
+	
 }

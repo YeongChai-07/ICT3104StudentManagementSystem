@@ -157,6 +157,56 @@ class LecturerController extends Controller {
                 Session::set('success_message', "Profile updated sucessfully."); 
                return redirect()->back();
     
-
     }
+
+    public function displayPassword()
+    {
+
+
+       return view('lecturer.change');
+    }
+
+    public function updatePassword(Request $request)
+    {   
+        $input= $request->all();
+        $user = auth()->guard('lecturer')->user();
+    
+        $validator = validator($request->all(),[
+        'old-password' => 'required',
+        'password' => 'required|min:3|confirmed',
+        'password_confirmation' => 'required|min:3'
+
+        ]);
+        //Validate inputs
+        if ($validator -> fails())
+        {
+            Session::set('error_message', "Password don't match");
+            return redirect()->back(); 
+        }
+        
+    
+        if (Hash::check($input['old-password'], $user->password)) {
+            $hash = Hash::make($input['password']);
+            $user->password = $hash;
+            $user->save();
+
+            Session::set('success_message', "Password updated sucessfully.");
+            } else {
+                Session::set('error_message', "Old Password is wrong.");
+            }
+            
+        return redirect()->back();
+    }
+
+
+    public function showDetailsFunction() // added
+    {
+
+             $lecturerId = auth()->guard('lecturer')->user()->lecturerid;
+
+            $lecturer = Lecturer::where('lecturerid',$lecturerId)                              
+                                ->first();       
+            return view('lecturer.showdetails',['lecturer' => $lecturer]);
+    }
+
 }

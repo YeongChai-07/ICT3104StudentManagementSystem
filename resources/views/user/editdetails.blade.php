@@ -16,16 +16,16 @@
 <div class="generalHeader">
     Edit Details
 </div>
-<?php echo Form::open(array('url' => 'student/editdetails', 'method' => 'post')) ?>
+<?php echo Form::open(array('url' => 'user/editdetails', 'method' => 'post')) ?>
  <div class="form-group">
             {!!Form::label('contact','Contact Number')!!}
-            {!!Form::text('contact',$student->contact,array('class' => 'form-control','required' => 'required'))!!}
+            {!!Form::text('contact',$user->contact,array('class' => 'form-control','required' => 'required'))!!}
         </div>
         <div class="form-group">
             {!!Form::label('address','Address')!!}
-            {!!Form::textarea('address',$student->address,array('class' => 'form-control'))!!}
+            {!!Form::textarea('address',$user->address,array('class' => 'form-control'))!!}
         </div>
-       <a href="{{URL::asset('student/index')}}" class="btn btn-danger" style="float:right;">Back to Homepage</a>
+       <a href="{{URL::asset('user/index')}}" class="btn btn-danger" style="float:right;">Back to Homepage</a>
         {!!Form::submit('Update', array('class' => 'btn btn-success'))!!}
         {!! Form::close() !!}
 @stop

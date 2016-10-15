@@ -134,12 +134,11 @@ class StudentController extends Controller {
 
     public function showDetailsFunction() // added
     {
-            $id = auth()->guard('student')->user()->studentid;
-            
-            $student = DB::table('students')
-            ->where('studentid',$id)->first();  
-        
-            return view('student.showdetails',['student' => $student]);
+           $studentId = auth()->guard('student')->user()->studentid;
+
+            $students = DB::table('students')
+            ->where('studentid',$studentId)->first();  
+            return view('student.showdetails',['students' => $students]);
     }
 
 
