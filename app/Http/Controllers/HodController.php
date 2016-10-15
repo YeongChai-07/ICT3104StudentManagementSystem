@@ -101,6 +101,36 @@ class HodController extends Controller {
             ]); 
     }
 
+
+         public function displayDetails()
+    {
+
+            $hodid = auth()->guard('hod')->user()->hodid;
+
+            $hod = hod::where('hodid',$hodid)                              
+                                ->first();       
+            return view('hod.editdetails',['hod' => $hod]);
+    }
+
+
+    public function updateDetails(Request $request)
+    {
+             $hodid = auth()->guard('hod')->user()->hodid;
+
+            $input= $request->all();
+            DB::table('hod')
+                ->where('hodid', $hodid)
+                ->update(['contact' => $input['contact'],'address' => $input['address']]);          
+          
+                Session::set('success_message', "Profile updated sucessfully."); 
+               return redirect()->back();
+    
+    }   
+
+
+
+
+
     public function showAddGrade(Request $request, $moduleid,$gradeid)
     {
         
@@ -133,18 +163,10 @@ class HodController extends Controller {
             'hodid' => $student->hodid,
             'moduleid' => $moduleid
             ]);
-
-        
-
-
              Session::set('success_message', "Student Grade added sucessfully."); 
              return redirect()->route('manage_grade_hod', $moduleid);
             
-            
-
-
-
-            }
+            }       
 
     }
 

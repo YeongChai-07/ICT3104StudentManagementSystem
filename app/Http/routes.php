@@ -112,6 +112,9 @@ Route::get('hod/logout', 'HodController@logout');
 		
 		Route::get('hod/index', 'HodController@index');
 		Route::get('hod/{id}/managegrade', ['as' => 'manage_grade_hod', 'uses' => 'HodController@showManageGrade']);
+
+         Route::get('hod/editdetails', 'LecturerController@displayDetails');
+        Route::post('hod/editdetails', 'LecturerController@updateDetails');
 		
 		Route::get('hod/{moduleid}/{id}/addgrade', 'HodController@showAddGrade');
         Route::post('hod/{moduleid}/{id}/addgrade', 'HodController@addGrade');
