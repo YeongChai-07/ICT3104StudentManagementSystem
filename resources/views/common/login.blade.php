@@ -12,7 +12,7 @@
     <div class="row">
         <div class="col-md-6 col-sm-12 col-md-offset-3">
             <div class="panel panel-primary">
-                <div class="panel-heading">Admin Login</div>
+                <div class="panel-heading">Login</div>
                 <div class="panel-body">
                     <div class="controls">
                         <p><strong>Email</strong></p>

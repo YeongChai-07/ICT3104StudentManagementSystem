@@ -1,6 +1,6 @@
 @extends('layouts.layout')
 
-@section('title','Edit Details')
+@section('title','Edit Lecturer')
 
 @section('content')
 
@@ -14,18 +14,18 @@
  @endif
 
 <div class="generalHeader">
-    Edit Details
+    Edit Lecturer
 </div>
-<?php echo Form::open(array('url' => 'student/editdetails', 'method' => 'post')) ?>
+<?php echo Form::open(array('url' => 'user/'.$lecturer->lecturerid.'/editlecturer', 'method' => 'post')) ?>
  <div class="form-group">
-            {!!Form::label('contact','Contact Number')!!}
-            {!!Form::text('contact',$student->contact,array('class' => 'form-control','required' => 'required'))!!}
+            {!!Form::label('name','Name')!!}
+            {!!Form::text('name',$lecturer->lecturername,array('class' => 'form-control'))!!}
         </div>
         <div class="form-group">
-            {!!Form::label('address','Address')!!}
-            {!!Form::textarea('address',$student->address,array('class' => 'form-control'))!!}
+            {!!Form::label('email','Email')!!}
+            {!!Form::text('email',$lecturer->lectureremail,array('class' => 'form-control', 'required' => 'required'))!!}
         </div>
-       <a href="{{URL::asset('student/index')}}" class="btn btn-danger" style="float:right;">Back to Homepage</a>
+       <a href="{{URL::asset('admin/lecturer')}}" class="btn btn-primary" style="float:right;">Back to Lecturer list</a>
         {!!Form::submit('Update', array('class' => 'btn btn-success'))!!}
         {!! Form::close() !!}
 @stop

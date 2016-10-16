@@ -27,7 +27,7 @@ textarea { width:250px !important; height:100px !important; }
                 </tr>
             </thead>
             <tbody>
-            <?php echo Form::open(array('url' => 'user/'.$id.'/enrollstudent', 'method' => 'post')) ?>
+            <?php echo Form::open(array('url' => 'admin/'.$id.'/enrollstudent', 'method' => 'post')) ?>
                 @foreach($students as $key=>$student)
 
                 <tr>

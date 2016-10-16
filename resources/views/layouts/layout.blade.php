@@ -33,60 +33,62 @@
                         @if(auth()->guard('student')->check())
                             <li><a href="{{URL::asset('student/grade')}}">View Grade</a></li><!--// added-->
                             <li><a href="{{URL::asset('student/module')}}">View All Module</a></li> <!--// added-->
-
-
-                            <li><a href="{{URL::asset('student/recommendation')}}">View Recommendation</a></li>
+                      
                             <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">{{ auth()->guard('student')->user()->studentname }} <span class="glyphicon glyphicon-cog"></span></a>
-                                    <ul class="dropdown-menu">
-                                        <li><a href="{{URL::asset('student/editdetails')}}">Edit Details</a></li>
-
-                                        <li><a href="{{URL::asset('student/showdetails')}}">View Details</a></li><!--// added-->
-                                        <li><a href="{{URL::asset('student/change')}}">Change Password</a></li>
-                                        <li><a href="{{URL::asset('student/logout')}}">Log Out</a></li>
-                                         
-                                    </ul>
+								<ul class="dropdown-menu">
+									<li><a href="{{URL::asset('common/editdetails')}}">Edit Details</a></li>
+									<li><a href="{{URL::asset('common/showdetails')}}">View Details</a></li><!--// added-->
+									<li><a href="{{URL::asset('common/change')}}">Change Password</a></li>
+									<li><a href="{{URL::asset('common/logout')}}">Log Out</a></li>
+									 
+								</ul>
+							</li>
                         <!-- Admin -->
-                         @elseif(auth()->guard('web')->check())
-                            <li><a href="{{URL::asset('user/index')}}">View Student</a></li>
-                            <li><a href="{{URL::asset('user/hod')}}">View HOD</a></li>
-                            <li><a href="{{URL::asset('user/lecturer')}}">View Lecturer</a></li>
-                            <li><a href="{{URL::asset('user/module')}}">View Module</a></li>
-                            <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">{{ auth()->guard('web')->user()->name }} <span class="glyphicon glyphicon-cog"></span></a>
-                                    <ul class="dropdown-menu">
-                                    <li><a href="{{URL::asset('user/editdetails')}}">Edit Details</a></li>
-                                     <li><a href="{{URL::asset('user/showdetails')}}">View Details</a></li><!--// added-->
-                                    <li><a href="{{URL::asset('user/change')}}">Change Password</a></li>
-                                        <li><a href="{{URL::asset('user/logout')}}">Log Out</a></li>
-                                        <!-- <li><a href="{{URL::asset('pretest/change')}}">Change Password</a></li> -->
-                                    </ul>
-
+                         @elseif(auth()->guard('admin')->check())
+                            <li><a href="{{URL::asset('admin/index')}}">View Student</a></li>
+                            <li><a href="{{URL::asset('admin/hod')}}">View HOD</a></li>
+                            <li><a href="{{URL::asset('admin/lecturer')}}">View Lecturer</a></li>
+                            <li><a href="{{URL::asset('admin/module')}}">View Module</a></li>
+							<li><a href="{{URL::asset('admin/backupsystem')}}">Backup System</a></li>
+							<li><a href="{{URL::asset('studentinfo/viewAllStudents')}}">Students</a></li>
+                            <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">{{ auth()->guard('admin')->user()->name }} <span class="glyphicon glyphicon-cog"></span></a>
+								<ul class="dropdown-menu">
+									<li><a href="{{URL::asset('common/editdetails')}}">Edit Details</a></li>
+									<li><a href="{{URL::asset('common/showdetails')}}">View Details</a></li><!--// added-->
+									<li><a href="{{URL::asset('common/change')}}">Change Password</a></li>
+									<li><a href="{{URL::asset('common/logout')}}">Log Out</a></li>
+									<!-- <li><a href="{{URL::asset('pretest/change')}}">Change Password</a></li> -->
+								</ul>
+							</li>
+							
                         <!-- HOD -->
-                         @elseif(auth()->guard('hod')->check())
-                            <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">{{ auth()->guard('hod')->user()->hodname }} <span class="glyphicon glyphicon-cog"></span></a>
-                                    <ul class="dropdown-menu">
-                                    <li><a href="{{URL::asset('hod/editdetails')}}">Edit Details</a></li>
-                                     <li><a href="{{URL::asset('hod/showdetails')}}">View Details</a></li><!--// added-->
-                                    <li><a href="{{URL::asset('hod/change')}}">Change Password</a></li>
-                                        <li><a href="{{URL::asset('hod/logout')}}">Log Out</a></li>
-                                        <!-- <li><a href="{{URL::asset('pretest/change')}}">Change Password</a></li> -->
-                                    </ul> 
-
-                        <!-- Lecturer                         -->
+                         @elseif(auth()->guard('hod')->check())						 
+							<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">{{ auth()->guard('hod')->user()->hodname }} <span class="glyphicon glyphicon-cog"></span></a>
+								<ul class="dropdown-menu">
+									<li><a href="{{URL::asset('common/editdetails')}}">Edit Details</a></li>
+									<li><a href="{{URL::asset('common/showdetails')}}">View Details</a></li><!--// added-->
+									<li><a href="{{URL::asset('common/change')}}">Change Password</a></li>
+									<li><a href="{{URL::asset('common/logout')}}">Log Out</a></li>
+									<!-- <li><a href="{{URL::asset('pretest/change')}}">Change Password</a></li> -->
+								</ul> 
+							</li>
+                        <!-- Lecturer-->
                          @elseif(auth()->guard('lecturer')->check())
-                            <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">{{ auth()->guard('lecturer')->user()->lecturername }} <span class="glyphicon glyphicon-cog"></span></a>
-                                    <ul class="dropdown-menu">
-                                        <li><a href="{{URL::asset('lecturer/editdetails')}}">Edit Details</a></li>
-                                         <li><a href="{{URL::asset('lecturer/showdetails')}}">View Details</a></li><!--// added-->
-                                         <li><a href="{{URL::asset('lecturer/change')}}">Change Password</a></li>
-                                        <li><a href="{{URL::asset('lecturer/logout')}}">Log Out</a></li>
-                                        <!-- <li><a href="{{URL::asset('pretest/change')}}">Change Password</a></li> -->
-                                    </ul> 
-                            @else                   
-                            <li><a class="studentlink orange" href="{{URL::asset('student/login')}}">Student Login</a></li>
-                            <li><a class="studentlink btn-primary" href="{{URL::asset('user/login')}}">Admin Login</a></li> 
-                            <li><a class="studentlink btn-danger" href="{{URL::asset('hod/login')}}">Hod Login</a></li>   
-                            <li><a class="studentlink btn-info" href="{{URL::asset('lecturer/login')}}">Lecturer Login</a></li>
-                            @endif                                         
+							<li><a href="{{URL::asset('studentinfo/viewAllStudents')}}">Students</a></li>
+							<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">{{ auth()->guard('lecturer')->user()->lecturername }} <span class="glyphicon glyphicon-cog"></span></a>
+								<ul class="dropdown-menu">
+									<li><a href="{{URL::asset('common/editdetails')}}">Edit Details</a></li>
+									<li><a href="{{URL::asset('common/showdetails')}}">View Details</a></li><!--// added-->
+									<li><a href="{{URL::asset('common/change')}}">Change Password</a></li>
+									<li><a href="{{URL::asset('common/logout')}}">Log Out</a></li>
+									<!-- <li><a href="{{URL::asset('pretest/change')}}">Change Password</a></li> -->
+								</ul> 
+							</li>
+						
+						@else 
+								
+						
+						@endif                                         
                     </ul>
                                 </div>
                             </div>

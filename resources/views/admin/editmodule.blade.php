@@ -16,7 +16,7 @@
 <div class="generalHeader">
     Edit Module
 </div>
-<?php echo Form::open(array('url' => 'user/'.$module->id.'/editmodule', 'method' => 'post')) ?>
+<?php echo Form::open(array('url' => 'admin/'.$module->id.'/editmodule', 'method' => 'post')) ?>
  <div class="form-group">
             {!!Form::label('name','Name')!!}
             {!!Form::text('name',$module->modulename,array('class' => 'form-control','required' => 'required'))!!}
@@ -63,7 +63,7 @@
              {!! Form::text('freezedate', date('y-m-d', strtotime($module->freezedate)), ['required' => 'required','readonly' ,'class' => 'form-control datepicker']) !!}
         </div>  
 
-       <a href="{{URL::asset('user/module')}}" class="btn btn-danger" style="float:right;">Back to Module list</a>
+       <a href="{{URL::asset('admin/module')}}" class="btn btn-primary" style="float:right;">Back to Module list</a>
         {!!Form::submit('Update', array('class' => 'btn btn-success'))!!}
         {!! Form::close() !!}
 @stop

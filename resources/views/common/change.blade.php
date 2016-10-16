@@ -16,7 +16,6 @@
   <div class="alert alert-success">{{ Session::get('success_message') }}</div>
  {{Session::forget('success_message')}}
  @endif
-    
 
         {!! Form::open() !!}
         <div class="form-group">
@@ -30,6 +29,23 @@
         <div class="form-group">
             {!!Form::label('password_confirmation','Re enter Password')!!}
             {!!Form::password('password_confirmation', array('class' => 'form-control', 'required' => 'required'))!!}
+        </div>
+		
+		<div class="form-group">
+			@if(auth()->guard('student')->check())			   
+				{!!Form::hidden('role', 'student')!!}
+			 @endif
+			@if(auth()->guard('lecturer')->check())
+				{!!Form::hidden('role', 'lecturer')!!}
+			 @endif
+			@if(auth()->guard('hod')->check())
+				{!!Form::hidden('role', 'hod')!!}
+			@endif
+			@if(auth()->guard('admin')->check())
+				{!!Form::hidden('role', 'admin')!!}
+			@endif
+
+			
         </div>
        
         {!!Form::submit('Change Password', array('class' => 'btn btn-success'))!!}

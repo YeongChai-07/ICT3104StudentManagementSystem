@@ -1,6 +1,6 @@
 @extends('layouts.layout')
 
-@section('title','Edit Details')
+@section('title','Edit Hod')
 
 @section('content')
 
@@ -14,18 +14,18 @@
  @endif
 
 <div class="generalHeader">
-    Edit Details
+    Edit Hod
 </div>
-<?php echo Form::open(array('url' => 'lecturer/editdetails', 'method' => 'post')) ?>
+<?php echo Form::open(array('url' => 'admin/'.$hod->hodid.'/edithod', 'method' => 'post')) ?>
  <div class="form-group">
-            {!!Form::label('contact','Contact Number')!!}
-            {!!Form::text('contact',$lecturer->contact,array('class' => 'form-control','required' => 'required'))!!}
+            {!!Form::label('name','Name')!!}
+            {!!Form::text('name',$hod->hodname,array('class' => 'form-control'))!!}
         </div>
         <div class="form-group">
-            {!!Form::label('address','Address')!!}
-            {!!Form::textarea('address',$lecturer->address,array('class' => 'form-control'))!!}
+            {!!Form::label('email','Email')!!}
+            {!!Form::text('email',$hod->hodemail,array('class' => 'form-control', 'required' => 'required'))!!}
         </div>
-       <a href="{{URL::asset('lecturer/index')}}" class="btn btn-danger" style="float:right;">Back to homepage</a>
+       <a href="{{URL::asset('admin/hod')}}" class="btn btn-primary" style="float:right;">Back to Hod list</a>
         {!!Form::submit('Update', array('class' => 'btn btn-success'))!!}
         {!! Form::close() !!}
 @stop

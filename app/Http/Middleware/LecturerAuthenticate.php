@@ -21,7 +21,8 @@ class LecturerAuthenticate
             if ($request->ajax() || $request->wantsJson()) {
                 return response('Unauthorized.', 401);
             } else {
-                return redirect()->guest('/lecturer/login');
+                //return redirect()->guest('/common/login');
+				return $next($request);
             }
         }
 

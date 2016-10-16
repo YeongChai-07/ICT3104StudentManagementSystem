@@ -24,11 +24,11 @@ textarea { width:250px !important; height:100px !important; }
             </thead>
 
             <tr>
-                <td>{{   $users->id }}</td>
-                <td>{{   $users->name }}</td>
-                <td>{{   $users->email }}</td>
-                <td>{{   $users->contact }}</td>
-                <td>{{   $users->address }}</td>
+                <td>{{   $id }}</td>
+                <td>{{   $name }}</td>
+                <td>{{   $email }}</td>
+                <td>{{   $contact }}</td>
+                <td>{{   $address }}</td>
                 
                 </td>
                 </tr> 

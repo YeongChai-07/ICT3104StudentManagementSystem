@@ -1,6 +1,6 @@
 @extends('layouts.layout')
 
-@section('title','Edit Lecturer')
+@section('title','Add Lecturer')
 
 @section('content')
 
@@ -12,20 +12,19 @@
   <div class="alert alert-success">{{ Session::get('success_message') }}</div>
  {{Session::forget('success_message')}}
  @endif
-
 <div class="generalHeader">
-    Edit Lecturer
+    Add Lecturer
 </div>
-<?php echo Form::open(array('url' => 'user/'.$lecturer->lecturerid.'/editlecturer', 'method' => 'post')) ?>
+<?php echo Form::open(array('url' => 'admin/addlecturer', 'method' => 'post')) ?>
  <div class="form-group">
             {!!Form::label('name','Name')!!}
-            {!!Form::text('name',$lecturer->lecturername,array('class' => 'form-control'))!!}
+            {!!Form::text('name',null,array('class' => 'form-control'))!!}
         </div>
         <div class="form-group">
             {!!Form::label('email','Email')!!}
-            {!!Form::text('email',$lecturer->lectureremail,array('class' => 'form-control', 'required' => 'required'))!!}
+            {!!Form::text('email',null,array('class' => 'form-control', 'required' => 'required'))!!}
         </div>
-       <a href="{{URL::asset('user/lecturer')}}" class="btn btn-danger" style="float:right;">Back to Lecturer list</a>
-        {!!Form::submit('Update', array('class' => 'btn btn-success'))!!}
+       <a href="{{URL::asset('admin/lecturer')}}" class="btn btn-primary" style="float:right;">Back to Lecturer list</a>
+        {!!Form::submit('Add', array('class' => 'btn btn-success'))!!}
         {!! Form::close() !!}
 @stop

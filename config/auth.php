@@ -36,11 +36,13 @@ return [
     */
 
     'guards' => [
-        //Admin
-        'web' => [
+        //common
+        /*
+		'web' => [
             'driver' => 'session',
             'provider' => 'users',
         ],
+		*/
 
         'api' => [
             'driver' => 'token',
@@ -60,6 +62,10 @@ return [
         'hod' => [
             'driver' => 'session',
             'provider' => 'hod',
+        ],
+		  'admin' => [
+            'driver' => 'session',
+            'provider' => 'admin',
         ],
     ],
 
@@ -81,10 +87,11 @@ return [
     */
 
     'providers' => [
+	/**
         'users' => [
             'driver' => 'eloquent',
             'model' => App\User::class,
-        ],
+        ],*/
        'student' => [
             'driver' => 'eloquent',
             'model' => App\Student::class,
@@ -96,6 +103,10 @@ return [
        'hod' => [
             'driver' => 'eloquent',
             'model' => App\Hod::class,
+        ],
+		'admin' => [
+            'driver' => 'eloquent',
+            'model' => App\Admin::class,
         ],
 
     ],

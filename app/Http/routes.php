@@ -12,113 +12,129 @@
 */
 
 Route::get('/', function () {
-    return view('student.login');
+    return view('common.login');
 });
 
 
 //Student URL
 Route::group(['middleware' => ['student']], function () {  
-
-Route::get('student/login', 'StudentController@displayLogin');
-Route::post('student/login', 'StudentController@login');
-Route::get('student/logout', 'StudentController@logout');
+Route::get('common/login', 'CommonController@displayLogin');
+Route::post('common/login', 'CommonController@login');
+Route::get('common/logout', 'CommonController@logout');
 
 	Route::group(['middleware' =>['studentauth']], function(){
 		Route::get('student/index', 'StudentController@index');
-		Route::get('student/recommendation', 'StudentController@recommendation');
         Route::get('student/grade', 'StudentController@viewGrade');// added
         
         Route::get('student/module','StudentController@showModule'); // added 
-        Route::get('student/showdetails','StudentController@showDetailsFunction'); // added 
 
 
-        Route::get('student/editdetails', 'StudentController@displayDetails');
-        Route::post('student/editdetails', 'StudentController@updateDetails');
-        Route::get('student/change', 'StudentController@displayPassword');
-        Route::post('student/change', 'StudentController@updatePassword');
+		// personal info update
+        Route::get('common/change', 'CommonController@displayPassword');
+        Route::post('common/change', 'CommonController@updatePassword');
+        Route::get('common/editdetails', 'CommonController@displayDetails');
+        Route::post('common/editdetails', 'CommonController@updateDetails');
+        Route::get('common/showdetails','CommonController@showDetailsFunction'); // added 
+
     });
 });
 
 //Admin URL
-Route::group(['middleware' => ['web']], function () {
-
-Route::get('user/login', 'UserController@displayLogin');
-Route::post('user/login', 'UserController@login');
-Route::get('user/logout', 'UserController@logout');
-
+Route::group(['middleware' => ['admin']], function () {
+Route::get('common/login', 'CommonController@displayLogin');
+Route::post('common/login', 'CommonController@login');
+Route::get('common/logout', 'CommonController@logout');
 
 
-	Route::group(['middleware' =>['auth']], function(){
+	Route::group(['middleware' =>['adminauth']], function(){
 
-		Route::get('user/index', 'UserController@index');
-		Route::get('/user/addstudent', 'UserController@showAddStudent');
-        Route::post('/user/addstudent', 'UserController@addStudent');
-        Route::get('/user/{id}/editstudent', 'UserController@editStudent');
-        Route::post('/user/{id}/editstudent', 'UserController@updateStudent');
-        Route::get('/user/{id}/deletestudent', 'UserController@deleteStudent');
+		Route::get('admin/index', 'AdminController@index');
+		Route::get('/admin/addstudent', 'AdminController@showAddStudent');
+        Route::post('/admin/addstudent', 'AdminController@addStudent');
+        Route::get('/admin/{id}/editstudent', 'AdminController@editStudent');
+        Route::post('/admin/{id}/editstudent', 'AdminController@updateStudent');
+        Route::get('/admin/{id}/deletestudent', 'AdminController@deleteStudent');
 
-		Route::get('user/hod', 'UserController@showHod');
-		Route::get('/user/addhod', 'UserController@showAddHod');
-        Route::post('/user/addhod', 'UserController@addHod');
-        Route::get('/user/{id}/edithod', 'UserController@editHod');
-        Route::post('/user/{id}/edithod', 'UserController@updateHod');
-        Route::get('/user/{id}/deletehod', 'UserController@deleteHod');
+		Route::get('admin/hod', 'AdminController@showHod');
+		Route::get('/admin/addhod', 'AdminController@showAddHod');
+        Route::post('/admin/addhod', 'AdminController@addHod');
+        Route::get('/admin/{id}/edithod', 'AdminController@editHod');
+        Route::post('/admin/{id}/edithod', 'AdminController@updateHod');
+        Route::get('/admin/{id}/deletehod', 'AdminController@deleteHod');
 
-		Route::get('user/lecturer', 'UserController@showLecturer');
-		Route::get('/user/addlecturer', 'UserController@showAddLecturer');
-        Route::post('/user/addlecturer', 'UserController@addLecturer');
-        Route::get('/user/{id}/editlecturer', 'UserController@editLecturer');
-        Route::post('/user/{id}/editlecturer', 'UserController@updateLecturer');
-        Route::get('/user/{id}/deletelecturer', 'UserController@deleteLecturer');
+		Route::get('admin/lecturer', 'AdminController@showLecturer');
+		Route::get('/admin/addlecturer', 'AdminController@showAddLecturer');
+        Route::post('/admin/addlecturer', 'AdminController@addLecturer');
+        Route::get('/admin/{id}/editlecturer', 'AdminController@editLecturer');
+        Route::post('/admin/{id}/editlecturer', 'AdminController@updateLecturer');
+        Route::get('/admin/{id}/deletelecturer', 'AdminController@deleteLecturer');
 
-        Route::get('user/module', 'UserController@showModule');
-        Route::get('user/addmodule', 'UserController@showAddModule');
-        Route::post('user/addmodule', 'UserController@addModule');
-        Route::get('/user/{id}/editmodule', 'UserController@editModule');
-        Route::post('/user/{id}/editmodule', 'UserController@updateModule');
-        Route::get('/user/{id}/deletemodule', 'UserController@deleteModule');
-        Route::get('/user/{id}/enrollstudent', 'UserController@displayStudent');
-        Route::post('/user/{id}/enrollstudent', 'UserController@enrollStudent');
+        Route::get('admin/module', 'AdminController@showModule');
+        Route::get('admin/addmodule', 'AdminController@showAddModule');
+        Route::post('admin/addmodule', 'AdminController@addModule');
+        Route::get('/admin/{id}/editmodule', 'AdminController@editModule');
+        Route::post('/admin/{id}/editmodule', 'AdminController@updateModule');
+        Route::get('/admin/{id}/deletemodule', 'AdminController@deleteModule');
+        Route::get('/admin/{id}/enrollstudent', 'AdminController@displayStudent');
+        Route::post('/admin/{id}/enrollstudent', 'AdminController@enrollStudent');
 		
-        Route::get('user/change', 'UserController@displayPassword');
-        Route::post('user/change', 'UserController@updatePassword');
-
-        Route::get('user/editdetails', 'UserController@displayDetails');
-        Route::post('user/editdetails', 'UserController@updateDetails');
-
-        Route::get('user/showdetails','UserController@showDetailsFunction'); // added 
-
-
 		//Routes for backing up the application files and DB
-		Route::get('user/backupsystem', 'UserController@backupSystem');
-		Route::get('user/processsystembackup', 'UserController@processSystemBackup');
+		Route::get('admin/backupsystem', 'AdminController@backupSystem');
+		Route::get('admin/processsystembackup', 'AdminController@processSystemBackup');
+		
+		// personal info update
+        Route::get('common/change', 'CommonController@displayPassword');
+        Route::post('common/change', 'CommonController@updatePassword');
+        Route::get('common/editdetails', 'CommonController@displayDetails');
+        Route::post('common/editdetails', 'CommonController@updateDetails');
+        Route::get('common/showdetails','CommonController@showDetailsFunction'); // added 
+		
+			//jerlyn - edit student info //
+		Route::get('studentinfo/viewAllStudents', ['as' => 'view_students', 'uses' => 'StudentInfoController@viewAllStudents']);
+		Route::get('studentinfo/{studentID}/editStudentInfoView', 'StudentInfoController@editStudentInfoView');
+		Route::post('studentinfo/{studentID}/editStudentInfoView', 'StudentInfoController@updateStudentInfo');
+		
+		Route::get('studentinfo/{studentID}/deleteStudentView', 'StudentInfoController@deleteStudentView');
+		Route::post('studentinfo/{studentID}/deleteStudentView', 'StudentInfoController@deleteStudent');
+		//-- end edit student info --//
 
+
+	
+		
     });
 });
 
 //LecturerURL
 Route::group(['middleware' => ['lecturer']], function () {
+Route::get('common/login', 'CommonController@displayLogin');
+Route::post('common/login', 'CommonController@login');
+Route::get('common/logout', 'CommonController@logout');
 
-Route::get('lecturer/login', 'LecturerController@displayLogin');
-Route::post('lecturer/login', 'LecturerController@login');
-Route::get('lecturer/logout', 'LecturerController@logout');
 
 	Route::group(['middleware' =>['lecturerauth']], function(){
 		
 		Route::get('lecturer/index', 'LecturerController@index');
         Route::get('lecturer/{id}/managegrade', ['as' => 'manage_grade', 'uses' => 'LecturerController@showManageGrade']);
+		Route::post('lecturer/{moduleid}/{id}/addgrade', 'LecturerController@addGrade');
+		Route::get('lecturer/{moduleid}/{id}/addgrade', 'LecturerController@showAddGrade');
 
-        Route::get('lecturer/editdetails', 'LecturerController@displayDetails');
-        Route::post('lecturer/editdetails', 'LecturerController@updateDetails');
-
-
-        Route::get('lecturer/change', 'LecturerController@displayPassword');
-        Route::post('lecturer/change', 'LecturerController@updatePassword');
-        
-        Route::get('lecturer/{moduleid}/{id}/addgrade', 'LecturerController@showAddGrade');
-        Route::post('lecturer/{moduleid}/{id}/addgrade', 'LecturerController@addGrade');
-
-        Route::get('lecturer/showdetails','LecturerController@showDetailsFunction'); // added 
+		
+// personal info update		
+        Route::get('common/change', 'CommonController@displayPassword');
+        Route::post('common/change', 'CommonController@updatePassword');
+        Route::get('common/editdetails', 'CommonController@displayDetails');
+        Route::post('common/editdetails', 'CommonController@updateDetails');
+        Route::get('common/showdetails','CommonController@showDetailsFunction'); // added 
+		
+		//jerlyn - edit student info //
+		Route::get('studentinfo/viewAllStudents', ['as' => 'view_students', 'uses' => 'StudentInfoController@viewAllStudents']);
+		Route::get('studentinfo/{studentID}/editStudentInfoView', 'StudentInfoController@editStudentInfoView');
+		Route::post('studentinfo/{studentID}/editStudentInfoView', 'StudentInfoController@updateStudentInfo');
+		
+		Route::get('studentinfo/{studentID}/deleteStudentView', 'StudentInfoController@deleteStudentView');
+		Route::post('studentinfo/{studentID}/deleteStudentView', 'StudentInfoController@deleteStudent');
+		//-- end edit student info --//
+		
 
     });
 });
@@ -126,26 +142,30 @@ Route::get('lecturer/logout', 'LecturerController@logout');
 //HOD URL
 Route::group(['middleware' => ['hod']], function () {
 	
-Route::get('hod/login', 'HodController@displayLogin');
-Route::post('hod/login', 'HodController@login');
-Route::get('hod/logout', 'HodController@logout');
+Route::get('common/login', 'CommonController@displayLogin');
+Route::post('common/login', 'CommonController@login');
+Route::get('common/logout', 'CommonController@logout');
+
 
 	Route::group(['middleware' =>['hodauth']], function(){
 		
 		Route::get('hod/index', 'HodController@index');
 		Route::get('hod/{id}/managegrade', ['as' => 'manage_grade_hod', 'uses' => 'HodController@showManageGrade']);
 
-        Route::get('hod/editdetails', 'HodController@displayDetails');
-        Route::post('hod/editdetails', 'HodController@updateDetails');
-
-        Route::get('hod/change', 'HodController@displayPassword');
-        Route::post('hod/change', 'HodController@updatePassword');
+		// personal info update
+        Route::get('common/change', 'CommonController@displayPassword');
+        Route::post('common/change', 'CommonController@updatePassword');
+        Route::get('common/editdetails', 'CommonController@displayDetails');
+        Route::post('common/editdetails', 'CommonController@updateDetails');
+        Route::get('common/showdetails','CommonController@showDetailsFunction'); // added 
 		
+
 		Route::get('hod/{moduleid}/{id}/addgrade', 'HodController@showAddGrade');
         Route::post('hod/{moduleid}/{id}/addgrade', 'HodController@addGrade');
 
-               Route::get('hod/showdetails','HodController@showDetailsFunction'); // added 
-
+        
+		
+		
 		
 
     });

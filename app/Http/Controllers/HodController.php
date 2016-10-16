@@ -16,44 +16,6 @@ use Session;
 class HodController extends Controller {
 
 
-	public function displayLogin()
-	{
-		return view('hod.login');
-	}
-
-	public function login(Request $request)
-	{
-
-		$data = $request->only(['email', 'password']);
-        $validator = validator($request->all(),[
-        'email' => 'required|min:3|max:100',
-        'password' => 'required|min:3|max:100',
-
-        ]);
-
-        //Validate inputs
-        if ($validator -> fails())
-        {
-            Session::set('error_message', "Invalid Login");
-            return redirect('hod/login');
-        }
-
-
-        //Check for inputs with users table
-        if( auth()->guard('hod')->attempt(['hodemail' => $data['email'], 'password' => $data['password']]))
-        {
-            //return auth()->guard('hod')->user();
-            Session::forget('error_message');
-
-            return redirect('hod/index');
-        }
-        else
-        {
-            Session::set('error_message', "Invalid Login");
-            return redirect('hod/index');
-            
-        }
-	}
 
     public function index()
     {
@@ -72,14 +34,6 @@ class HodController extends Controller {
             ]);  
     }
 
-
-    public function logout(Request $request)
-    {
-        auth()->guard('hod')->logout();
-        $request->session()->flush();
-        return redirect('hod/login');
-    }
-	
 	
 	    public function showManageGrade(Request $request, $id){
 
@@ -101,31 +55,6 @@ class HodController extends Controller {
             ]); 
     }
 
-
-         public function displayDetails()
-    {
-
-            $hodid = auth()->guard('hod')->user()->hodid;
-
-            $hod = hod::where('hodid',$hodid)                              
-                                ->first();       
-            return view('hod.editdetails',['hod' => $hod]);
-    }
-
-
-    public function updateDetails(Request $request)
-    {
-             $hodid = auth()->guard('hod')->user()->hodid;
-
-            $input= $request->all();
-            DB::table('hod')
-                ->where('hodid', $hodid)
-                ->update(['contact' => $input['contact'],'address' => $input['address']]);          
-          
-                Session::set('success_message', "Profile updated sucessfully."); 
-               return redirect()->back();
-    
-    }   
 
 
 

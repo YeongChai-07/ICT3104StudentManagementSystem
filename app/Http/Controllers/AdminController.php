@@ -6,6 +6,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use App\User;
+use App\Admin;
 use App\Lecturer;
 use App\Student;
 use App\Hod;
@@ -20,92 +21,45 @@ use DateTime;
 //Importing the Artisan Facade
 use Illuminate\Support\Facades\Artisan;
 
-class UserController extends Controller {
+class AdminController extends Controller {
 
 
-	public function displayLogin()
-	{
-		$users = User::all();
-		return view('user.login')->with([
-            'users' => $users
-            ]);
-	}
-
-	public function login(Request $request)
-	{
-
-		$data = $request->only(['email', 'password']);
-        $validator = validator($request->all(),[
-        'email' => 'required|min:3|max:100',
-        'password' => 'required|min:3|max:100',
-
-        ]);
-
-        //Validate inputs
-        if ($validator -> fails())
-        {
-            Session::set('error_message', "Invalid Login");
-            return redirect('user/login');
-        }
-
-
-        //Check for inputs with users table
-        if( auth()->guard('web')->attempt(['email' => $data['email'], 'password' => $data['password']]))
-        {
-            //return auth()->guard('web')->user();
-            Session::forget('error_message');
-
-            return redirect('user/index');
-        }
-        else
-        {
-            Session::set('error_message', "Invalid Login");
-            return redirect('user/login');
-          
-        }
-	}
 	
     public function index()
     {
-        $adminId = auth()->guard('web')->user()->id;
+        $adminId = auth()->guard('admin')->user()->id;
 
         $students = DB::table('students')->paginate(5);
-        return view('user.index')->with([
+        return view('admin.index')->with([
             'students' => $students
             ]);
     }
 
     public function showHod()
     {
-        $adminId = auth()->guard('web')->user()->id;
+        $adminId = auth()->guard('admin')->user()->id;
 
         $hods = DB::table('hod')->paginate(5);
-        return view('user.hod')->with([
+        return view('admin.hod')->with([
             'hods' => $hods
             ]);
     }
 
     public function showLecturer()
     {
-        $adminId = auth()->guard('web')->user()->id;
+        $adminId = auth()->guard('admin')->user()->id;
 
         $lecturers = DB::table('lecturer')->paginate(5);
-        return view('user.lecturer')->with([
+        return view('admin.lecturer')->with([
             'lecturers' => $lecturers
             ]);
     }
 
 
-    public function logout(Request $request)
-    {
-        auth()->guard('web')->logout();
-        $request->session()->flush();
-        return redirect('user/login');
-    }
-
+ 
 
     public function showAddLecturer(){
-        return view('user.addlecturer');
+        return view('admin.addlecturer');
     }
 
     public function addLecturer(Request $request)
@@ -158,7 +112,7 @@ class UserController extends Controller {
         
             
             
-            return view('user.editlecturer',['lecturer' => $lecturer]);
+            return view('admin.editlecturer',['lecturer' => $lecturer]);
     }
 
     /**
@@ -218,7 +172,7 @@ class UserController extends Controller {
 
 
     public function showAddStudent(){
-        return view('user.addstudent');
+        return view('admin.addstudent');
     }
 
     public function addStudent(Request $request)
@@ -270,7 +224,7 @@ class UserController extends Controller {
         
             
             
-            return view('user.editstudent',['student' => $student]);
+            return view('admin.editstudent',['student' => $student]);
     }
 
     /**
@@ -329,7 +283,7 @@ class UserController extends Controller {
     } 
 
     public function showAddHod(){
-        return view('user.addhod');
+        return view('admin.addhod');
     }
 
     public function addHod(Request $request)
@@ -381,7 +335,7 @@ class UserController extends Controller {
         
             
             
-            return view('user.edithod',['hod' => $hod]);
+            return view('admin.edithod',['hod' => $hod]);
     }
 
     /**
@@ -449,7 +403,7 @@ class UserController extends Controller {
             ->select('module.*','hod.*','lecturer.*')->paginate(5);
 
 
-        return view('user.module')->with([
+        return view('admin.module')->with([
             'modules' => $modules
             ]);
 
@@ -462,7 +416,7 @@ class UserController extends Controller {
             $lecturers = Lecturer::all();
             $hods = Hod::all();
 
-            return view('user.addmodule')->with([
+            return view('admin.addmodule')->with([
             'lecturers' => $lecturers,
             'hods' => $hods
             ]);
@@ -536,7 +490,7 @@ class UserController extends Controller {
             $lecturers = Lecturer::all();
             $hods = Hod::all();
 
-            return view('user.editmodule')->with([
+            return view('admin.editmodule')->with([
             'lecturers' => $lecturers,
             'hods' => $hods,
             'module' => $module
@@ -597,7 +551,7 @@ class UserController extends Controller {
 
         $students = DB::select('select * from students WHERE NOT EXISTS (SELECT * FROM enroll WHERE students.studentid = enroll.studentid and enroll.moduleid = ?)', [$id]);
 
-        return view('user.enrollstudent')->with([
+        return view('admin.enrollstudent')->with([
             'students' => $students,
             'id'   => $id
             ]);
@@ -633,7 +587,7 @@ class UserController extends Controller {
 	
 	public function backupSystem()
 	{
-		return view('user.backupsystem');
+		return view('admin.backupsystem');
 	}
 	
 	public function processSystemBackup()
@@ -642,78 +596,19 @@ class UserController extends Controller {
 	}
 
 
-    public function displayPassword()
-    {
-
-
-       return view('user.change');
-    }
-
-    public function updatePassword(Request $request)
-    {   
-        $input= $request->all();
-        $user = auth()->guard('web')->user();
     
-        $validator = validator($request->all(),[
-        'old-password' => 'required',
-        'password' => 'required|min:3|confirmed',
-        'password_confirmation' => 'required|min:3'
-
-        ]);
-        //Validate inputs
-        if ($validator -> fails())
-        {
-            Session::set('error_message', "Password don't match");
-            return redirect()->back(); 
-        }
-        
-    
-        if (Hash::check($input['old-password'], $user->password)) {
-            $hash = Hash::make($input['password']);
-            $user->password = $hash;
-            $user->save();
-
-            Session::set('success_message', "Password updated sucessfully.");
-            } else {
-                Session::set('error_message', "Old Password is wrong.");
-            }
-            
-        return redirect()->back();
-    }
 
     public function displayDetails()
     {
 
-            $userid = auth()->guard('web')->user()->id; 
+            $userid = auth()->guard('admin')->user()->id; 
 
               $user = User::where('id',$userid)                              
                                 ->first();  
 
-            return view('user.editdetails',['user' => $user]);
+            return view('admin.editdetails',['user' => $user]);
     
 }
-
-
-    public function updateDetails(Request $request)
-    {
-        $userid  = auth()->guard('web')->user()->id;
-        $input= $request->all();
-       DB::table('users')
-                ->where('id', $userid)
-                ->update(['contact' => $input['contact'],'address' => $input['address']]);           
-                Session::set('success_message', "Profile updated sucessfully."); 
-               return redirect()->back();
-    }
-
-
-    public function showDetailsFunction() // added
-    {
-           $id = auth()->guard('web')->user()->id;
-
-            $users = DB::table('users')
-            ->where('id',$id)->first();  
-            return view('user.showdetail',['users' => $users]);
-    }
 
 	
 }

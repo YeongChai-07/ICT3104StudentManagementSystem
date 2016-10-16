@@ -15,7 +15,7 @@
 <div class="generalHeader">
     Add Student
 </div>
-<?php echo Form::open(array('url' => 'user/addstudent', 'method' => 'post')) ?>
+<?php echo Form::open(array('url' => 'admin/addstudent', 'method' => 'post')) ?>
  <div class="form-group">
             {!!Form::label('name','Name')!!}
             {!!Form::text('name',null,array('class' => 'form-control'))!!}
@@ -24,7 +24,7 @@
             {!!Form::label('email','Email')!!}
             {!!Form::text('email',null,array('class' => 'form-control', 'required' => 'required'))!!}
         </div>
-       <a href="{{URL::asset('user/index')}}" class="btn btn-danger" style="float:right;">Back to Student list</a>
+       <a href="{{URL::asset('admin/index')}}" class="btn btn-primary" style="float:right;">Back to Student list</a>
         {!!Form::submit('Add', array('class' => 'btn btn-success'))!!}
         {!! Form::close() !!}
 @stop

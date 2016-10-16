@@ -1,11 +1,11 @@
 <?php
-
+//Authentication check for Student users
 namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Support\Facades\Auth;
 
-class Authenticate
+class AdminAuthenticate
 {
     /**
      * Handle an incoming request.
@@ -17,11 +17,12 @@ class Authenticate
      */
     public function handle($request, Closure $next, $guard = null)
     {
-        if (Auth::guard('web')->guest()) {
+        if (Auth::guard('admin')->guest()) {
             if ($request->ajax() || $request->wantsJson()) {
                 return response('Unauthorized.', 401);
             } else {
-                return redirect()->guest('/user/login');
+               // return redirect()->guest('/common/login');
+			   return $next($request);
             }
         }
 

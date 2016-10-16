@@ -15,7 +15,7 @@
 <div class="generalHeader">
     Add Module
 </div>
-<?php echo Form::open(array('url' => 'user/addmodule', 'method' => 'post')) ?>
+<?php echo Form::open(array('url' => 'admin/addmodule', 'method' => 'post')) ?>
  <div class="form-group">
             {!!Form::label('name','Module Name')!!}
              {!!Form::text('name',null,array('class' => 'form-control', 'required' => 'required'))!!}
@@ -58,7 +58,7 @@
        
        
 
-       <a href="{{URL::asset('user/module')}}" class="btn btn-danger" style="float:right;">Back to Module list</a>
+       <a href="{{URL::asset('admin/module')}}" class="btn btn-primary" style="float:right;">Back to Module list</a>
         {!!Form::submit('Add', array('class' => 'btn btn-success'))!!}
         {!! Form::close() !!}
 @stop
