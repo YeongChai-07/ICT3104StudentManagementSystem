@@ -48,10 +48,9 @@ class CommonController extends Controller {
     }
 	public function displayLogin()
 	{
-		$users = User::all();
-		return view('common.login')->with([
-            'users' => $users
-            ]);
+		//$users = User::all();
+		//return view('common.login')->with(['users' => $users  ]);
+		return view('common.login');
 	}
 
 	public function login(Request $request)
