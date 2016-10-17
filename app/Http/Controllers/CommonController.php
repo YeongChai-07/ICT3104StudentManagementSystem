@@ -259,7 +259,7 @@ class CommonController extends Controller {
 			
 		}
 		DB::table($tableName)
-                ->where($idColName, $userid)
+                ->where($idColName, $id)
                 ->update(['contact' => $input['contact'],'address' => $input['address']]);           
                 Session::set('success_message', "Profile updated sucessfully."); 
                return redirect()->back();
