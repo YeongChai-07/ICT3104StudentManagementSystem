@@ -79,18 +79,7 @@ class AdminController extends Controller {
             'lecturername' => $input['name'], 
             'lectureremail' =>  $input['email'],
             'password' => $hash
-            ]);
-
-
-            // //set gmail email and password in .env to work             
-            // $data = array( 'name' => $input['name'], 'email' =>  trim($input['email']), 'password' => $password );
-            // Mail::send('email.register', $data,  function ($message) use ($data) {
-            
-            // //Uncomment to work like intedashboard;
-            // $message->to(trim($data['email']))->subject('You are registered to Inteplayer');
-            //  //$message->to($input[email])->subject('You are registered to Inteplayer');
-            // });
-                         
+            ]);    
         }
         else
         {
@@ -306,14 +295,6 @@ class AdminController extends Controller {
             ]);
 
 
-            // //set gmail email and password in .env to work             
-            // $data = array( 'name' => $input['name'], 'email' =>  trim($input['email']), 'password' => $password );
-            // Mail::send('email.register', $data,  function ($message) use ($data) {
-            
-            // //Uncomment to work like intedashboard;
-            // $message->to(trim($data['email']))->subject('You are registered to Inteplayer');
-            //  //$message->to($input[email])->subject('You are registered to Inteplayer');
-            // });
                          
         }
         else
