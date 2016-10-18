@@ -41,7 +41,6 @@ textarea { width:250px !important; height:100px !important; }
 
                 <a class="btn btn-info" href="{{  $module->id }}/editmodule">Edit module</a>
                 <a class="btn btn-info" href="{{  $module->id }}/enrollstudent">Enroll Student</a>
-                <a class="btn btn-primary" href="{{  $module->id }}/moderate">Moderate Grades</a>
                 <a class="btn btn-danger" onclick="checkDelete()" href="{{  $module->id }}/deletemodule">Delete module</a>
                 </td>
                 </tr>  

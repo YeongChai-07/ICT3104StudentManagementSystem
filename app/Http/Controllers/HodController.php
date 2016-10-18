@@ -97,7 +97,7 @@ class HodController extends Controller {
             
             }      
 
-}
+    }
     public function displayPassword()
     {
        return view('hod.change');

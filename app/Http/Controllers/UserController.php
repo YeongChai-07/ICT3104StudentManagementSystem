@@ -6,62 +6,102 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use App\User;
-use App\Admin;
 use App\Lecturer;
 use App\Student;
 use App\Hod;
 use App\Module;
 use App\Enroll;
-use App\Recommendation;
-use App\Grade;
 use Auth;
 use Hash;
 use DB;
 use Session;
 use DateTime;
-
-//Importing the Artisan Facade
-use Illuminate\Support\Facades\Artisan;
-
-class AdminController extends Controller {
+class UserController extends Controller {
 
 
+	public function displayLogin()
+	{
+		$users = User::all();
+		return view('user.login')->with([
+            'users' => $users
+            ]);
+	}
+
+	public function login(Request $request)
+	{
+
+		$data = $request->only(['email', 'password']);
+        $validator = validator($request->all(),[
+        'email' => 'required|min:3|max:100',
+        'password' => 'required|min:3|max:100',
+
+        ]);
+
+        //Validate inputs
+        if ($validator -> fails())
+        {
+            Session::set('error_message', "Invalid Login");
+            return redirect('user/login');
+        }
+
+
+        //Check for inputs with users table
+        if( auth()->guard('web')->attempt(['email' => $data['email'], 'password' => $data['password']]))
+        {
+            //return auth()->guard('web')->user();
+            Session::forget('error_message');
+
+            return redirect('user/index');
+        }
+        else
+        {
+            Session::set('error_message', "Invalid Login");
+            return redirect('user/login');
+          
+        }
+	}
 	
     public function index()
     {
-        $adminId = auth()->guard('admin')->user()->id;
+        $adminId = auth()->guard('web')->user()->id;
 
         $students = DB::table('students')->paginate(5);
-        return view('admin.index')->with([
+        return view('user.index')->with([
             'students' => $students
             ]);
     }
 
     public function showHod()
     {
-        $adminId = auth()->guard('admin')->user()->id;
+        $adminId = auth()->guard('web')->user()->id;
 
         $hods = DB::table('hod')->paginate(5);
-        return view('admin.hod')->with([
+        return view('user.hod')->with([
             'hods' => $hods
             ]);
     }
 
     public function showLecturer()
     {
-        $adminId = auth()->guard('admin')->user()->id;
+        $adminId = auth()->guard('web')->user()->id;
 
         $lecturers = DB::table('lecturer')->paginate(5);
-        return view('admin.lecturer')->with([
+        return view('user.lecturer')->with([
             'lecturers' => $lecturers
             ]);
     }
 
 
- 
+    public function logout(Request $request)
+    {
+        auth()->guard('web')->logout();
+        $request->session()->flush();
+        return redirect('user/login');
+    }
+
 
     public function showAddLecturer(){
-        return view('admin.addlecturer');
+        return view('user.addlecturer');
     }
 
     public function addLecturer(Request $request)
@@ -81,7 +121,18 @@ class AdminController extends Controller {
             'lecturername' => $input['name'], 
             'lectureremail' =>  $input['email'],
             'password' => $hash
-            ]);    
+            ]);
+
+
+            // //set gmail email and password in .env to work             
+            // $data = array( 'name' => $input['name'], 'email' =>  trim($input['email']), 'password' => $password );
+            // Mail::send('email.register', $data,  function ($message) use ($data) {
+            
+            // //Uncomment to work like intedashboard;
+            // $message->to(trim($data['email']))->subject('You are registered to Inteplayer');
+            //  //$message->to($input[email])->subject('You are registered to Inteplayer');
+            // });
+                         
         }
         else
         {
@@ -103,7 +154,7 @@ class AdminController extends Controller {
         
             
             
-            return view('admin.editlecturer',['lecturer' => $lecturer]);
+            return view('user.editlecturer',['lecturer' => $lecturer]);
     }
 
     /**
@@ -163,7 +214,7 @@ class AdminController extends Controller {
 
 
     public function showAddStudent(){
-        return view('admin.addstudent');
+        return view('user.addstudent');
     }
 
     public function addStudent(Request $request)
@@ -215,7 +266,7 @@ class AdminController extends Controller {
         
             
             
-            return view('admin.editstudent',['student' => $student]);
+            return view('user.editstudent',['student' => $student]);
     }
 
     /**
@@ -274,7 +325,7 @@ class AdminController extends Controller {
     } 
 
     public function showAddHod(){
-        return view('admin.addhod');
+        return view('user.addhod');
     }
 
     public function addHod(Request $request)
@@ -297,6 +348,14 @@ class AdminController extends Controller {
             ]);
 
 
+            // //set gmail email and password in .env to work             
+            // $data = array( 'name' => $input['name'], 'email' =>  trim($input['email']), 'password' => $password );
+            // Mail::send('email.register', $data,  function ($message) use ($data) {
+            
+            // //Uncomment to work like intedashboard;
+            // $message->to(trim($data['email']))->subject('You are registered to Inteplayer');
+            //  //$message->to($input[email])->subject('You are registered to Inteplayer');
+            // });
                          
         }
         else
@@ -318,7 +377,7 @@ class AdminController extends Controller {
         
             
             
-            return view('admin.edithod',['hod' => $hod]);
+            return view('user.edithod',['hod' => $hod]);
     }
 
     /**
@@ -386,7 +445,7 @@ class AdminController extends Controller {
             ->select('module.*','hod.*','lecturer.*')->paginate(5);
 
 
-        return view('admin.module')->with([
+        return view('user.module')->with([
             'modules' => $modules
             ]);
 
@@ -399,7 +458,7 @@ class AdminController extends Controller {
             $lecturers = Lecturer::all();
             $hods = Hod::all();
 
-            return view('admin.addmodule')->with([
+            return view('user.addmodule')->with([
             'lecturers' => $lecturers,
             'hods' => $hods
             ]);
@@ -473,7 +532,7 @@ class AdminController extends Controller {
             $lecturers = Lecturer::all();
             $hods = Hod::all();
 
-            return view('admin.editmodule')->with([
+            return view('user.editmodule')->with([
             'lecturers' => $lecturers,
             'hods' => $hods,
             'module' => $module
@@ -534,7 +593,7 @@ class AdminController extends Controller {
 
         $students = DB::select('select * from students WHERE NOT EXISTS (SELECT * FROM enroll WHERE students.studentid = enroll.studentid and enroll.moduleid = ?)', [$id]);
 
-        return view('admin.enrollstudent')->with([
+        return view('user.enrollstudent')->with([
             'students' => $students,
             'id'   => $id
             ]);
@@ -555,7 +614,6 @@ class AdminController extends Controller {
          $enroll = $input['chkid'];
 
 
-         $module = Module::findorFail($id);
 
          for($i=0;$i<count($enroll);$i++)
          {
@@ -563,86 +621,9 @@ class AdminController extends Controller {
             'moduleid' => $id, 
             'studentid' =>  $enroll[$i]
             ]);
-
-            $gradeid = DB::table('grades')->insertGetId([
-            'moduleid' => $module->id,
-            'studentid' => $enroll[$i],
-            'lecturerid'=> $module->lecturerid,
-            'hodid' => $module->hodid,
-            'publish' => 0
-
-
-
-            ]);
          }
          
         Session::set('success_message', "Student enrolled Successfully");  
         return redirect()->back();
     }
-	
-	public function backupSystem()
-	{
-		return view('admin.backupsystem');
-	}
-	
-	public function processSystemBackup()
-	{
-		$artisanCall_Result = Artisan::call('backup:run', []);
-	}
-
-
-    
-
-    public function displayDetails()
-    {
-
-            $userid = auth()->guard('admin')->user()->id; 
-
-              $user = User::where('id',$userid)                              
-                                ->first();  
-
-            return view('admin.editdetails',['user' => $user]);
-    
-}
-
-    public function showRecommendation($moduleid)
-    {
-
-        $module = Module::findorFail($moduleid);
-
-        $recommendations = DB::table('recommendation')
-            ->join('students','students.studentid', '=', 'recommendation.studentid')
-            ->select('recommendation.*','students.*')
-            ->where('recommendation.moduleid', $moduleid)
-            ->where('recommendation.status', 1)->paginate(5);  
-
-            return view('admin.moderate')->with([
-                'module' => $module,
-                'recommendations' => $recommendations
-                ]); 
-    }
-
-    public function moderateGrade($moduleid,$recommendationid)
-    {
-
-        $recommendation = Recommendation::findorFail($recommendationid);
-        $grade = Grade::where('studentid', $recommendation->studentid)
-                    ->where('moduleid', $recommendation->moduleid)
-                    ->first();
-
-        $finalgrade = $grade->grade + $recommendation->moderation;
-
-
-        DB::table('grades')
-                ->where('id', $grade->id)
-                ->update(['grade' => $finalgrade]);
-
-        DB::table('recommendation')
-                ->where('id', $recommendationid)
-                ->update(['status' => 3]);   
-
-        Session::set('success_message', "Student Grade moderated.");
-        return redirect()->back();
-    }
-
 }

@@ -20,11 +20,10 @@ textarea { width:250px !important; height:100px !important; }
  <div class="row">
     <div class="col-md-12 col-sm-12">
         <br><br>
-        <a class="btn btn-info" href="addmodule">Add new Module</a>
         <table width="100%" cellpadding="5" cellspacing="5" id="modulesList" border="1"  class="table table-striped table-bordered dt-responsive" >
             <thead>
 
-                <tr><th>S/N</th><th>Module Name</th><th>Module Description</th><th>Lecturer Incharge</th><th>Hod Incharge</th><th>Edit Date</th><th>Freeze Date</th><th width="40%">Action</th>
+                <tr><th>S/N</th><th>Module Name</th><th>Module Description</th><th width="40%">Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -33,16 +32,20 @@ textarea { width:250px !important; height:100px !important; }
                 <td>{{   $module->id }}</td>
                 <td>{{  $module->modulename }}</td>
                 <td> {{ $module->description }}</td>
-                <td> {{ $module->lecturername }}</td>
-                <td> {{ $module->hodname }}</td>
-                <td> {{ $module->editdate }}</td>
-                <td> {{ $module->freezedate }}</td>
                 <td>
 
-                <a class="btn btn-info" href="{{  $module->id }}/editmodule">Edit module</a>
-                <a class="btn btn-info" href="{{  $module->id }}/enrollstudent">Enroll Student</a>
-                <a class="btn btn-primary" href="{{  $module->id }}/moderate">Moderate Grades</a>
-                <a class="btn btn-danger" onclick="checkDelete()" href="{{  $module->id }}/deletemodule">Delete module</a>
+                @if($today > $module->editdate)
+                  @if(strcmp($role,'hod') == 0)
+                      @if($today > $module->freezedate)
+                        <a class="btn btn-info" href="{{  $module->id }}/publish" >Publish Grades</a>
+                      @else
+                        <a class="btn btn-info" href="{{  $module->id }}/approval">Approve Recommendations</a>
+                      @endif
+                  @endif
+                @else
+                  <a class="btn btn-info" href="{{  $module->id }}/managegrade">Manage Grade</a>
+                @endif
+
                 </td>
                 </tr>  
                 @endforeach

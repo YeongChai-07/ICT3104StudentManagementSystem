@@ -77,11 +77,11 @@ class CommonController extends Controller {
 		if( auth()->guard('lecturer')->attempt(['lectureremail' => $data['email'], 'password' => $data['password']]))
         {
 			session(['role' => 'lecturer']);	
-			return redirect('lecturer/index');
+			return redirect('grade/index');
         }
 		else if (auth()->guard('hod')->attempt(['hodemail' => $data['email'], 'password' => $data['password']])){
 			session(['role' => 'hod']);		
-			return redirect('hod/index');
+			return redirect('grade/index');
 		}
 		else if (auth()->guard('student')->attempt(['studentemail' => $data['email'], 'password' => $data['password']])){
 			session(['role' => 'student']);

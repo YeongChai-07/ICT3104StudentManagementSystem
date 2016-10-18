@@ -77,7 +77,8 @@ Route::get('common/logout', 'CommonController@logout');
         Route::get('/admin/{id}/deletemodule', 'AdminController@deleteModule');
         Route::get('/admin/{id}/enrollstudent', 'AdminController@displayStudent');
         Route::post('/admin/{id}/enrollstudent', 'AdminController@enrollStudent');
-		
+		Route::get('/admin/{moduleid}/moderate', 'AdminController@showRecommendation');
+		Route::get('/admin/{moduleid}/{recommendationid}/moderateGrade', 'AdminController@moderateGrade');
 		//Routes for backing up the application files and DB
 		Route::get('admin/backupsystem', 'AdminController@backupSystem');
 		Route::get('admin/processsystembackup', 'AdminController@processSystemBackup');
@@ -113,10 +114,23 @@ Route::get('common/logout', 'CommonController@logout');
 
 	Route::group(['middleware' =>['lecturerauth']], function(){
 		
-		Route::get('lecturer/index', 'LecturerController@index');
-        Route::get('lecturer/{id}/managegrade', ['as' => 'manage_grade', 'uses' => 'LecturerController@showManageGrade']);
-		Route::post('lecturer/{moduleid}/{id}/addgrade', 'LecturerController@addGrade');
-		Route::get('lecturer/{moduleid}/{id}/addgrade', 'LecturerController@showAddGrade');
+		Route::get('grade/index', 'GradeController@index');
+		Route::get('grade/{id}/managegrade', ['as' => 'manage_grade', 'uses' => 'GradeController@showManageGrade']);
+
+		Route::get('grade/{moduleid}/{id}/addgrade', 'GradeController@showAddGrade');
+  		Route::post('grade/{moduleid}/{id}/addgrade', 'GradeController@addGrade');	
+
+		Route::get('grade/{moduleid}/{id}/editgrade', 'GradeController@showEditGrade');
+  		Route::post('grade/{moduleid}/{id}/editgrade', 'GradeController@editGrade');
+
+  		Route::get('grade/{moduleid}/approval', 'GradeController@showRecommendation');
+
+  		Route::get('grade/{moduleid}/{recommendationid}/approveRec', 'GradeController@approveRec');
+  		Route::get('grade/{moduleid}/{recommendationid}/rejectRec', 'GradeController@rejectRec');  		
+		//Route::get('lecturer/index', 'LecturerController@index');
+        //Route::get('lecturer/{id}/managegrade', ['as' => 'manage_grade', 'uses' => 'LecturerController@showManageGrade']);
+		//Route::post('lecturer/{moduleid}/{id}/addgrade', 'LecturerController@addGrade');
+		//Route::get('lecturer/{moduleid}/{id}/addgrade', 'LecturerController@showAddGrade');
 
 		
 // personal info update		
@@ -149,8 +163,21 @@ Route::get('common/logout', 'CommonController@logout');
 
 	Route::group(['middleware' =>['hodauth']], function(){
 		
-		Route::get('hod/index', 'HodController@index');
-		Route::get('hod/{id}/managegrade', ['as' => 'manage_grade_hod', 'uses' => 'HodController@showManageGrade']);
+		Route::get('grade/index', 'GradeController@index');
+		Route::get('grade/{id}/managegrade', ['as' => 'manage_grade', 'uses' => 'GradeController@showManageGrade']);
+
+		Route::get('grade/{moduleid}/{id}/addgrade', 'GradeController@showAddGrade');
+  		Route::post('grade/{moduleid}/{id}/addgrade', 'GradeController@addGrade');
+
+		Route::get('grade/{moduleid}/{id}/editgrade', 'GradeController@showEditGrade');
+  		Route::post('grade/{moduleid}/{id}/editgrade', 'GradeController@editGrade');
+
+  		Route::get('grade/{moduleid}/approval', 'GradeController@showRecommendation');
+
+  		Route::get('grade/{moduleid}/{recommendationid}/approveRec', 'GradeController@approveRec');
+  		Route::get('grade/{moduleid}/{recommendationid}/rejectRec', 'GradeController@rejectRec');
+		// Route::get('hod/index', 'HodController@index');
+		// Route::get('hod/{id}/managegrade', ['as' => 'manage_grade_hod', 'uses' => 'HodController@showManageGrade']);
 
 		// personal info update
         Route::get('common/change', 'CommonController@displayPassword');
@@ -160,8 +187,8 @@ Route::get('common/logout', 'CommonController@logout');
         Route::get('common/showdetails','CommonController@showDetailsFunction'); // added 
 		
 
-		Route::get('hod/{moduleid}/{id}/addgrade', 'HodController@showAddGrade');
-        Route::post('hod/{moduleid}/{id}/addgrade', 'HodController@addGrade');
+		// Route::get('hod/{moduleid}/{id}/addgrade', 'HodController@showAddGrade');
+  		// Route::post('hod/{moduleid}/{id}/addgrade', 'HodController@addGrade');
 
         
 		
