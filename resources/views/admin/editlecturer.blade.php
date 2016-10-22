@@ -16,7 +16,7 @@
 <div class="generalHeader">
     Edit Lecturer
 </div>
-<?php echo Form::open(array('url' => 'user/'.$lecturer->lecturerid.'/editlecturer', 'method' => 'post')) ?>
+<?php echo Form::open(array('url' => 'admin/'.$lecturer->lecturerid.'/editlecturer', 'method' => 'post')) ?>
  <div class="form-group">
             {!!Form::label('name','Name')!!}
             {!!Form::text('name',$lecturer->lecturername,array('class' => 'form-control'))!!}
@@ -24,6 +24,10 @@
         <div class="form-group">
             {!!Form::label('email','Email')!!}
             {!!Form::text('email',$lecturer->lectureremail,array('class' => 'form-control', 'required' => 'required'))!!}
+        </div>
+		<div class="form-group">
+            {!!Form::label('Contact Number','Contact Number')!!}
+            {!!Form::text('contact',$lecturer->contact,array('class' => 'form-control', 'required' => 'required'))!!}
         </div>
        <a href="{{URL::asset('admin/lecturer')}}" class="btn btn-primary" style="float:right;">Back to Lecturer list</a>
         {!!Form::submit('Update', array('class' => 'btn btn-success'))!!}

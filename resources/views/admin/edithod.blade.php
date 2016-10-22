@@ -25,6 +25,10 @@
             {!!Form::label('email','Email')!!}
             {!!Form::text('email',$hod->hodemail,array('class' => 'form-control', 'required' => 'required'))!!}
         </div>
+		<div class="form-group">
+            {!!Form::label('Contact Number','Contact Number')!!}
+            {!!Form::text('contact',$hod->contact,array('class' => 'form-control', 'required' => 'required'))!!}
+        </div>
        <a href="{{URL::asset('admin/hod')}}" class="btn btn-primary" style="float:right;">Back to Hod list</a>
         {!!Form::submit('Update', array('class' => 'btn btn-success'))!!}
         {!! Form::close() !!}

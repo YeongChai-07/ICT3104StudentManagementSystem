@@ -24,7 +24,7 @@ textarea { width:250px !important; height:100px !important; }
         <a class="btn btn-info" href="addhod">Add new Hod</a>
         <table width="100%" cellpadding="5" cellspacing="5" id="hodsList" border="1"  class="table table-striped table-bordered dt-responsive" >
             <thead>
-                <tr><th>S/N</th><th>Name</th><th>Email</th><th width="40%">Action</th>
+                <tr><th>S/N</th><th>Name</th><th>Email</th><th>Contact Number</th><th width="40%">Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -33,6 +33,7 @@ textarea { width:250px !important; height:100px !important; }
                 <td>{{   $hod->hodid }}</td>
                 <td>{{  $hod->hodname }}</td>
                 <td class="td-limit">{{  $hod->hodemail }}</td>
+				<td>{{  $hod->contact }}</td>
                 <td>
 
                  <a class="btn btn-info" href="{{  $hod->hodid }}/edithod">Edit</a>

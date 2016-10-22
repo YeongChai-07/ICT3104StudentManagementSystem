@@ -24,7 +24,12 @@
         <div class="form-group">
             {!!Form::label('email','Email')!!}
             {!!Form::text('email',$admin->adminemail,array('class' => 'form-control', 'required' => 'required'))!!}
+        </div>		
+		<div class="form-group">
+            {!!Form::label('Contact Number','Contact Number')!!}
+            {!!Form::text('contact',$admin->contact,array('class' => 'form-control', 'required' => 'required'))!!}
         </div>
+		
        <a href="{{URL::asset('admin/admin')}}" class="btn btn-primary" style="float:right;">Back to Admin list</a>
         {!!Form::submit('Update', array('class' => 'btn btn-success'))!!}
         {!! Form::close() !!}

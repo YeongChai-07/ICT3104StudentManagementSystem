@@ -71,6 +71,7 @@ class AdminController extends Controller {
             $lecturerid = DB::table('lecturer')->insertGetId([
             'lecturername' => $input['name'], 
             'lectureremail' =>  $input['email'],
+			'contact' =>  $input['contact'],
             'password' => $hash
             ]);    
         }
@@ -122,8 +123,7 @@ class AdminController extends Controller {
 
         $validator= validator($request->all(), [
                 'name' => 'required',
-                'email' => $emailvalidation,
-                /*' studentemail' => 'required|email|unique:m_student,studentemail,'.$id,  */
+                'email' => $emailvalidation
         ]);
 
    
@@ -137,7 +137,7 @@ class AdminController extends Controller {
        
        DB::table('lecturer')
                 ->where('lecturerid', $id)
-                ->update(['lecturername' => $input['name'],'lectureremail' => $input['email']]);          
+                ->update(['lecturername' => $input['name'],'lectureremail' => $input['email'], 'contact' =>  $input['contact']]);          
           
                 Session::set('success_message', "Profile updated sucessfully."); 
                return redirect()->back();
@@ -174,19 +174,11 @@ class AdminController extends Controller {
             $studentid = DB::table('students')->insertGetId([
             'studentname' => $input['name'], 
             'studentemail' =>  $input['email'],
+			'contact' =>  $input['contact'],
             'password' => $hash
             ]);
 
-
-            // //set gmail email and password in .env to work             
-            // $data = array( 'name' => $input['name'], 'email' =>  trim($input['email']), 'password' => $password );
-            // Mail::send('email.register', $data,  function ($message) use ($data) {
-            
-            // //Uncomment to work like intedashboard;
-            // $message->to(trim($data['email']))->subject('You are registered to Inteplayer');
-            //  //$message->to($input[email])->subject('You are registered to Inteplayer');
-            // });
-                         
+  
         }
         else
         {
@@ -236,7 +228,6 @@ class AdminController extends Controller {
         $validator= validator($request->all(), [
                 'name' => 'required',
                 'email' => $emailvalidation,
-                /*' studentemail' => 'required|email|unique:m_student,studentemail,'.$id,  */
         ]);
 
    
@@ -250,9 +241,9 @@ class AdminController extends Controller {
        
        DB::table('students')
                 ->where('studentid', $id)
-                ->update(['studentname' => $input['name'],'studentemail' => $input['email']]);          
+                ->update(['studentname' => $input['name'],'studentemail' => $input['email'], 'contact' =>  $input['contact']]);          
           
-                Session::set('success_message', "Profile updated sucessfully."); 
+                Session::set('success_message', "StudentProfile updated sucessfully."); 
                return redirect()->back();
           
     }
@@ -296,6 +287,7 @@ class AdminController extends Controller {
             $studentid = DB::table('hod')->insertGetId([
             'hodname' => $input['name'], 
             'hodemail' =>  $input['email'],
+			'contact' =>  $input['contact'],
             'password' => $hash
             ]);
 
@@ -350,7 +342,6 @@ class AdminController extends Controller {
         $validator= validator($request->all(), [
                 'name' => 'required',
                 'email' => $emailvalidation,
-                /*' studentemail' => 'required|email|unique:m_student,studentemail,'.$id,  */
         ]);
 
    
@@ -364,7 +355,7 @@ class AdminController extends Controller {
        
        DB::table('hod')
                 ->where('hodid', $id)
-                ->update(['hodname' => $input['name'],'hodemail' => $input['email']]);          
+                ->update(['hodname' => $input['name'],'hodemail' => $input['email'], 'contact' =>  $input['contact']]);          
           
                 Session::set('success_message', "Profile updated sucessfully."); 
                return redirect()->back();
@@ -412,6 +403,7 @@ class AdminController extends Controller {
             $adminid = DB::table('admin')->insertGetId([
             'adminname' => $input['name'], 
             'adminemail' =>  $input['email'],
+			'contact' =>  $input['contact'],
             'password' => $hash
             ]);
 
@@ -465,7 +457,6 @@ class AdminController extends Controller {
         $validator= validator($request->all(), [
                 'name' => 'required',
                 'email' => $emailvalidation,
-                /*' studentemail' => 'required|email|unique:m_student,studentemail,'.$id,  */
         ]);
 
    
@@ -479,7 +470,7 @@ class AdminController extends Controller {
        
        DB::table('admin')
                 ->where('adminid', $id)
-                ->update(['adminname' => $input['name'],'adminemail' => $input['email']]);          
+                ->update(['adminname' => $input['name'],'adminemail' => $input['email'], 'contact' =>  $input['contact']]);          
           
                 Session::set('success_message', "Admin Profile updated sucessfully."); 
                return redirect()->back();

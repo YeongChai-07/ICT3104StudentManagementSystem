@@ -24,6 +24,11 @@
             {!!Form::label('email','Email')!!}
             {!!Form::text('email',null,array('class' => 'form-control', 'required' => 'required'))!!}
         </div>
+		
+		 <div class="form-group">
+            {!!Form::label('Contact Number','contact')!!}
+            {!!Form::text('contact',null, array('class' => 'form-control', 'required' => 'required'))!!}
+        </div>
        <a href="{{URL::asset('admin/index')}}" class="btn btn-primary" style="float:right;">Back to Student list</a>
         {!!Form::submit('Add', array('class' => 'btn btn-success'))!!}
         {!! Form::close() !!}
