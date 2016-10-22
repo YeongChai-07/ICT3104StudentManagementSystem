@@ -23,11 +23,11 @@ textarea { width:250px !important; height:100px !important; }
     @endif
     <br/>
 
-<?php echo Form::open(array('url' => 'lecturer/'.$student->studentid.'/deleteStudentView', 'method' => 'post')) ?>
+<?php echo Form::open(array('url' => 'studentinfo/'.$student->studentid.'/deleteStudentView', 'method' => 'post')) ?>
 <!-- form --> 
  <div class="form-group">
     {!! Form::label('title', 'Reason for delete:', ['class' => 'control-label']) !!}
-	{!!Form::select('reason', array('Drop Out' => 'dropout', 'Graduate' => 'graduate'), 'Drop Out')!!}}
+	{!!Form::select('reason', array('Drop Out' => 'dropout', 'Graduate' => 'graduate'), 'Drop Out')!!}
 
    
 </div>
@@ -35,7 +35,10 @@ textarea { width:250px !important; height:100px !important; }
 
 
 <!-- ./form -->
- <a href="{{URL::asset('studentinfo/viewAllStudents')}}" class="btn btn-danger" style="float:right;">Back to Student list</a
+ <a href="{{URL::asset('studentinfo/viewAllStudents')}}" class="btn btn-danger" style="float:right;">Back to Student list</a>
+ 
+
+		
 <!-- button -->
 {!! Form::submit('Delete', ['class' => 'btn btn-primary']) !!}
 

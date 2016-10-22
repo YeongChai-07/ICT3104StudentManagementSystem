@@ -40,7 +40,7 @@ textarea { width:250px !important; height:100px !important; }
 				<td>
                  <a class="btn btn-info" href="{{  $student->studentid }}/editStudentInfoView">Edit Info</a>
                  
-                 <a class="btn btn-Primary" href="{{  $student->studentid }}/deleteStudentView">Remove</a>
+                 <a class="btn btn-danger" href="{{  $student->studentid }}/deleteStudentView">Remove</a>
                  
                 </td>
                 </tr>  
@@ -51,10 +51,6 @@ textarea { width:250px !important; height:100px !important; }
 		
 		@if(auth()->guard('lecturer')->check())
 			<a href="{{URL::asset('lecturer/index')}}" class="btn btn-primary" style="float:right;">Home</a>
-		@endif
-		
-		@if(auth()->guard('admin')->check())
-			<a href="{{URL::asset('admin/index')}}" class="btn btn-primary" style="float:right;">Home</a>
 		@endif
 		
     </div>

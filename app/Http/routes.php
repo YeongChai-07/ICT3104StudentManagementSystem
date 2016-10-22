@@ -48,13 +48,6 @@ Route::get('common/logout', 'CommonController@logout');
 
 	Route::group(['middleware' =>['adminauth']], function(){
 
-		Route::get('admin/index', 'AdminController@index');
-		Route::get('/admin/addstudent', 'AdminController@showAddStudent');
-        Route::post('/admin/addstudent', 'AdminController@addStudent');
-        Route::get('/admin/{id}/editstudent', 'AdminController@editStudent');
-        Route::post('/admin/{id}/editstudent', 'AdminController@updateStudent');
-        Route::get('/admin/{id}/deletestudent', 'AdminController@deleteStudent');
-
 		Route::get('admin/hod', 'AdminController@showHod');
 		Route::get('/admin/addhod', 'AdminController@showAddHod');
         Route::post('/admin/addhod', 'AdminController@addHod');
@@ -100,14 +93,13 @@ Route::get('common/logout', 'CommonController@logout');
         Route::post('common/editdetails', 'CommonController@updateDetails');
         Route::get('common/showdetails','CommonController@showDetailsFunction'); // added 
 		
-			//jerlyn - edit student info //
+		
 		Route::get('studentinfo/viewAllStudents', ['as' => 'view_students', 'uses' => 'StudentInfoController@viewAllStudents']);
 		Route::get('studentinfo/{studentID}/editStudentInfoView', 'StudentInfoController@editStudentInfoView');
-		Route::post('studentinfo/{studentID}/editStudentInfoView', 'StudentInfoController@updateStudentInfo');
-		
+		Route::post('studentinfo/{studentID}/editStudentInfoView', 'StudentInfoController@updateStudentInfo');		
 		Route::get('studentinfo/{studentID}/deleteStudentView', 'StudentInfoController@deleteStudentView');
 		Route::post('studentinfo/{studentID}/deleteStudentView', 'StudentInfoController@deleteStudent');
-		//-- end edit student info --//
+		
 
 
 	

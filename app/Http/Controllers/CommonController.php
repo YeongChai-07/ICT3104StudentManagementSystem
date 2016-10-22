@@ -89,7 +89,7 @@ class CommonController extends Controller {
 		}
 		else if (auth()->guard('admin')->attempt(['adminemail' => $data['email'], 'password' => $data['password']])){
 			session(['role' => 'admin']);
-			return redirect('admin/index');
+			return redirect('studentinfo/viewAllStudents');
 		}
         else
         {

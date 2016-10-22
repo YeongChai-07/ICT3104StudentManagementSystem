@@ -26,7 +26,7 @@ use Illuminate\Support\Facades\Artisan;
 class AdminController extends Controller {
 
 
-	
+	/**
     public function index()
     {
         $adminId = auth()->guard('admin')->user()->id;
@@ -37,7 +37,7 @@ class AdminController extends Controller {
             ]);
     }
 
-
+*/
 
 	/** --- LECTURER CONTROL ---*/
     public function showLecturer()
@@ -152,109 +152,6 @@ class AdminController extends Controller {
         return redirect()->back();
     }
 
-	/** ---  STUDENT CONTROL ---*/
-
-    public function showAddStudent(){
-        return view('admin.addstudent');
-    }
-
-    public function addStudent(Request $request)
-    {
-        $input = $request->all();
-        $emailcheck = Student::where('studentemail', $input['email'])
-                    ->first();
-
-        $id = $emailcheck['studentid'];
-        if(!$id)
-        {
-            $password = substr(md5(uniqid(mt_rand(), true)) , 0, 6);
-            $password = 'demo123';
-            $hash = Hash::make($password);
-
-            $studentid = DB::table('students')->insertGetId([
-            'studentname' => $input['name'], 
-            'studentemail' =>  $input['email'],
-			'contact' =>  $input['contact'],
-            'password' => $hash
-            ]);
-
-  
-        }
-        else
-        {
-            Session::set('error_message', "Student Exists");
-            return redirect()->back();             
-        }
-
-
-            Session::set('success_message', "Student Created Successfully");
-            return redirect()->back(); 
-    }
-
-    public function editStudent($id)
-    {
-    
-            $student = Student::where('studentid',$id)                              
-                                ->first();  
-        
-            
-            
-            return view('admin.editstudent',['student' => $student]);
-    }
-
-    /***
-     * Update Student Details based on inputs
-     *
-     * @param  $id
-     * @return View User editteacher 
-     */
-    public function updateStudent($id, Request $request) 
-    {
-          
-        $student = Student::findorFail($id);
-                  
-        
-       $input= $request->all();
-       //check if duplicate email
-       if(trim($student->studentemail) == trim($input['email']))
-       {
-           $emailvalidation = 'required|email';
-       }
-       else
-       {
-           $emailvalidation = 'required|email|unique:students,studentemail';
-       }
-
-        $validator= validator($request->all(), [
-                'name' => 'required',
-                'email' => $emailvalidation,
-        ]);
-
-   
-        //Validate inputs
-        if ($validator -> fails())
-        {
-            Session::set('error_message', "Email already exists");
-            return redirect()->back();
-        }     
-        
-       
-       DB::table('students')
-                ->where('studentid', $id)
-                ->update(['studentname' => $input['name'],'studentemail' => $input['email'], 'contact' =>  $input['contact']]);          
-          
-                Session::set('success_message', "StudentProfile updated sucessfully."); 
-               return redirect()->back();
-          
-    }
-
-    public function deleteStudent($id){
-        
-           DB::table('students')->where('studentid', $id)->delete();
-                                       
-        Session::set('success_message', "Student deleted Successfully");  
-        return redirect()->back();
-    } 
 
 	
 	/** --- HOD CONTROL ---*/

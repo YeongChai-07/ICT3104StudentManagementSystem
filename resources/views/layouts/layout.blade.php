@@ -45,13 +45,13 @@
 							</li>
                         <!-- Admin -->
                          @elseif(auth()->guard('admin')->check())
-                            <li><a href="{{URL::asset('admin/index')}}">View Student</a></li>
+							<li><a href="{{URL::asset('studentinfo/viewAllStudents')}}">View Students</a></li>
                             <li><a href="{{URL::asset('admin/hod')}}">View HOD</a></li>
                             <li><a href="{{URL::asset('admin/lecturer')}}">View Lecturer</a></li>
 							<li><a href="{{URL::asset('admin/admin')}}">View Admin</a></li>
                             <li><a href="{{URL::asset('admin/module')}}">View Module</a></li>
 							<li><a href="{{URL::asset('admin/backupsystem')}}">Backup System</a></li>
-							<li><a href="{{URL::asset('studentinfo/viewAllStudents')}}">Students</a></li>
+							
                             <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">{{ auth()->guard('admin')->user()->name }} <span class="glyphicon glyphicon-cog"></span></a>
 								<ul class="dropdown-menu">
 									<li><a href="{{URL::asset('common/editdetails')}}">Edit Details</a></li>
