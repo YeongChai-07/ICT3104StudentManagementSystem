@@ -68,6 +68,13 @@ Route::get('common/logout', 'CommonController@logout');
         Route::get('/admin/{id}/editlecturer', 'AdminController@editLecturer');
         Route::post('/admin/{id}/editlecturer', 'AdminController@updateLecturer');
         Route::get('/admin/{id}/deletelecturer', 'AdminController@deleteLecturer');
+		
+		Route::get('admin/admin', 'AdminController@showAdmin');
+		Route::get('/admin/addadmin', 'AdminController@showAddAdmin');
+        Route::post('/admin/addadmin', 'AdminController@addAdmin');
+        Route::get('/admin/{id}/editadmin', 'AdminController@editAdmin');
+        Route::post('/admin/{id}/editadmin', 'AdminController@updateAdmin');
+        Route::get('/admin/{id}/deleteadmin', 'AdminController@deleteAdmin');
 
         Route::get('admin/module', 'AdminController@showModule');
         Route::get('admin/addmodule', 'AdminController@showAddModule');
@@ -75,6 +82,9 @@ Route::get('common/logout', 'CommonController@logout');
         Route::get('/admin/{id}/editmodule', 'AdminController@editModule');
         Route::post('/admin/{id}/editmodule', 'AdminController@updateModule');
         Route::get('/admin/{id}/deletemodule', 'AdminController@deleteModule');
+		
+		
+		
         Route::get('/admin/{id}/enrollstudent', 'AdminController@displayStudent');
         Route::post('/admin/{id}/enrollstudent', 'AdminController@enrollStudent');
 		Route::get('/admin/{moduleid}/moderate', 'AdminController@showRecommendation');

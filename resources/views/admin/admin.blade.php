@@ -1,6 +1,6 @@
 @extends('layouts.Layout')
 
-@section('title','View Hod')
+@section('title','View Admin')
 
 @section('content')
 <style>
@@ -8,7 +8,7 @@ textarea { width:250px !important; height:100px !important; }
 </style>
 
 <div class="generalHeader">
-    View Hod
+    View Admin
 </div>
 <body>
    
@@ -21,29 +21,30 @@ textarea { width:250px !important; height:100px !important; }
     <div class="col-md-12 col-sm-12">
         <br><br>
 
-<!--         <a class="btn btn-info" href="addhod">Add new Hod</a> -->
+        <a class="btn btn-info" href="addadmin">Add new Admin</a>
         <table width="100%" cellpadding="5" cellspacing="5" id="hodsList" border="1"  class="table table-striped table-bordered dt-responsive" >
             <thead>
-                <tr><th>S/N</th><th>Name</th><th>Email</th><th width="40%">Action</th>
+                <tr><th>S/N</th><th>Admin Name</th><th>Email</th><th>Contact Number</th><th width="40%">Action</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach($hods as $key=>$hod)
+                @foreach($admins as $key=>$admin)
                 <tr>
-                <td>{{   $hod->hodid }}</td>
-                <td>{{  $hod->hodname }}</td>
-                <td class="td-limit">{{  $hod->hodemail }}</td>
+                <td>{{   $admin->adminid }}</td>
+                <td>{{  $admin->adminname }}</td>
+                <td class="td-limit">{{  $admin->adminemail }}</td>
+				<td>{{  $admin->contact }}</td>
                 <td>
 
-<!--                  <a class="btn btn-info" href="{{  $hod->hodid }}/edithod">Edit</a>
-                <a class="btn btn-danger" onclick="checkDelete()" href="{{  $hod->hodid }}/deletehod">Delete</a> -->
+                 <a class="btn btn-info" href="{{  $admin->adminid }}/editadmin">Edit</a>
+                <a class="btn btn-danger" onclick="checkDelete()" href="{{  $admin->adminid }}/deleteadmin">Delete</a>
 
                 </td>
                 </tr>  
                 @endforeach
             </tbody>
         </table>
-        {!! $hods->render() !!}
+        {!! $admins->render() !!}
     </div>
 </div>   
 

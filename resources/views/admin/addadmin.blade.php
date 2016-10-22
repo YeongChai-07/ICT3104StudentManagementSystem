@@ -1,6 +1,6 @@
 @extends('layouts.layout')
 
-@section('title','Add Lecturer')
+@section('title','Add Admin')
 
 @section('content')
 
@@ -13,9 +13,9 @@
  {{Session::forget('success_message')}}
  @endif
 <div class="generalHeader">
-    Add Lecturer
+    Add Admin
 </div>
-<?php echo Form::open(array('url' => 'user/addlecturer', 'method' => 'post')) ?>
+<?php echo Form::open(array('url' => 'admin/addadmin', 'method' => 'post')) ?>
  <div class="form-group">
             {!!Form::label('name','Name')!!}
             {!!Form::text('name',null,array('class' => 'form-control'))!!}
@@ -24,7 +24,7 @@
             {!!Form::label('email','Email')!!}
             {!!Form::text('email',null,array('class' => 'form-control', 'required' => 'required'))!!}
         </div>
-       <a href="{{URL::asset('user/lecturer')}}" class="btn btn-danger" style="float:right;">Back to Lecturer list</a>
+       <a href="{{URL::asset('admin/admin')}}" class="btn btn-primary" style="float:right;">Back to Admin list</a>
         {!!Form::submit('Add', array('class' => 'btn btn-success'))!!}
         {!! Form::close() !!}
 @stop

@@ -37,16 +37,9 @@ class AdminController extends Controller {
             ]);
     }
 
-    public function showHod()
-    {
-        $adminId = auth()->guard('admin')->user()->id;
 
-        $hods = DB::table('hod')->paginate(5);
-        return view('admin.hod')->with([
-            'hods' => $hods
-            ]);
-    }
 
+	/** --- LECTURER CONTROL ---*/
     public function showLecturer()
     {
         $adminId = auth()->guard('admin')->user()->id;
@@ -57,8 +50,6 @@ class AdminController extends Controller {
             ]);
     }
 
-
- 
 
     public function showAddLecturer(){
         return view('admin.addlecturer');
@@ -95,7 +86,7 @@ class AdminController extends Controller {
     }
 
 
-        public function editLecturer($id)
+    public function editLecturer($id)
     {
     
             $lecturer = Lecturer::where('lecturerid',$id)                              
@@ -161,6 +152,7 @@ class AdminController extends Controller {
         return redirect()->back();
     }
 
+	/** ---  STUDENT CONTROL ---*/
 
     public function showAddStudent(){
         return view('admin.addstudent');
@@ -207,7 +199,7 @@ class AdminController extends Controller {
             return redirect()->back(); 
     }
 
-        public function editStudent($id)
+    public function editStudent($id)
     {
     
             $student = Student::where('studentid',$id)                              
@@ -218,8 +210,8 @@ class AdminController extends Controller {
             return view('admin.editstudent',['student' => $student]);
     }
 
-    /**
-     * Update Teacher Details based on inputs
+    /***
+     * Update Student Details based on inputs
      *
      * @param  $id
      * @return View User editteacher 
@@ -273,6 +265,17 @@ class AdminController extends Controller {
         return redirect()->back();
     } 
 
+	
+	/** --- HOD CONTROL ---*/
+	public function showHod()
+    {
+        $adminId = auth()->guard('admin')->user()->id;
+
+        $hods = DB::table('hod')->paginate(5);
+        return view('admin.hod')->with([
+            'hods' => $hods
+            ]);
+    }
     public function showAddHod(){
         return view('admin.addhod');
     }
@@ -310,7 +313,7 @@ class AdminController extends Controller {
             return redirect()->back(); 
     }
 
-        public function editHod($id)
+    public function editHod($id)
     {
     
             $hod = hod::where('hodid',$id)                              
@@ -376,6 +379,123 @@ class AdminController extends Controller {
         return redirect()->back();
     }
 
+	
+	/** --- ADMIN CONTROL --- */
+	
+	public function showAdmin()
+    {
+        $adminId = auth()->guard('admin')->user()->id;
+
+        $admins = DB::table('admin')->paginate(5);
+        return view('admin.admin')->with([
+            'admins' => $admins
+            ]);
+    }
+
+    public function showAddAdmin(){
+        return view('admin.addadmin');
+    }
+
+    public function addAdmin(Request $request)
+    {
+        $input = $request->all();
+        $emailcheck = Admin::where('adminemail', $input['email'])
+                    ->first();
+
+        $id = $emailcheck['adminid'];
+        if(!$id)
+        {
+            $password = substr(md5(uniqid(mt_rand(), true)) , 0, 6);
+            $password = 'demo123';
+            $hash = Hash::make($password);
+
+            $adminid = DB::table('admin')->insertGetId([
+            'adminname' => $input['name'], 
+            'adminemail' =>  $input['email'],
+            'password' => $hash
+            ]);
+
+ 
+        }
+        else
+        {
+            Session::set('error_message', "Admin Exists");
+            return redirect()->back();             
+        }
+
+
+            Session::set('success_message', "Admin Created Successfully");
+            return redirect()->back(); 
+    }
+
+    public function editAdmin($id)
+    {
+    
+            $admin = Admin::where('adminid',$id)                              
+                                ->first();  
+        
+            
+            
+            return view('admin.editadmin',['admin' => $admin]);
+    }
+
+    /**
+     * Update Student Details based on inputs
+     *
+     * @param  $id
+     * @return View User editteacher 
+     */
+    public function updateAdmin($id, Request $request) 
+    {
+          
+        $admin = Admin::findorFail($id);
+                  
+        
+       $input= $request->all();
+       //check if duplicate email
+       if(trim($admin->adminemail) == trim($input['email']))
+       {
+           $emailvalidation = 'required|email';
+       }
+       else
+       {
+           $emailvalidation = 'required|email|unique:admin,adminemail';
+       }
+
+        $validator= validator($request->all(), [
+                'name' => 'required',
+                'email' => $emailvalidation,
+                /*' studentemail' => 'required|email|unique:m_student,studentemail,'.$id,  */
+        ]);
+
+   
+        //Validate inputs
+        if ($validator -> fails())
+        {
+            Session::set('error_message', "Email already exists");
+            return redirect()->back();
+        }     
+        
+       
+       DB::table('admin')
+                ->where('adminid', $id)
+                ->update(['adminname' => $input['name'],'adminemail' => $input['email']]);          
+          
+                Session::set('success_message', "Admin Profile updated sucessfully."); 
+               return redirect()->back();
+          
+    }
+
+    public function deleteAdmin($id){
+        
+           DB::table('admin')->where('adminid', $id)->delete();
+                                       
+        Session::set('success_message', "Admin deleted Successfully");  
+        return redirect()->back();
+    } 
+	
+	
+	/** --- MODULE CONTROL -- */
 
     public function showModule(){
 
@@ -394,7 +514,7 @@ class AdminController extends Controller {
     }
 
 
-        public function showAddModule(){
+    public function showAddModule(){
 
             $lecturers = Lecturer::all();
             $hods = Hod::all();
@@ -405,7 +525,7 @@ class AdminController extends Controller {
             ]);
 
     }
-        public function addModule(Request $request)
+    public function addModule(Request $request)
     {
         //To be used later when comparing dates
         //$today = (new DateTime())->format('Y-m-d');
@@ -464,7 +584,7 @@ class AdminController extends Controller {
             return redirect()->back(); 
     }
 
-        public function editModule($id)
+    public function editModule($id)
     {
     
             $module = Module::where('id',$id)                              
@@ -529,6 +649,8 @@ class AdminController extends Controller {
         return redirect()->back();
     }
 
+	
+	/** --- ENROL CONTROL --- */
     public function displayStudent($id)
     {
 
@@ -580,6 +702,8 @@ class AdminController extends Controller {
         return redirect()->back();
     }
 	
+	
+	/** --- ROUTINE OPERATIONS --- */
 	public function backupSystem()
 	{
 		return view('admin.backupsystem');
@@ -593,6 +717,7 @@ class AdminController extends Controller {
 
     
 
+	/** --- UPDATE PERSONAL INFO  ---*/
     public function displayDetails()
     {
 
@@ -605,6 +730,7 @@ class AdminController extends Controller {
     
 }
 
+	/** --- RECOMMENDATION --- */
     public function showRecommendation($moduleid)
     {
 
@@ -622,6 +748,8 @@ class AdminController extends Controller {
                 ]); 
     }
 
+	
+	/** --- MODERATE GRADES --- */
     public function moderateGrade($moduleid,$recommendationid)
     {
 
