@@ -1,6 +1,6 @@
 <?php
 namespace App\Http\Controllers;
-
+ini_set('max_execution_time', 300);
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -19,7 +19,8 @@ use Hash;
 use DB;
 use Session;
 use DateTime;
-
+use ZipArchive;
+use File;
 //Importing the Artisan Facade
 use Illuminate\Support\Facades\Artisan;
 
@@ -592,14 +593,66 @@ class AdminController extends Controller {
 	
 	
 	/** --- ROUTINE OPERATIONS --- */
-	public function backupSystem()
+	public function backupSystem(Request $request)
 	{
+        //Get zip file name
+        $dir    = 'C:\xampp\htdocs\ict3104\storage\app\http---localhost';
+        $files1 = scandir($dir,1);
+        $url = $request->session()->get('url');
+        if(strcmp($files1[0],"..")!=0)
+        {
+        //Delete the Zip
+        unlink('C:/xampp/htdocs/ict3104/storage/app/http---localhost/'. $files1[0]);
+        }
+        File::deleteDirectory($url . '\xampp');
+        File::delete($url . '\ict3104.sql');
 		return view('admin.backupsystem');
 	}
 	
-	public function processSystemBackup()
+	public function processSystemBackup(Request $request)
 	{
-		$artisanCall_Result = Artisan::call('backup:run', []);
+        $input = $request->all();
+        //Download zip.dll AND PLACE IN xampp/php/ext
+        //Use it at the top
+        //Add in parameters for users to choose where to save it to
+        //Backup
+
+        $artisanCall_Result = Artisan::call('backup:run', []);
+        
+
+        //Get zip file name
+        $dir    = 'C:\xampp\htdocs\ict3104\storage\app\http---localhost';
+        $files1 = scandir($dir,1);
+
+        //Extract default zip file in storage
+        $zip = new ZipArchive;
+        if ($zip->open('C:/xampp/htdocs/ict3104/storage/app/http---localhost/'. $files1[0]) === TRUE) {
+            $zip->extractTo($input['file']);
+            $zip->close();
+
+            //Copy db to web app root folder
+            $dst =  $input['file'] . '\xampp\htdocs\ict3104\ict3104.sql';
+            $src = $input['file'] . '\ict3104.sql';
+            //@mkdir($dst); 
+            $success = File::copy($src, $dst);
+
+            //Zip up to the intended location
+            $zipper = new \Chumper\Zipper\Zipper;
+
+            $zipper->make($input['file'] . '\backup.zip');
+            $zipper->zip($input['file'] . '\backup.zip')->add($input['file'] . '\xampp\htdocs\ict3104');
+
+            
+
+        } else {
+            Session::set('error_message', "Backup Failed");
+            return redirect()->back();
+        }
+  
+  
+        session(['url' => $input['file']]);
+        Session::set('success_message', "Backup Successful");
+        return redirect()->back();
 	}
 
 

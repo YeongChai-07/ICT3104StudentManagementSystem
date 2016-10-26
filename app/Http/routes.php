@@ -84,7 +84,7 @@ Route::get('common/logout', 'CommonController@logout');
 		Route::get('/admin/{moduleid}/{recommendationid}/moderateGrade', 'AdminController@moderateGrade');
 		//Routes for backing up the application files and DB
 		Route::get('admin/backupsystem', 'AdminController@backupSystem');
-		Route::get('admin/processsystembackup', 'AdminController@processSystemBackup');
+		Route::post('admin/backupsystem', 'AdminController@processSystemBackup');
 		
 		// personal info update
         Route::get('common/change', 'CommonController@displayPassword');
