@@ -151,7 +151,7 @@ class CommonController extends Controller {
 				Session::set('error_message', "Old Password is wrong.");
 			}
             
-   
+   return redirect()->back();
     }
 
     public function displayDetails(Request $request)

@@ -44,7 +44,7 @@ class StudentController extends Controller {
             //return auth()->guard('student')->user();
             Session::forget('error_message');
 
-            return redirect('student/index');
+            return redirect('student/grade');
         }
         else
         {

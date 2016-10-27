@@ -31,13 +31,13 @@
         </div>
 		
 		@if (auth()->guard('admin')->check())
-			<a href="{{URL::asset('admin/index')}}" class="btn btn-primary" style="float:right;">Home</a>
+			<a href="{{URL::asset('studentinfo/viewAllStudents')}}" class="btn btn-primary" style="float:right;">Home</a>
 		
 		@elseif (auth()->guard('lecturer')->check())
-			<a href="{{URL::asset('lecturer/index')}}" class="btn btn-primary" style="float:right;">Home</a>
+			<a href="{{URL::asset('grade/index')}}" class="btn btn-primary" style="float:right;">Home</a>
 		
 		@elseif (auth()->guard('hod')->check())
-			<a href="{{URL::asset('hod/index')}}" class="btn btn-primary" style="float:right;">Home</a>
+			<a href="{{URL::asset('grade/index')}}" class="btn btn-primary" style="float:right;">Home</a>
 		
 		@else 
 			<a href="{{URL::asset('student/index')}}" class="btn btn-primary" style="float:right;">Home</a>

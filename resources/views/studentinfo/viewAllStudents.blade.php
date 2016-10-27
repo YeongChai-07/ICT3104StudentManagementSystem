@@ -23,7 +23,10 @@ textarea { width:250px !important; height:100px !important; }
     <br/>
  <div class="row">
     <div class="col-md-12 col-sm-12">
+		<br>
+		<a class="btn btn-info" href="addStudentView">Add student</a>
         <br><br>
+		
         <table width="100%" cellpadding="5" cellspacing="5" id="gradesList" border="1"  class="table table-striped table-bordered dt-responsive" >
             <thead>
 
@@ -49,9 +52,9 @@ textarea { width:250px !important; height:100px !important; }
         </table>
         {!! $allStudentInfo->render() !!}
 		
-		@if(auth()->guard('lecturer')->check())
+<!-- 		@if(auth()->guard('lecturer')->check())
 			<a href="{{URL::asset('lecturer/index')}}" class="btn btn-primary" style="float:right;">Home</a>
-		@endif
+		@endif -->
 		
     </div>
 

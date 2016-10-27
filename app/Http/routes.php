@@ -23,8 +23,8 @@ Route::post('common/login', 'CommonController@login');
 Route::get('common/logout', 'CommonController@logout');
 
 	Route::group(['middleware' =>['studentauth']], function(){
-		Route::get('student/index', 'StudentController@index');
-        Route::get('student/grade', 'StudentController@viewGrade');// added
+		Route::get('student/index', 'StudentController@showModule');
+        // Route::get('student/grade', 'StudentController@viewGrade');// added
         
         Route::get('student/module','StudentController@showModule'); // added 
 
@@ -99,7 +99,8 @@ Route::get('common/logout', 'CommonController@logout');
 		Route::post('studentinfo/{studentID}/editStudentInfoView', 'StudentInfoController@updateStudentInfo');		
 		Route::get('studentinfo/{studentID}/deleteStudentView', 'StudentInfoController@deleteStudentView');
 		Route::post('studentinfo/{studentID}/deleteStudentView', 'StudentInfoController@deleteStudent');
-		
+		Route::get('studentinfo/addStudentView', 'StudentInfoController@showAddStudent');
+		Route::post('studentinfo/addStudentView', 'StudentInfoController@addStudent');
 
 
 	
@@ -150,7 +151,8 @@ Route::get('common/logout', 'CommonController@logout');
 		Route::get('studentinfo/{studentID}/deleteStudentView', 'StudentInfoController@deleteStudentView');
 		Route::post('studentinfo/{studentID}/deleteStudentView', 'StudentInfoController@deleteStudent');
 		//-- end edit student info --//
-		
+		Route::get('studentinfo/addStudentView', 'StudentInfoController@showAddStudent');
+		Route::post('studentinfo/addStudentView', 'StudentInfoController@addStudent');
 
     });
 });

@@ -6,6 +6,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use App\Lecturer;
+use App\Student;
 use App\Module;
 use App\Grade;
 
@@ -38,7 +39,49 @@ class StudentInfoController extends Controller {
 
             return view('studentinfo.editStudentInfoView',['student' => $student]);
     }
+	
+	public function showAddStudent(){
+        return view('studentinfo.addStudentView');
+    }
 
+    public function addStudent(Request $request)
+    {
+        $input = $request->all();
+        $emailcheck = Student::where('studentemail', $input['email'])
+                    ->first();
+
+        $id = $emailcheck['studentid'];
+        if(!$id)
+        {
+            $password = substr(md5(uniqid(mt_rand(), true)) , 0, 6);
+            $password = 'demo123';
+            $hash = Hash::make($password);
+
+            $studentid = DB::table('students')->insertGetId([
+            'studentname' => $input['name'], 
+            'studentemail' =>  $input['email'],
+            'metric' => $input['metric'],
+            'contact'=> $input['contact'],
+            'address'=> $input['address'],
+            'password' => $hash
+            ]);
+
+                         
+        }
+        else
+        {
+            Session::set('error_message', "Student Exists");
+            return redirect()->back();             
+        }
+
+
+            Session::set('success_message', "Student Created Successfully");
+			
+			//$role = $request->session()->get('role');
+			
+			return redirect('studentinfo/viewAllStudents');
+            //return redirect()->back(); 
+    }
 	//jerlyn
 	public function updateStudentInfo(Request $request, $studentID){
 		$input= $request->all();
@@ -85,6 +128,6 @@ class StudentInfoController extends Controller {
             $student = DB::table('students')->where('studentid',$sID)->delete(); 
 									
 			Session::set('success_message', "Deleted sucessfully."); 
-            return $this->viewAllStudents() ;
+            return redirect('studentinfo/viewAllStudents');
     }
 }
