@@ -599,58 +599,145 @@ class AdminController extends Controller {
         $dir    = 'C:\xampp\htdocs\ict3104\storage\app\http---localhost';
         $files1 = scandir($dir,1);
         $url = $request->session()->get('url');
+        $url2 = $request->session()->get('url2');
         if(strcmp($files1[0],"..")!=0)
         {
         //Delete the Zip
         unlink('C:/xampp/htdocs/ict3104/storage/app/http---localhost/'. $files1[0]);
         }
-        File::deleteDirectory($url . '\xampp');
-        File::delete($url . '\ict3104.sql');
+        if(!isset($url) || !isset($url2))
+        {
+            
+        }
+        else
+        {
+            File::deleteDirectory($url);
+            File::delete($url2 . '\ict3104.sql');
+        }
+
 		return view('admin.backupsystem');
 	}
 	
 	public function processSystemBackup(Request $request)
 	{
         $input = $request->all();
+        $option = $input['option'];
+        $duration = $input['duration'];
+
         //Download zip.dll AND PLACE IN xampp/php/ext
         //Use it at the top
         //Add in parameters for users to choose where to save it to
         //Backup
-
         $artisanCall_Result = Artisan::call('backup:run', []);
         
-
+        
         //Get zip file name
         $dir    = 'C:\xampp\htdocs\ict3104\storage\app\http---localhost';
         $files1 = scandir($dir,1);
 
         //Extract default zip file in storage
-        $zip = new ZipArchive;
-        if ($zip->open('C:/xampp/htdocs/ict3104/storage/app/http---localhost/'. $files1[0]) === TRUE) {
-            $zip->extractTo($input['file']);
-            $zip->close();
+        // DB backup
+        if(strcmp($option,"Database") == 0)
+        {
+            $zip = new ZipArchive;
+            if ($zip->open('C:/xampp/htdocs/ict3104/storage/app/http---localhost/'. $files1[0]) === TRUE) 
+            {
+                $zip->extractTo($input['file']);
+                $zip->close();
 
-            //Copy db to web app root folder
-            $dst =  $input['file'] . '\xampp\htdocs\ict3104\ict3104.sql';
-            $src = $input['file'] . '\ict3104.sql';
-            //@mkdir($dst); 
-            $success = File::copy($src, $dst);
+                $dirname = $input['file'].'\Database';
+                if (!is_dir($dirname))
+                {
+                     mkdir($dirname, 0755, true);
+                }
 
-            //Zip up to the intended location
-            $zipper = new \Chumper\Zipper\Zipper;
+                //Zip up to the intended location
+                $zipper = new \Chumper\Zipper\Zipper;
+                $date = date("mdy") ."DB.zip";
+                $zipper->make($dirname . '\\'. $date);
+                $zipper->zip($dirname . '\\'. $date)->add($input['file'] . '\ict3104.sql');
 
-            $zipper->make($input['file'] . '\backup.zip');
-            $zipper->zip($input['file'] . '\backup.zip')->add($input['file'] . '\xampp\htdocs\ict3104');
+                if(strcmp($duration,"Monthly") == 0)
+                {
+
+                //Zip up to the intended location
+                $zipper2 = new \Chumper\Zipper\Zipper;
+                $date2 = date("my") ."MonthlyDB.zip";
+                $zipper2->make($input['file'] . '\\'. $date2);
+                $zipper2->zip($input['file'] . '\\'. $date2)->add($dirname);  
+
+                }
+            } else {
+                Session::set('error_message', "Backup Failed");
+                return redirect()->back();
+            }
+        }
+        elseif(strcmp($option,"Web Application") == 0)
+        {
+            //Extract default zip file in storage
+            $zip = new ZipArchive;
+            if ($zip->open('C:/xampp/htdocs/ict3104/storage/app/http---localhost/'. $files1[0]) === TRUE) {
+                $zip->extractTo($input['file']);
+                $zip->close();
+
+                $dirname = $input['file'].'\Web';
+                if (!is_dir($dirname))
+                {
+                     mkdir($dirname, 0755, true);
+                }
+
+                //Zip up to the intended location
+                $zipper = new \Chumper\Zipper\Zipper;
+                $date = date("mdy") ."Web.zip";
+                $zipper->make($dirname . '\\'. $date);
+                $zipper->zip($dirname . '\\'. $date)->add($input['file'] . '\xampp\htdocs\ict3104');
+
+                if(strcmp($duration,"Monthly") == 0)
+                {
+
+                    //Zip up to the intended location
+                    $zipper2 = new \Chumper\Zipper\Zipper;
+                    $date2 = date("my") ."MonthlyWeb.zip";
+                    $zipper2->make($input['file'] . '\\'. $date2);
+                    $zipper2->zip($input['file'] . '\\'. $date2)->add($dirname);  
+
+                }
+
+            } else {
+                Session::set('error_message', "Backup Failed");
+                return redirect()->back();
+            } 
+        }
+
+        // //Extract default zip file in storage
+        // $zip = new ZipArchive;
+        // if ($zip->open('C:/xampp/htdocs/ict3104/storage/app/http---localhost/'. $files1[0]) === TRUE) {
+        //     $zip->extractTo($input['file']);
+        //     $zip->close();
+
+        //     //Copy db to web app root folder
+        //     $dst =  $input['file'] . '\xampp\htdocs\ict3104\ict3104.sql';
+        //     $src = $input['file'] . '\ict3104.sql';
+        //     //@mkdir($dst); 
+        //     $success = File::copy($src, $dst);
+
+        //     //Zip up to the intended location
+        //     $zipper = new \Chumper\Zipper\Zipper;
+
+        //     $zipper->make($input['file'] . '\backup.zip');
+        //     $zipper->zip($input['file'] . '\backup.zip')->add($input['file'] . '\xampp\htdocs\ict3104');
 
             
 
-        } else {
-            Session::set('error_message', "Backup Failed");
-            return redirect()->back();
-        }
+        // } else {
+        //     Session::set('error_message', "Backup Failed");
+        //     return redirect()->back();
+        // }
   
-  
-        session(['url' => $input['file']]);
+        $url = $input['file'] . '\xampp';
+        $url2 = $input['file'];
+
+        session(['url' => $url,'url2' => $url2]);
         Session::set('success_message', "Backup Successful");
         return redirect()->back();
 	}
