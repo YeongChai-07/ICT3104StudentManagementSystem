@@ -305,5 +305,57 @@ class GradeController extends Controller {
 
 	    Session::set('success_message', "Student Recommendation rejected.");
 	    return redirect()->back();
-    }          
+    }      
+
+	//TODO
+	// @param: marks (decimal)
+	// @return: grade (text/varchar)
+	public function calculateIndivGrade($marks)
+    {
+        //TODO: this function converts the marks into grades (alphabets) and store into grades table
+		if ($marks >= 75){
+			//A
+		}
+		elseif ($marks >= 60 && $marks < 75){
+			//B
+		}
+		elseif ($marks>= 50  && $marks < 60){
+			//C
+		}
+		else{
+			//fail
+		}
+    } 
+
+	//TODO
+	// @param: studentid(int)
+	// @return: grade (text/varchar)
+	public function calculateCgpa($studentid)
+    {
+		// this function should be called when marks are released to students
+		
+        //TODO: this function calculates the average marks of the student and converts to grades for cgpa
+		$allEnrolledMods = DB::table('grades') 
+				->where('studentid', $sID) 
+				->get(); 
+				
+		
+		$modCount = 0;
+		$totalGpa = 0.0;		
+		foreach ($allEnrolledMods as $studMod) {
+			$modCount +=1;
+			$totalGpa+=$studMod->marks;
+		}
+		//check if the formula to calc cgpa is correct
+		$cgpa = $totalGpa/$modCount;
+		
+		//update student cgpa in student table
+		DB::table('students')
+                ->where('studentid', $studentID)
+                ->update([
+				'cgpa' => $cgpa
+							
+				]);     
+		
+    } 	
 }

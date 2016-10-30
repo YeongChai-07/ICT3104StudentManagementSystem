@@ -1,6 +1,6 @@
 @extends('layouts.Layout')
 
-@section('title','Delete Confirmation')
+@section('title','Graduated Students')
 
 @section('content')
 <style>
@@ -8,9 +8,8 @@ textarea { width:250px !important; height:100px !important; }
 </style>
 
 <div class="generalHeader">
-    Delete {{$student->studentname}}?
+    Graduated Students
 </div>
-
 <body>
    
     @if(Session::has('error_message'))
@@ -22,29 +21,39 @@ textarea { width:250px !important; height:100px !important; }
     {{Session::forget('success_message')}}
     @endif
     <br/>
+ <div class="row">
+    <div class="col-md-12 col-sm-12">
+		
+        <table width="100%" cellpadding="5" cellspacing="5" id="gradesList" border="1"  class="table table-striped table-bordered dt-responsive" >
+            <thead>
 
-<?php echo Form::open(array('url' => 'studentinfo/'.$student->studentid.'/deleteStudentView', 'method' => 'post')) ?>
-<!-- form --> 
- <div class="form-group">
-    {!! Form::label('title', 'Reason for delete:', ['class' => 'control-label']) !!}
-	{!!Form::select('reason', array('Drop Out' => 'dropout', 'Graduate' => 'graduate'), 'Drop Out')!!}
+                <tr><th>Student Name</th><th>Metric Num</th><th>Grad_Year</th><th>CGPA</th><th width="40%">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($allGradStudentInfo as $student)
+                <tr>   
+                <td>{{  $student->gradstudentname }}</td>
+				<td>{{  $student->metric }}</td>
+                <td>{{  $student->gradyear }}</td>
+                <td>{{  $student->cgpa }}</td>
+				<td>
+                 <a class="btn btn-info" href="#">More</a>
 
-   
-</div>
-
-
-
-<!-- ./form -->
- <a href="{{URL::asset('studentinfo/viewAllStudents')}}" class="btn btn-danger" style="float:right;">Back to Student list</a>
- 
+                 
+                </td>
+                </tr>  
+                @endforeach
+            </tbody>
+        </table>
+        {!! $allGradStudentInfo->render() !!}
 
 		
-<!-- button -->
-{!! Form::submit('Delete', ['class' => 'btn btn-primary']) !!}
+    </div>
 
+</div>   
 
-{!! Form::close() !!}
-
+</body>
 
 @stop
 

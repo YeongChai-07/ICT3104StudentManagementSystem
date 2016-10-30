@@ -42,19 +42,15 @@ textarea { width:250px !important; height:100px !important; }
                 <td>{{  $student->contact }}</td>
 				<td>
                  <a class="btn btn-info" href="{{  $student->studentid }}/editStudentInfoView">Edit Info</a>
-                 
-                 <a class="btn btn-danger" href="{{  $student->studentid }}/deleteStudentView">Remove</a>
-                 
+                 <a class="btn btn-danger" href="{{action('StudentInfoController@archiveStudent' , ['studentid' => $student->studentid])}}">Archive Student</a>
+                
                 </td>
                 </tr>  
                 @endforeach
             </tbody>
         </table>
         {!! $allStudentInfo->render() !!}
-		
-<!-- 		@if(auth()->guard('lecturer')->check())
-			<a href="{{URL::asset('lecturer/index')}}" class="btn btn-primary" style="float:right;">Home</a>
-		@endif -->
+
 		
     </div>
 

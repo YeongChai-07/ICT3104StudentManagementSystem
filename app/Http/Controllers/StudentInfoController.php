@@ -100,34 +100,58 @@ class StudentInfoController extends Controller {
                 Session::set('success_message', "Profile updated sucessfully."); 
                return redirect()->back();
     }
-	
+
 	//jerlyn
-	public function deleteStudentView(Request $request, $studentID){
-            $sID = $studentID;
+	//public function deleteStudent(Request $request, $studentID){
+	public function archiveStudent(Request $request, $studentID){	
+			
+			$sID = $studentID;
 
             $student = DB::table('students')->where('studentid',$sID)                              
                                 ->first(); 
-										
-
-            return view('studentinfo.deleteStudentView', ['student' => $student]);
-    }
-	
-	//jerlyn
-	public function deleteStudent(Request $request, $studentID){
-		
-			$input= $request->all();
 			
-            //update table if the category selected == graduated
-			//remove student from table
-			if ($input['reason']== "graduate"){
-				// put in new table
-				return $input;				
+			$gradyear = $student->enrolyear + 3;
+			
+			
+			//insert into graduatedstudents table
+			DB::table('graduatedstudents')->insert(array(
+				'gradstudentid' => $student->studentid, 
+				'gradstudentname' => $student->studentname,
+				'gradstudentemail' => $student->studentemail,
+				'metric' => $student->metric,
+				'contact' => $student->contact,
+				'address' => $student->address,
+				'enrolyear' => $student->enrolyear,
+				'gradyear' => $gradyear,
+				'cgpa' => $student->cgpa
+			
+			));   
+			
+			//insert into meta info
+			$allEnrolledMods = DB::table('grades') 
+				->where('studentid', $sID) 
+				-> select('studentid', 'moduleid', 'grade', 'marks')
+				->get(); 
+			
+			foreach ($allEnrolledMods as $studMod) {
+				DB::table('gradstudentsmetainfo')->insert(array(
+				'gradstudentid' => $studMod->studentid, 
+				'moduleid' => $studMod->moduleid,
+				'grade' => $studMod->grade,
+				'marks' => $studMod->marks
+			));   			
 			}
-			$sID = $studentID;
-
+			
+			
+			//delete student from students table
             $student = DB::table('students')->where('studentid',$sID)->delete(); 
-									
-			Session::set('success_message', "Deleted sucessfully."); 
+			
+			//delete student from grades table
+            $student = DB::table('grades')->where('studentid',$sID)->delete(); 
+			
+
+			Session::set('success_message', "Archived sucessfully."); 			
+			//Session::set('success_message', "Deleted sucessfully."); 
             return redirect('studentinfo/viewAllStudents');
     }
 }

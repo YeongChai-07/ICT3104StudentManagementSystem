@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.2.7.1
+-- version 4.5.1
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 18, 2016 at 12:14 PM
--- Server version: 5.6.20
--- PHP Version: 5.5.15
+-- Generation Time: Oct 30, 2016 at 01:50 PM
+-- Server version: 10.1.16-MariaDB
+-- PHP Version: 5.6.24
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -14,7 +14,7 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
+/*!40101 SET NAMES utf8mb4 */;
 
 --
 -- Database: `ict3104`
@@ -26,8 +26,8 @@ SET time_zone = "+00:00";
 -- Table structure for table `admin`
 --
 
-CREATE TABLE IF NOT EXISTS `admin` (
-`adminid` int(10) NOT NULL,
+CREATE TABLE `admin` (
+  `adminid` int(10) NOT NULL,
   `adminname` varchar(255) NOT NULL,
   `adminemail` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
@@ -35,14 +35,14 @@ CREATE TABLE IF NOT EXISTS `admin` (
   `address` varchar(255) NOT NULL,
   `remember_token` varchar(255) DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `admin`
 --
 
 INSERT INTO `admin` (`adminid`, `adminname`, `adminemail`, `password`, `contact`, `address`, `remember_token`, `updated_at`) VALUES
-(1, 'admin1', 'admin@admin.com', '$2y$10$ADd3MMvLklcRfOb1oC5JD.xF8.h3P6rfogkETuf8/z.1cnmqYu4wi', 66655544, 'block 123', 'JpR02rTmfKdBOS7M42RpsARSVAmCwmRVFwRG61Aj70NzEnZ5g2Gkj2ztg5oC', '2016-10-18 02:14:08'),
+(1, 'admin1', 'admin@admin.com', '$2y$10$ADd3MMvLklcRfOb1oC5JD.xF8.h3P6rfogkETuf8/z.1cnmqYu4wi', 66655544, 'block 123', 'NzFFg6yexa8zdvpv3ib16getmWucWEAnxxxKyoELcUEUM9cxsinUqgINlumq', '2016-10-30 04:39:07'),
 (2, 'admin2', 'admin2@admin.com', '$2y$10$ADd3MMvLklcRfOb1oC5JD.xF8.h3P6rfogkETuf8/z.1cnmqYu4wi', 11112222, 'block555', '', NULL);
 
 -- --------------------------------------------------------
@@ -51,11 +51,11 @@ INSERT INTO `admin` (`adminid`, `adminname`, `adminemail`, `password`, `contact`
 -- Table structure for table `enroll`
 --
 
-CREATE TABLE IF NOT EXISTS `enroll` (
-`id` int(10) NOT NULL,
+CREATE TABLE `enroll` (
+  `id` int(10) NOT NULL,
   `moduleid` int(10) NOT NULL,
   `studentid` int(10) NOT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `enroll`
@@ -72,23 +72,47 @@ INSERT INTO `enroll` (`id`, `moduleid`, `studentid`) VALUES
 -- Table structure for table `grades`
 --
 
-CREATE TABLE IF NOT EXISTS `grades` (
-`id` int(10) NOT NULL,
+CREATE TABLE `grades` (
+  `id` int(10) NOT NULL,
   `grade` varchar(255) DEFAULT NULL,
+  `marks` decimal(5,2) NOT NULL,
   `moduleid` int(10) NOT NULL,
   `studentid` int(10) NOT NULL,
   `lecturerid` int(10) NOT NULL,
   `hodid` int(10) NOT NULL,
   `publish` int(10) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `grades`
 --
 
-INSERT INTO `grades` (`id`, `grade`, `moduleid`, `studentid`, `lecturerid`, `hodid`, `publish`) VALUES
-(1, '4.2', 1, 1, 2, 1, 0),
-(2, '3.3', 2, 1, 2, 1, 0);
+INSERT INTO `grades` (`id`, `grade`, `marks`, `moduleid`, `studentid`, `lecturerid`, `hodid`, `publish`) VALUES
+(1, 'B', '60.20', 1, 1, 2, 1, 0),
+(2, 'A', '78.00', 2, 1, 2, 1, 0),
+(3, 'B', '61.20', 1, 4, 2, 1, 0),
+(4, 'A', '79.50', 2, 4, 2, 1, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `gradstudentsmetainfo`
+--
+
+CREATE TABLE `gradstudentsmetainfo` (
+  `gradstudentid` int(11) NOT NULL,
+  `moduleid` int(11) NOT NULL,
+  `grade` varchar(3) NOT NULL,
+  `marks` decimal(5,2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `gradstudentsmetainfo`
+--
+
+INSERT INTO `gradstudentsmetainfo` (`gradstudentid`, `moduleid`, `grade`, `marks`) VALUES
+(4, 1, 'B', '61.20'),
+(4, 2, 'A', '79.50');
 
 -- --------------------------------------------------------
 
@@ -96,15 +120,25 @@ INSERT INTO `grades` (`id`, `grade`, `moduleid`, `studentid`, `lecturerid`, `hod
 -- Table structure for table `graduatedstudents`
 --
 
-CREATE TABLE IF NOT EXISTS `graduatedstudents` (
-`gradstudentid` int(10) NOT NULL,
+CREATE TABLE `graduatedstudents` (
+  `gradstudentid` int(10) NOT NULL,
   `gradstudentname` varchar(255) NOT NULL,
-  `metric` int(10) NOT NULL,
   `gradstudentemail` varchar(255) NOT NULL,
+  `metric` int(10) NOT NULL,
   `contact` int(10) NOT NULL,
   `address` varchar(255) NOT NULL,
-  `graddate` date NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+  `enrolyear` int(5) NOT NULL,
+  `gradyear` int(5) NOT NULL,
+  `cgpa` decimal(3,2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `graduatedstudents`
+--
+
+INSERT INTO `graduatedstudents` (`gradstudentid`, `gradstudentname`, `gradstudentemail`, `metric`, `contact`, `address`, `enrolyear`, `gradyear`, `cgpa`) VALUES
+(4, 'izzat23', 'izzat23@izzat.com', 123456, 99938354, 'CCK 123', 2002, 2005, '3.45'),
+(10, 'mavis', 'mavis@123.com', 1010, 66655544, 'Block 100', 2000, 2003, '4.30');
 
 -- --------------------------------------------------------
 
@@ -112,8 +146,8 @@ CREATE TABLE IF NOT EXISTS `graduatedstudents` (
 -- Table structure for table `hod`
 --
 
-CREATE TABLE IF NOT EXISTS `hod` (
-`hodid` int(10) NOT NULL,
+CREATE TABLE `hod` (
+  `hodid` int(10) NOT NULL,
   `hodname` varchar(255) NOT NULL,
   `hodemail` varchar(255) NOT NULL,
   `metric` varchar(255) DEFAULT NULL,
@@ -123,7 +157,7 @@ CREATE TABLE IF NOT EXISTS `hod` (
   `remember_token` varchar(255) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `hod`
@@ -138,8 +172,8 @@ INSERT INTO `hod` (`hodid`, `hodname`, `hodemail`, `metric`, `contact`, `address
 -- Table structure for table `lecturer`
 --
 
-CREATE TABLE IF NOT EXISTS `lecturer` (
-`lecturerid` int(10) NOT NULL,
+CREATE TABLE `lecturer` (
+  `lecturerid` int(10) NOT NULL,
   `lecturername` varchar(255) NOT NULL,
   `lectureremail` varchar(255) NOT NULL,
   `metric` varchar(255) DEFAULT NULL,
@@ -149,7 +183,7 @@ CREATE TABLE IF NOT EXISTS `lecturer` (
   `remember_token` varchar(255) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `lecturer`
@@ -165,15 +199,15 @@ INSERT INTO `lecturer` (`lecturerid`, `lecturername`, `lectureremail`, `metric`,
 -- Table structure for table `module`
 --
 
-CREATE TABLE IF NOT EXISTS `module` (
-`id` int(10) NOT NULL,
+CREATE TABLE `module` (
+  `id` int(10) NOT NULL,
   `modulename` varchar(255) NOT NULL,
   `description` varchar(255) DEFAULT NULL,
   `lecturerid` int(10) NOT NULL,
   `hodid` int(10) NOT NULL,
   `editdate` date NOT NULL,
   `freezedate` date NOT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `module`
@@ -190,8 +224,8 @@ INSERT INTO `module` (`id`, `modulename`, `description`, `lecturerid`, `hodid`, 
 -- Table structure for table `recommendation`
 --
 
-CREATE TABLE IF NOT EXISTS `recommendation` (
-`id` int(10) NOT NULL,
+CREATE TABLE `recommendation` (
+  `id` int(10) NOT NULL,
   `recommendation` varchar(255) DEFAULT NULL,
   `studentid` int(10) NOT NULL,
   `lecturerid` int(10) NOT NULL,
@@ -199,7 +233,7 @@ CREATE TABLE IF NOT EXISTS `recommendation` (
   `moduleid` int(11) NOT NULL,
   `moderation` varchar(255) DEFAULT NULL,
   `status` int(10) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `recommendation`
@@ -215,27 +249,30 @@ INSERT INTO `recommendation` (`id`, `recommendation`, `studentid`, `lecturerid`,
 -- Table structure for table `students`
 --
 
-CREATE TABLE IF NOT EXISTS `students` (
-`studentid` int(10) NOT NULL,
+CREATE TABLE `students` (
+  `studentid` int(10) NOT NULL,
   `studentname` varchar(255) NOT NULL,
   `studentemail` varchar(255) NOT NULL,
   `metric` varchar(255) DEFAULT NULL,
+  `enrolyear` int(5) NOT NULL,
+  `cgpa` decimal(3,2) NOT NULL,
   `contact` varchar(255) DEFAULT NULL,
   `address` varchar(255) DEFAULT NULL,
   `password` varchar(255) NOT NULL,
   `remember_token` varchar(255) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `students`
 --
 
-INSERT INTO `students` (`studentid`, `studentname`, `studentemail`, `metric`, `contact`, `address`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'student2', 'student@student.com', 'Hello Panda', '', '', '$2y$10$.zNUS.sRY060bL0c1Uovxu9PeFlUHD8oFkOxTK5n6zkeSz3iwF9y2', '9nnwls2hX345Mpfd9RnevPO6tiqOOYCAukX5N5OdekII6LLSG7VnXxqLBboc', NULL, '2016-10-16 08:01:26'),
-(2, 'izzat', 'izzat@izzat.com', '123456', '96938354', 'CCK 123', '$2y$10$NC2Gz.ouF6MEnZMwuavdROvE8ZMYdkdxhSFSwP06na12KRRkCruFG', 'npRKgofeQ33MGVw6SmXwAC4U8QuDq7cvTeAeVT4KRNvMQO8oa3gOVqIugHmd', NULL, '2016-10-02 00:39:06'),
-(3, 'testing', 'test@test.com', NULL, NULL, NULL, '$2y$10$ADd3MMvLklcRfOb1oC5JD.xF8.h3P6rfogkETuf8/z.1cnmqYu4wi', NULL, NULL, NULL);
+INSERT INTO `students` (`studentid`, `studentname`, `studentemail`, `metric`, `enrolyear`, `cgpa`, `contact`, `address`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
+(1, 'student2', 'student@student.com', 'Hello Panda', 2001, '1.50', '', '', '$2y$10$.zNUS.sRY060bL0c1Uovxu9PeFlUHD8oFkOxTK5n6zkeSz3iwF9y2', '9nnwls2hX345Mpfd9RnevPO6tiqOOYCAukX5N5OdekII6LLSG7VnXxqLBboc', NULL, '2016-10-16 08:01:26'),
+(2, 'izzat', 'izzat@izzat.com', '123456', 2002, '2.40', '96938354', 'CCK 123', '$2y$10$NC2Gz.ouF6MEnZMwuavdROvE8ZMYdkdxhSFSwP06na12KRRkCruFG', 'npRKgofeQ33MGVw6SmXwAC4U8QuDq7cvTeAeVT4KRNvMQO8oa3gOVqIugHmd', NULL, '2016-10-02 00:39:06'),
+(3, 'testing', 'test@test.com', NULL, 2003, '3.30', NULL, NULL, '$2y$10$ADd3MMvLklcRfOb1oC5JD.xF8.h3P6rfogkETuf8/z.1cnmqYu4wi', NULL, NULL, NULL),
+(5, 'izzat234', 'izzat234@izzat.com', '123456', 2002, '3.45', '99938354', 'CCK 123', '$2y$10$NC2Gz.ouF6MEnZMwuavdROvE8ZMYdkdxhSFSwP06na12KRRkCruFG', 'npRKgofeQ33MGVw6SmXwAC4U8QuDq7cvTeAeVT4KRNvMQO8oa3gOVqIugHmd', NULL, '2016-10-02 00:39:06');
 
 --
 -- Indexes for dumped tables
@@ -245,55 +282,61 @@ INSERT INTO `students` (`studentid`, `studentname`, `studentemail`, `metric`, `c
 -- Indexes for table `admin`
 --
 ALTER TABLE `admin`
- ADD PRIMARY KEY (`adminid`);
+  ADD PRIMARY KEY (`adminid`);
 
 --
 -- Indexes for table `enroll`
 --
 ALTER TABLE `enroll`
- ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `grades`
 --
 ALTER TABLE `grades`
- ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `gradstudentsmetainfo`
+--
+ALTER TABLE `gradstudentsmetainfo`
+  ADD PRIMARY KEY (`gradstudentid`,`moduleid`);
 
 --
 -- Indexes for table `graduatedstudents`
 --
 ALTER TABLE `graduatedstudents`
- ADD PRIMARY KEY (`gradstudentid`);
+  ADD PRIMARY KEY (`gradstudentid`);
 
 --
 -- Indexes for table `hod`
 --
 ALTER TABLE `hod`
- ADD PRIMARY KEY (`hodid`);
+  ADD PRIMARY KEY (`hodid`);
 
 --
 -- Indexes for table `lecturer`
 --
 ALTER TABLE `lecturer`
- ADD PRIMARY KEY (`lecturerid`);
+  ADD PRIMARY KEY (`lecturerid`);
 
 --
 -- Indexes for table `module`
 --
 ALTER TABLE `module`
- ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `recommendation`
 --
 ALTER TABLE `recommendation`
- ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `students`
 --
 ALTER TABLE `students`
- ADD PRIMARY KEY (`studentid`);
+  ADD PRIMARY KEY (`studentid`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -303,47 +346,47 @@ ALTER TABLE `students`
 -- AUTO_INCREMENT for table `admin`
 --
 ALTER TABLE `admin`
-MODIFY `adminid` int(10) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
+  MODIFY `adminid` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `enroll`
 --
 ALTER TABLE `enroll`
-MODIFY `id` int(10) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `grades`
 --
 ALTER TABLE `grades`
-MODIFY `id` int(10) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `graduatedstudents`
 --
 ALTER TABLE `graduatedstudents`
-MODIFY `gradstudentid` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `gradstudentid` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 --
 -- AUTO_INCREMENT for table `hod`
 --
 ALTER TABLE `hod`
-MODIFY `hodid` int(10) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+  MODIFY `hodid` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `lecturer`
 --
 ALTER TABLE `lecturer`
-MODIFY `lecturerid` int(10) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
+  MODIFY `lecturerid` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `module`
 --
 ALTER TABLE `module`
-MODIFY `id` int(10) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `recommendation`
 --
 ALTER TABLE `recommendation`
-MODIFY `id` int(10) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=9;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT for table `students`
 --
 ALTER TABLE `students`
-MODIFY `studentid` int(10) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
+  MODIFY `studentid` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

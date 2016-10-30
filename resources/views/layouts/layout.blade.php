@@ -50,6 +50,7 @@
                             <li><a href="{{URL::asset('admin/lecturer')}}">View Lecturer</a></li>
 							<li><a href="{{URL::asset('admin/admin')}}">View Admin</a></li>
                             <li><a href="{{URL::asset('admin/module')}}">View Module</a></li>
+							<li><a href="{{URL::asset('graduatedStudents/viewAllGradStudents')}}">View Graduates</a></li>
 							<li><a href="{{URL::asset('admin/backupsystem')}}">Backup System</a></li>
 							
                             <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">{{ auth()->guard('admin')->user()->name }} <span class="glyphicon glyphicon-cog"></span></a>

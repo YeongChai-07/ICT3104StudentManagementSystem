@@ -93,15 +93,19 @@ Route::get('common/logout', 'CommonController@logout');
         Route::post('common/editdetails', 'CommonController@updateDetails');
         Route::get('common/showdetails','CommonController@showDetailsFunction'); // added 
 		
-		
+		//crud student info
 		Route::get('studentinfo/viewAllStudents', ['as' => 'view_students', 'uses' => 'StudentInfoController@viewAllStudents']);
 		Route::get('studentinfo/{studentID}/editStudentInfoView', 'StudentInfoController@editStudentInfoView');
 		Route::post('studentinfo/{studentID}/editStudentInfoView', 'StudentInfoController@updateStudentInfo');		
-		Route::get('studentinfo/{studentID}/deleteStudentView', 'StudentInfoController@deleteStudentView');
-		Route::post('studentinfo/{studentID}/deleteStudentView', 'StudentInfoController@deleteStudent');
+		Route::get('studentinfo/{studentID}/viewAllStudents', 'StudentInfoController@archiveStudent');	
 		Route::get('studentinfo/addStudentView', 'StudentInfoController@showAddStudent');
 		Route::post('studentinfo/addStudentView', 'StudentInfoController@addStudent');
-
+		
+		//Grad student info
+		Route::get('graduatedStudents/viewAllGradStudents', 'GraduatedStudentsController@viewAllGradStudents');
+		Route::get('graduatedStudents/viewGradStudentsMetaInfo', 'GraduatedStudentsController@viewMetaInfo');
+		
+		
 
 	
 		
@@ -136,7 +140,7 @@ Route::get('common/logout', 'CommonController@logout');
 		//Route::get('lecturer/{moduleid}/{id}/addgrade', 'LecturerController@showAddGrade');
 
 		
-// personal info update		
+		// personal info update		
         Route::get('common/change', 'CommonController@displayPassword');
         Route::post('common/change', 'CommonController@updatePassword');
         Route::get('common/editdetails', 'CommonController@displayDetails');
@@ -147,10 +151,7 @@ Route::get('common/logout', 'CommonController@logout');
 		Route::get('studentinfo/viewAllStudents', ['as' => 'view_students', 'uses' => 'StudentInfoController@viewAllStudents']);
 		Route::get('studentinfo/{studentID}/editStudentInfoView', 'StudentInfoController@editStudentInfoView');
 		Route::post('studentinfo/{studentID}/editStudentInfoView', 'StudentInfoController@updateStudentInfo');
-		
-		Route::get('studentinfo/{studentID}/deleteStudentView', 'StudentInfoController@deleteStudentView');
-		Route::post('studentinfo/{studentID}/deleteStudentView', 'StudentInfoController@deleteStudent');
-		//-- end edit student info --//
+		Route::get('studentinfo/{studentID}/viewAllStudents', 'StudentInfoController@archiveStudent');
 		Route::get('studentinfo/addStudentView', 'StudentInfoController@showAddStudent');
 		Route::post('studentinfo/addStudentView', 'StudentInfoController@addStudent');
 
