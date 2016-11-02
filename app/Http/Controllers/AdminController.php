@@ -65,6 +65,8 @@ class AdminController extends Controller {
         $id = $emailcheck['lecturerid'];
         if(!$id)
         {
+            $today = (new DateTime())->format('Y-m-d');
+            $expirydate = date('Y-m-d', strtotime($today. ' + 90 days'));
             $password = substr(md5(uniqid(mt_rand(), true)) , 0, 6);
             $password = 'demo123';
             $hash = Hash::make($password);
@@ -73,7 +75,8 @@ class AdminController extends Controller {
             'lecturername' => $input['name'], 
             'lectureremail' =>  $input['email'],
 			'contact' =>  $input['contact'],
-            'password' => $hash
+            'password' => $hash,
+            'expirydate' => $expirydate
             ]);    
         }
         else
@@ -178,6 +181,8 @@ class AdminController extends Controller {
         $id = $emailcheck['hodid'];
         if(!$id)
         {
+            $today = (new DateTime())->format('Y-m-d');
+            $expirydate = date('Y-m-d', strtotime($today. ' + 90 days'));
             $password = substr(md5(uniqid(mt_rand(), true)) , 0, 6);
             $password = 'demo123';
             $hash = Hash::make($password);
@@ -186,7 +191,8 @@ class AdminController extends Controller {
             'hodname' => $input['name'], 
             'hodemail' =>  $input['email'],
 			'contact' =>  $input['contact'],
-            'password' => $hash
+            'password' => $hash,
+            'expirydate' => $expirydate
             ]);
 
 
@@ -839,5 +845,23 @@ class AdminController extends Controller {
         }
 
         return $gradeScore;
+    }
+
+    public function generatePassword($_len) {
+
+        $_alphaSmall = 'abcdefghijklmnopqrstuvwxyz';            // small letters
+        $_alphaCaps  = strtoupper($_alphaSmall);                // CAPITAL LETTERS
+        $_numerics   = '1234567890';                            // numerics
+        $_specialChars = '`~!@#$%^&*()-_=+]}[{;:,<.>/?\'"\|';   // Special Characters
+
+        $_container = $_alphaSmall.$_alphaCaps.$_numerics.$_specialChars;   // Contains all characters
+        $password = '';         // will contain the desired pass
+
+        for($i = 0; $i < $_len; $i++) {                                 // Loop till the length mentioned
+            $_rand = rand(0, strlen($_container) - 1);                  // Get Randomized Length
+            $password .= substr($_container, $_rand, 1);                // returns part of the string [ high tensile strength ;) ] 
+        }
+
+        return $password;       // Returns the generated Pass
     } 
 }

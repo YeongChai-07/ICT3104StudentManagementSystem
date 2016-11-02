@@ -73,17 +73,81 @@ class CommonController extends Controller {
 
 
 		
+
 		//check if user exists in any of the user tables
 		if( auth()->guard('lecturer')->attempt(['lectureremail' => $data['email'], 'password' => $data['password']]))
-        {
+        {	
+
+        	$checkLock = $this->checkLock(1,$data['email']);
+        	if($checkLock ==1)
+        	{
+        		Session::set('error_message', "Account Locked. Contact Admin");
+            	return redirect('common/login');
+        	}
+        	else
+        	{
+        		$checkExpiry = $this->checkExpiry(1,$data['email']);
+        		if($checkExpiry == 1)
+        		{
+        			Session::set('error_message', "Account Locked. Contact Admin");
+            		return redirect('common/login');        			
+        		}
+        		elseif($checkExpiry == 2)
+        		{
+					Session::set('error_message', "Password has expired. Please update your password");
+        		}
+        	}
+
 			session(['role' => 'lecturer']);	
 			return redirect('grade/index');
         }
 		else if (auth()->guard('hod')->attempt(['hodemail' => $data['email'], 'password' => $data['password']])){
+
+			$checkLock = $this->checkLock(2,$data['email']);
+        	if($checkLock ==1)
+        	{
+        		Session::set('error_message', "Account Locked. Contact Admin");
+            	return redirect('common/login');
+        	}
+        	else
+        	{
+        		$checkExpiry = $this->checkExpiry(2,$data['email']);
+        		if($checkExpiry == 1)
+        		{
+        			Session::set('error_message', "Account Locked. Contact Admin");
+            		return redirect('common/login');        			
+        		}
+        		elseif($checkExpiry == 2)
+        		{
+					Session::set('error_message', "Password has expired. Please update your password");
+        		}
+        	}
+
 			session(['role' => 'hod']);		
 			return redirect('grade/index');
 		}
 		else if (auth()->guard('student')->attempt(['studentemail' => $data['email'], 'password' => $data['password']])){
+	       
+	        $checkLock = $this->checkLock(3,$data['email']);
+        	if($checkLock ==1)
+        	{
+        		Session::set('error_message', "Account Locked. Contact Admin");
+            	return redirect('common/login');
+        	}
+        	else
+        	{
+        		$checkExpiry = $this->checkExpiry(3,$data['email']);
+        		if($checkExpiry == 1)
+        		{
+        			Session::set('error_message', "Account Locked. Contact Admin");
+            		return redirect('common/login');        			
+        		}
+        		elseif($checkExpiry == 2)
+        		{
+					Session::set('error_message', "Password has expired. Please update your password");
+        		}
+        	}
+        	
 			session(['role' => 'student']);
 			return redirect('student/index');
 		}
@@ -347,5 +411,79 @@ class CommonController extends Controller {
 
     }
 
-	
+	public function checkExpiry($type,$email)
+	{
+		if($type == 1)
+		{
+        	$user = DB::table('lecturer')
+            ->where('lectureremail',$email)->first();
+		}
+		elseif($type ==2)
+		{
+        	$user = DB::table('hod')
+            ->where('hodemail',$email)->first();
+		}
+		elseif($type == 3)
+		{
+        	$user = DB::table('students')
+            ->where('studentemail',$email)->first();
+		}
+		$today = (new DateTime())->format('Y-m-d');
+
+		if($today >= $user->expirydate)
+		{
+			$graceperiod = date('Y-m-d', strtotime($user->expirydate. ' + 10 days'));
+			if($today > $graceperiod)
+			{
+				if($type == 1)
+				{
+		        	$user = DB::table('lecturer')
+		            ->where('lectureremail',$email)
+		            ->update(['lockacc' => 1]);   
+				}
+				elseif($type ==2)
+				{
+		        	$user = DB::table('hod')
+		            ->where('hodemail',$email)
+		            ->update(['lockacc' => 1]);  
+				}
+				elseif($type == 3)
+				{
+		        	$user = DB::table('students')
+		            ->where('studentemail',$email)
+		            ->update(['lockacc' => 1]);  
+				}
+				return 1;
+			}
+			else
+			{
+				return 2;
+			}
+		}
+		else
+		{
+			return 0;
+		}
+	}
+
+	public function checkLock($type,$email)
+	{
+		if($type == 1)
+		{
+        	$user =  DB::table('lecturer')
+            ->where('lectureremail',$email)->first();
+		}
+		elseif($type ==2)
+		{
+        	$user =  DB::table('hod')
+            ->where('hodemail',$email)->first();
+		}
+		elseif($type == 3)
+		{
+        	$user =  DB::table('students')
+            ->where('studentemail',$email)->first();
+		}
+		return $user->lockacc;
+	}
+
 }

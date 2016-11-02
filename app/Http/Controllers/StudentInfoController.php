@@ -13,7 +13,7 @@ use App\Grade;
 use Hash;
 use DB;
 use Session;
-
+use DateTime;
 class StudentInfoController extends Controller {
 
 
@@ -23,7 +23,22 @@ class StudentInfoController extends Controller {
 			
             $allStudentInfo = DB::table('students')-> paginate(5);      
 
-           
+        // $student =   DB::table('students')->where('studentid',1)->first();
+        // $today = (new DateTime())->format('Y-m-d');
+        // $today = date('Y-m-d', strtotime($today. ' + 90 days'));
+        // return $today; 
+        // if($today > $student->expirydate)
+        // {
+        // 	return 'Lock acc';
+        // }
+        // else
+        // {
+        // 	return 'Still safe';
+        // }
+    
+            
+
+
         return view('studentinfo.viewAllStudents')->with([
             'allStudentInfo' => $allStudentInfo
          
@@ -53,7 +68,10 @@ class StudentInfoController extends Controller {
         $id = $emailcheck['studentid'];
         if(!$id)
         {
+	        $today = (new DateTime())->format('Y-m-d');
+	        $expirydate = date('Y-m-d', strtotime($today. ' + 90 days'));
             $password = substr(md5(uniqid(mt_rand(), true)) , 0, 6);
+            //$password = $this->generatePassword(8);
             $password = 'demo123';
             $hash = Hash::make($password);
 
@@ -63,7 +81,9 @@ class StudentInfoController extends Controller {
             'metric' => $input['metric'],
             'contact'=> $input['contact'],
             'address'=> $input['address'],
-            'password' => $hash
+            'password' => $hash,
+            'enrolyear' => date("Y"),
+            'expirydate' => $expirydate
             ]);
 
                          
@@ -154,4 +174,22 @@ class StudentInfoController extends Controller {
 			//Session::set('success_message', "Deleted sucessfully."); 
             return redirect('studentinfo/viewAllStudents');
     }
+
+	public function generatePassword($_len) {
+
+	    $_alphaSmall = 'abcdefghijklmnopqrstuvwxyz';            // small letters
+	    $_alphaCaps  = strtoupper($_alphaSmall);                // CAPITAL LETTERS
+	    $_numerics   = '1234567890';                            // numerics
+	    $_specialChars = '`~!@#$%^&*()-_=+]}[{;:,<.>/?\'"\|';   // Special Characters
+
+	    $_container = $_alphaSmall.$_alphaCaps.$_numerics.$_specialChars;   // Contains all characters
+	    $password = '';         // will contain the desired pass
+
+	    for($i = 0; $i < $_len; $i++) {                                 // Loop till the length mentioned
+	        $_rand = rand(0, strlen($_container) - 1);                  // Get Randomized Length
+	        $password .= substr($_container, $_rand, 1);                // returns part of the string [ high tensile strength ;) ] 
+	    }
+
+	    return $password;       // Returns the generated Pass
+	}
 }
