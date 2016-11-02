@@ -36,14 +36,14 @@ textarea { width:250px !important; height:100px !important; }
                 <td>{{   $grade->id }}</td>
                 <td>{{  $grade->studentname }}</td>
                 <td> 
-                @if(isset($grade->grade))
-                {{ $grade->grade }}
+                @if(isset($grade->marks))
+                {{ decrypt($grade->marks) }}
                 @else
                 Grade Not Set
                 @endif
                 </td>
                 <td>
-                @if(isset($grade->grade))
+                @if(isset($grade->marks))
                  <a class="btn btn-info" href="{{  $grade->id }}/editgrade">Edit Grade</a>
                  @else
                  <a class="btn btn-Primary" href="{{  $grade->id }}/addgrade">Add Grade</a>

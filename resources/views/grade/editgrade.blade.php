@@ -18,8 +18,8 @@
 </div>
 <?php echo Form::open(array('url' => 'grade/'.$moduleid.'/'.$gradeid.'/editgrade', 'method' => 'post')) ?>
  <div class="form-group">
-            {!!Form::label('grade','Grade')!!}
-            {!!Form::text('grade',$grades->grade,array('class' => 'form-control', 'required' => 'required'))!!}
+            {!!Form::label('grade','Marks')!!}
+            {!!Form::text('grade',decrypt($grades->marks),array('class' => 'form-control', 'required' => 'required'))!!}
         </div>
         <div class="form-group">
             {!!Form::label('recommendation','Recommendation')!!}
@@ -39,11 +39,11 @@
             if(!isset($recommendations->moderation))
             {
               echo'<option value="0.0" selected>Select If applicable</option>';                      
-              echo '<option value="0.1">0.1</option>';
-              echo '<option value="0.2">0.2</option>';
-              echo '<option value="0.3">0.3</option>';
-              echo '<option value="0.4">0.4</option>';
-              echo '<option value="0.5">0.5</option> ';             
+              echo '<option value="1">1.0</option>';
+              echo '<option value="2">2.0</option>';
+              echo '<option value="3">3.0</option>';
+              echo '<option value="4">4.0</option>';
+              echo '<option value="5">5.0</option> ';             
             }
             else
             {
@@ -55,45 +55,45 @@
                 {
                   echo '<option value=0.0>Select if applicable</option>';
                 }
-                if($recommendations->moderation == '0.1')
+                if($recommendations->moderation == '1')
                 {
-                  echo '<option value=0.1 selected>0.1</option>';
+                  echo '<option value=1 selected>1.0</option>';
                 }
                 else
                 {
-                  echo '<option value=0.1>0.1</option>';
+                  echo '<option value=1>1.0</option>';
                 }
-                if($recommendations->moderation == '0.2')
+                if($recommendations->moderation == '2')
                 {
-                  echo '<option value=0.2 selected>0.2</option>';
-                }
-                else
-                {
-                  echo '<option value=0.2>0.2</option>';
-                }
-                if($recommendations->moderation == '0.3')
-                {
-                  echo '<option value=0.3 selected>0.3</option>';
+                  echo '<option value=2 selected>2.0</option>';
                 }
                 else
                 {
-                  echo '<option value=0.3>0.3</option>';
+                  echo '<option value=2>2.0</option>';
+                }
+                if($recommendations->moderation == '3')
+                {
+                  echo '<option value=3 selected>3.0</option>';
+                }
+                else
+                {
+                  echo '<option value=3>3.0</option>';
                 }                
-                if($recommendations->moderation == '0.4')
+                if($recommendations->moderation == '4')
                 {
-                  echo '<option value=0.4 selected>0.4</option>';
+                  echo '<option value=4 selected>4.0</option>';
                 }
                 else
                 {
-                  echo '<option value=0.4>0.4</option>';
+                  echo '<option value=4>4.0</option>';
                 }              
-                if($recommendations->moderation == '0.5')
+                if($recommendations->moderation == '5')
                 {
-                  echo '<option value=0.5 selected>0.5</option>';
+                  echo '<option value=5 selected>5.0</option>';
                 }
                 else
                 {
-                  echo '<option value=0.5>0.5</option>';
+                  echo '<option value=5>5.0</option>';
                 } 
             }    
             ?>

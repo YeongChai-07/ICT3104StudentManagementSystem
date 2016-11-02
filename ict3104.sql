@@ -3,9 +3,9 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 30, 2016 at 01:50 PM
+-- Generation Time: Nov 01, 2016 at 03:44 PM
 -- Server version: 10.1.16-MariaDB
--- PHP Version: 5.6.24
+-- PHP Version: 7.0.9
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -42,7 +42,7 @@ CREATE TABLE `admin` (
 --
 
 INSERT INTO `admin` (`adminid`, `adminname`, `adminemail`, `password`, `contact`, `address`, `remember_token`, `updated_at`) VALUES
-(1, 'admin1', 'admin@admin.com', '$2y$10$ADd3MMvLklcRfOb1oC5JD.xF8.h3P6rfogkETuf8/z.1cnmqYu4wi', 66655544, 'block 123', 'NzFFg6yexa8zdvpv3ib16getmWucWEAnxxxKyoELcUEUM9cxsinUqgINlumq', '2016-10-30 04:39:07'),
+(1, 'admin1', 'admin@admin.com', '$2y$10$ADd3MMvLklcRfOb1oC5JD.xF8.h3P6rfogkETuf8/z.1cnmqYu4wi', 66655544, 'block 123', 'dSMF48AYLojYXJzEolxxdKQZA6H9DtXi6K0GZjs74QhfRMmmmThi3Du4cOoH', '2016-11-01 06:26:04'),
 (2, 'admin2', 'admin2@admin.com', '$2y$10$ADd3MMvLklcRfOb1oC5JD.xF8.h3P6rfogkETuf8/z.1cnmqYu4wi', 11112222, 'block555', '', NULL);
 
 -- --------------------------------------------------------
@@ -64,7 +64,8 @@ CREATE TABLE `enroll` (
 INSERT INTO `enroll` (`id`, `moduleid`, `studentid`) VALUES
 (1, 1, 1),
 (2, 2, 2),
-(3, 1, 2);
+(3, 1, 2),
+(4, 4, 1);
 
 -- --------------------------------------------------------
 
@@ -75,7 +76,7 @@ INSERT INTO `enroll` (`id`, `moduleid`, `studentid`) VALUES
 CREATE TABLE `grades` (
   `id` int(10) NOT NULL,
   `grade` varchar(255) DEFAULT NULL,
-  `marks` decimal(5,2) NOT NULL,
+  `marks` varchar(255) DEFAULT NULL,
   `moduleid` int(10) NOT NULL,
   `studentid` int(10) NOT NULL,
   `lecturerid` int(10) NOT NULL,
@@ -88,10 +89,11 @@ CREATE TABLE `grades` (
 --
 
 INSERT INTO `grades` (`id`, `grade`, `marks`, `moduleid`, `studentid`, `lecturerid`, `hodid`, `publish`) VALUES
-(1, 'B', '60.20', 1, 1, 2, 1, 0),
-(2, 'A', '78.00', 2, 1, 2, 1, 0),
-(3, 'B', '61.20', 1, 4, 2, 1, 0),
-(4, 'A', '79.50', 2, 4, 2, 1, 0);
+(1, NULL, NULL, 1, 1, 2, 1, 0),
+(2, NULL, NULL, 2, 1, 2, 1, 0),
+(3, NULL, NULL, 1, 4, 2, 1, 0),
+(4, NULL, NULL, 2, 4, 2, 1, 0),
+(6, 'D', 'eyJpdiI6ImNIS3BKNU42ZFwvRWN4N1liTHZFMzNnPT0iLCJ2YWx1ZSI6Ilg0eE00ZVAzRDUzXC92KzNPbHFcL1wvd3c9PSIsIm1hYyI6ImNlNGQ0YzNkOWNhOGUzMDJkN2E0ZmI3ODE4NjMzN2Y1YTFlMGQxYjcxYmJlZDVjM2NkYTc2MGUyNWE0ZWY5NjQifQ==', 4, 1, 2, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -164,7 +166,7 @@ CREATE TABLE `hod` (
 --
 
 INSERT INTO `hod` (`hodid`, `hodname`, `hodemail`, `metric`, `contact`, `address`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'hod', 'hod@hod.com', NULL, '2637238', 'Block 112', '$2y$10$ADd3MMvLklcRfOb1oC5JD.xF8.h3P6rfogkETuf8/z.1cnmqYu4wi', 'UYqenFgUqxurNCAWkeC5wnyS8ytULarA03PkTow0e2KXdKTqsbwPJhn171yz', NULL, '2016-10-18 01:46:10');
+(1, 'hod', 'hod@hod.com', NULL, '2637238', 'Block 112', '$2y$10$ADd3MMvLklcRfOb1oC5JD.xF8.h3P6rfogkETuf8/z.1cnmqYu4wi', 'DAGjhdgDgG47iUhugvROQF7ogMReGkgNlW8miuZJfMgn6lZYOnc9al2Rcm49', NULL, '2016-11-01 06:31:03');
 
 -- --------------------------------------------------------
 
@@ -206,17 +208,20 @@ CREATE TABLE `module` (
   `lecturerid` int(10) NOT NULL,
   `hodid` int(10) NOT NULL,
   `editdate` date NOT NULL,
-  `freezedate` date NOT NULL
+  `freezedate` date NOT NULL,
+  `endedit` int(11) NOT NULL DEFAULT '0',
+  `endfreeze` int(11) NOT NULL DEFAULT '0',
+  `publish` int(11) DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `module`
 --
 
-INSERT INTO `module` (`id`, `modulename`, `description`, `lecturerid`, `hodid`, `editdate`, `freezedate`) VALUES
-(1, 'Maths', 'E Maths', 2, 1, '2016-10-31', '2016-11-10'),
-(2, 'Science', 'Physics', 2, 1, '2016-10-05', '2016-10-31'),
-(4, 'English', 'English', 1, 1, '2016-10-12', '2016-10-26');
+INSERT INTO `module` (`id`, `modulename`, `description`, `lecturerid`, `hodid`, `editdate`, `freezedate`, `endedit`, `endfreeze`, `publish`) VALUES
+(1, 'Maths', 'E Maths', 2, 1, '2016-11-14', '2016-11-30', 0, 0, 0),
+(2, 'Science', 'Physics', 2, 1, '2016-11-14', '2016-11-30', 0, 0, 0),
+(4, 'English', 'English', 1, 1, '2016-11-14', '2016-11-30', 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -240,8 +245,7 @@ CREATE TABLE `recommendation` (
 --
 
 INSERT INTO `recommendation` (`id`, `recommendation`, `studentid`, `lecturerid`, `hodid`, `moduleid`, `moderation`, `status`) VALUES
-(6, 'test1', 1, 2, 1, 1, '0.2', 0),
-(7, 'good', 1, 2, 1, 2, '0.3', 3);
+(12, 'test', 1, 2, 1, 4, '5', 3);
 
 -- --------------------------------------------------------
 
@@ -255,7 +259,7 @@ CREATE TABLE `students` (
   `studentemail` varchar(255) NOT NULL,
   `metric` varchar(255) DEFAULT NULL,
   `enrolyear` int(5) NOT NULL,
-  `cgpa` decimal(3,2) NOT NULL,
+  `cgpa` varchar(255) DEFAULT NULL,
   `contact` varchar(255) DEFAULT NULL,
   `address` varchar(255) DEFAULT NULL,
   `password` varchar(255) NOT NULL,
@@ -269,7 +273,7 @@ CREATE TABLE `students` (
 --
 
 INSERT INTO `students` (`studentid`, `studentname`, `studentemail`, `metric`, `enrolyear`, `cgpa`, `contact`, `address`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'student2', 'student@student.com', 'Hello Panda', 2001, '1.50', '', '', '$2y$10$.zNUS.sRY060bL0c1Uovxu9PeFlUHD8oFkOxTK5n6zkeSz3iwF9y2', '9nnwls2hX345Mpfd9RnevPO6tiqOOYCAukX5N5OdekII6LLSG7VnXxqLBboc', NULL, '2016-10-16 08:01:26'),
+(1, 'student2', 'student@student.com', 'Hello Panda', 2001, '2', '', '', '$2y$10$.zNUS.sRY060bL0c1Uovxu9PeFlUHD8oFkOxTK5n6zkeSz3iwF9y2', '9nnwls2hX345Mpfd9RnevPO6tiqOOYCAukX5N5OdekII6LLSG7VnXxqLBboc', NULL, '2016-10-16 08:01:26'),
 (2, 'izzat', 'izzat@izzat.com', '123456', 2002, '2.40', '96938354', 'CCK 123', '$2y$10$NC2Gz.ouF6MEnZMwuavdROvE8ZMYdkdxhSFSwP06na12KRRkCruFG', 'npRKgofeQ33MGVw6SmXwAC4U8QuDq7cvTeAeVT4KRNvMQO8oa3gOVqIugHmd', NULL, '2016-10-02 00:39:06'),
 (3, 'testing', 'test@test.com', NULL, 2003, '3.30', NULL, NULL, '$2y$10$ADd3MMvLklcRfOb1oC5JD.xF8.h3P6rfogkETuf8/z.1cnmqYu4wi', NULL, NULL, NULL),
 (5, 'izzat234', 'izzat234@izzat.com', '123456', 2002, '3.45', '99938354', 'CCK 123', '$2y$10$NC2Gz.ouF6MEnZMwuavdROvE8ZMYdkdxhSFSwP06na12KRRkCruFG', 'npRKgofeQ33MGVw6SmXwAC4U8QuDq7cvTeAeVT4KRNvMQO8oa3gOVqIugHmd', NULL, '2016-10-02 00:39:06');
@@ -351,12 +355,12 @@ ALTER TABLE `admin`
 -- AUTO_INCREMENT for table `enroll`
 --
 ALTER TABLE `enroll`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `grades`
 --
 ALTER TABLE `grades`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT for table `graduatedstudents`
 --
@@ -381,7 +385,7 @@ ALTER TABLE `module`
 -- AUTO_INCREMENT for table `recommendation`
 --
 ALTER TABLE `recommendation`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 --
 -- AUTO_INCREMENT for table `students`
 --

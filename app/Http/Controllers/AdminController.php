@@ -764,10 +764,18 @@ class AdminController extends Controller {
 
         $module = Module::findorFail($moduleid);
 
+        // $recommendations = DB::table('recommendation')
+        //     ->join('students','students.studentid', '=', 'recommendation.studentid')
+        //     ->select('recommendation.*','students.*')
+        //     ->where('recommendation.moduleid', $moduleid)
+        //     ->where('recommendation.status', 1)->paginate(5);  
+
         $recommendations = DB::table('recommendation')
-            ->join('students','students.studentid', '=', 'recommendation.studentid')
-            ->select('recommendation.*','students.*')
+            ->leftjoin('students','students.studentid', '=', 'recommendation.studentid')
+            ->leftjoin('grades','grades.studentid', '=', 'recommendation.studentid')
+            ->select('recommendation.*','students.studentname','grades.marks')
             ->where('recommendation.moduleid', $moduleid)
+            ->where('grades.moduleid',$moduleid)
             ->where('recommendation.status', 1)->paginate(5);  
 
             return view('admin.moderate')->with([
@@ -785,13 +793,14 @@ class AdminController extends Controller {
         $grade = Grade::where('studentid', $recommendation->studentid)
                     ->where('moduleid', $recommendation->moduleid)
                     ->first();
+        
+        $finalgrade = decrypt($grade->marks) + $recommendation->moderation;
 
-        $finalgrade = $grade->grade + $recommendation->moderation;
-
+        $convertedGrade = $this->calculateIndivGrade($finalgrade);
 
         DB::table('grades')
                 ->where('id', $grade->id)
-                ->update(['grade' => $finalgrade]);
+                ->update(['marks' => encrypt($finalgrade),'grade'=> $convertedGrade]);
 
         DB::table('recommendation')
                 ->where('id', $recommendationid)
@@ -801,4 +810,34 @@ class AdminController extends Controller {
         return redirect()->back();
     }
 
+    public function calculateIndivGrade($marks)
+    {
+        //TODO: this function converts the marks into grades (alphabets) and store into grades table
+        if ($marks >= 80)
+        {
+            $gradeScore = 'A';
+        }
+        elseif ($marks >= 75  && $marks < 80)
+        {
+            $gradeScore = 'B+';
+        }
+        elseif ($marks>= 70  && $marks < 75)
+        {
+            $gradeScore = 'B';
+        }
+        elseif ($marks>= 60  && $marks < 70)
+        {
+            $gradeScore = 'C';
+        }
+        elseif ($marks>= 50  && $marks < 60)
+        {
+            $gradeScore = 'D';
+        }
+        else
+        {
+            $gradeScore = 'Fail';
+        }
+
+        return $gradeScore;
+    } 
 }

@@ -16,6 +16,10 @@ textarea { width:250px !important; height:100px !important; }
         <div class="alert alert-danger">{{ Session::get('error_message') }}</div>
         {{Session::forget('error_message')}}
     @endif
+    @if(Session::has('success_message'))
+    <div class="alert alert-success">{{ Session::get('success_message') }}</div>
+    {{Session::forget('success_message')}}
+    @endif
     <br/>
  <div class="row">
     <div class="col-md-12 col-sm-12">
@@ -33,17 +37,20 @@ textarea { width:250px !important; height:100px !important; }
                 <td>{{  $module->modulename }}</td>
                 <td> {{ $module->description }}</td>
                 <td>
-
-                @if($today > $module->editdate)
+                  <!-- <a class="btn btn-info" href="{{  $module->id }}/publish" >Publish Grades</a>
+ -->                @if($today > $module->editdate || $module->endedit ==1)
                   @if(strcmp($role,'hod') == 0)
-                      @if($today > $module->freezedate)
+                      @if($today > $module->freezedate || $module->endfreeze ==1)
+
                         <a class="btn btn-info" href="{{  $module->id }}/publish" >Publish Grades</a>
                       @else
                         <a class="btn btn-info" href="{{  $module->id }}/approval">Approve Recommendations</a>
+                        <a class="btn btn-primary" href="{{  $module->id }}/endfreeze">End Freeze</a>
                       @endif
                   @endif
                 @else
                   <a class="btn btn-info" href="{{  $module->id }}/managegrade">Manage Grade</a>
+                  <a class="btn btn-primary" href="{{  $module->id }}/endedit">End Edit</a>
                 @endif
 
                 </td>

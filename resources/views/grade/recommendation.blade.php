@@ -27,13 +27,14 @@ textarea { width:250px !important; height:100px !important; }
         <table width="100%" cellpadding="5" cellspacing="5" id="recommendationsList" border="1"  class="table table-striped table-bordered dt-responsive" >
             <thead>
 
-                <tr><th>S/N</th><th>Student Name</th><th>Recommendation</th><th>Moderation</th><th width="40%">Action</th></tr>
+                <tr><th>S/N</th><th>Student Name</th><th>Current Marks</th><th>Recommendation</th><th>Moderation</th><th width="40%">Action</th></tr>
             </thead>
             <tbody>
                 @foreach($recommendations as $key=>$recommendation)
                 <tr>
                 <td>{{   $recommendation->id }}</td>
                 <td>{{  $recommendation->studentname }}</td>
+                <td>{{  decrypt($recommendation->marks) }}</td>
                 <td> {{ $recommendation->recommendation }}</td>
                 <td>{{ $recommendation->moderation }}</td>
                 <td>

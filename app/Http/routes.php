@@ -181,6 +181,11 @@ Route::get('common/logout', 'CommonController@logout');
 
   		Route::get('grade/{moduleid}/{recommendationid}/approveRec', 'GradeController@approveRec');
   		Route::get('grade/{moduleid}/{recommendationid}/rejectRec', 'GradeController@rejectRec');
+
+  		Route::get('grade/{moduleid}/endedit', 'GradeController@endEdit');
+  		Route::get('grade/{moduleid}/endfreeze', 'GradeController@endFreeze');
+
+  		Route::get('grade/{moduleid}/publish', 'GradeController@publish');
 		// Route::get('hod/index', 'HodController@index');
 		// Route::get('hod/{id}/managegrade', ['as' => 'manage_grade_hod', 'uses' => 'HodController@showManageGrade']);
 

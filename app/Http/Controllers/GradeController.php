@@ -24,14 +24,18 @@ class GradeController extends Controller {
 			$userid = auth()->guard('lecturer')->user()->lecturerid;
 
 		    $modules = DB::table('module')
-            ->where('module.lecturerid', $userid)->paginate(5);  
+            ->where('module.lecturerid', $userid)
+            ->where('publish',0)
+            ->paginate(5);  
 			
 		}
 		else if ($role == 'hod'){
 			$userid = auth()->guard('hod')->user()->hodid;
 
 			$modules = DB::table('module')
-            ->where('module.hodid', $userid)->paginate(5);  
+            ->where('module.hodid', $userid)
+			->where('publish',0)
+            ->paginate(5);  
 		}
 		else
 		{
@@ -69,7 +73,6 @@ class GradeController extends Controller {
             ->select('module.*','grades.*','students.*')
             ->where('grades.moduleid', $moduleid)->paginate(5);    
 
-           
         return view('grade.managegrade')->with([
             'grades' => $grades,
             'module' => $module
@@ -112,10 +115,13 @@ class GradeController extends Controller {
         $input= $request->all();
         $student = Grade::findorFail($gradeid);
         $recommendation = $request->only(['recommendation']);
-
+        $gradeScore = $this->calculateIndivGrade($input['grade']);
+   		$encryptedGrade = encrypt($input['grade']);
+   		// $decrypted = decrypt($encryptedValue);
+   		// return $decrypted;
         DB::table('grades')
                 ->where('id', $gradeid)
-                ->update(['grade' => $input['grade']]);          
+                ->update(['grade' => $gradeScore,'marks' => $encryptedGrade]);          
           
 
             //if recommendation is empty dont run this insert into recommendation table
@@ -164,6 +170,7 @@ class GradeController extends Controller {
             				->where('moduleid', $grades->moduleid)
             				->first();
 
+        
         return view('grade.editgrade')->with([
             'grades' => $grades,
             'recommendations' => $recommendations,
@@ -185,7 +192,8 @@ class GradeController extends Controller {
 		}  
 
         $input= $request->all();
-   
+   		$gradeScore = $this->calculateIndivGrade($input['grade']);
+   		$encryptedGrade = encrypt($input['grade']);
         $student = Grade::findorFail($gradeid);
 		$recommendation = DB::table('recommendation')
             				->where('studentid', $student->studentid)
@@ -194,7 +202,7 @@ class GradeController extends Controller {
 
         DB::table('grades')
                 ->where('id', $gradeid)
-                ->update(['grade' => $input['grade']]);          
+                ->update(['grade' => $gradeScore,'marks' => $encryptedGrade]);           
           
     if (empty($input['recommendation']) != 1)
     {            
@@ -258,11 +266,14 @@ class GradeController extends Controller {
 		$module = Module::findorFail($moduleid);
 
 		$recommendations = DB::table('recommendation')
-            ->join('students','students.studentid', '=', 'recommendation.studentid')
-            ->select('recommendation.*','students.studentname')
+            ->leftjoin('students','students.studentid', '=', 'recommendation.studentid')
+            ->leftjoin('grades','grades.studentid', '=', 'recommendation.studentid')
+            ->select('recommendation.*','students.studentname','grades.marks')
             ->where('recommendation.moduleid', $moduleid)
+            ->where('grades.moduleid',$moduleid)
             ->where('recommendation.status', 0)->paginate(5);  
 
+            
 	        return view('grade.recommendation')->with([
 	            'module' => $module,
 	            'recommendations' => $recommendations
@@ -313,18 +324,32 @@ class GradeController extends Controller {
 	public function calculateIndivGrade($marks)
     {
         //TODO: this function converts the marks into grades (alphabets) and store into grades table
-		if ($marks >= 75){
-			//A
+		if ($marks >= 80)
+		{
+			$gradeScore = 'A';
 		}
-		elseif ($marks >= 60 && $marks < 75){
-			//B
+		elseif ($marks >= 75  && $marks < 80)
+		{
+			$gradeScore = 'B+';
 		}
-		elseif ($marks>= 50  && $marks < 60){
-			//C
+		elseif ($marks>= 70  && $marks < 75)
+		{
+			$gradeScore = 'B';
 		}
-		else{
-			//fail
+		elseif ($marks>= 60  && $marks < 70)
+		{
+			$gradeScore = 'C';
 		}
+		elseif ($marks>= 50  && $marks < 60)
+		{
+			$gradeScore = 'D';
+		}
+		else
+		{
+			$gradeScore = 'Fail';
+		}
+
+		return $gradeScore;
     } 
 
 	//TODO
@@ -336,7 +361,8 @@ class GradeController extends Controller {
 		
         //TODO: this function calculates the average marks of the student and converts to grades for cgpa
 		$allEnrolledMods = DB::table('grades') 
-				->where('studentid', $sID) 
+				->where('studentid', $studentid)
+				->where('publish', 1)
 				->get(); 
 				
 		
@@ -344,18 +370,121 @@ class GradeController extends Controller {
 		$totalGpa = 0.0;		
 		foreach ($allEnrolledMods as $studMod) {
 			$modCount +=1;
-			$totalGpa+=$studMod->marks;
+			$gradeScore = $this->convertGPA($studMod->grade);
+			$totalGpa+=$gradeScore;
 		}
 		//check if the formula to calc cgpa is correct
 		$cgpa = $totalGpa/$modCount;
 		
 		//update student cgpa in student table
+		//TODO: NEED TO ENCRPYT
 		DB::table('students')
-                ->where('studentid', $studentID)
+                ->where('studentid', $studentid)
                 ->update([
 				'cgpa' => $cgpa
 							
 				]);     
+		return $cgpa;
+    }
+
+	public function convertGPA($grade)
+    {
+        //TODO: this function converts the marks into grades (alphabets) and store into grades table
+		if (strcmp($grade,'A') == 0)
+		{
+			$gradeScore = '4.0';
+		}
+		elseif (strcmp($grade,'B+') == 0)
+		{
+			$gradeScore = '3.5';
+		}
+		elseif (strcmp($grade,'B') == 0)
+		{
+			$gradeScore = '3.0';
+		}
+		elseif (strcmp($grade,'C') == 0)
+		{
+			$gradeScore = '2.5';
+		}
+		elseif (strcmp($grade,'D') == 0)
+		{
+			$gradeScore = '2.0';
+		}
+		elseif(strcmp($grade,'Fail') == 0)
+		{
+			$gradeScore = '1.0';
+		}
+
+		return $gradeScore;
+    } 
+
+    public function endEdit(Request $request, $moduleid)
+    {
+        $role = $request->session()->get('role');
+	
+		if ($role != 'lecturer' and $role != 'hod')
+		{
+	
+		return redirect('common/logout');
+	
+		}
+
+        DB::table('module')
+                ->where('id', $moduleid)
+                ->update(['endedit' => 1]);   
+
+	    Session::set('success_message', "Edit grades has been ended");
+	    return redirect()->back();
+    }
+
+    public function endFreeze(Request $request, $moduleid)
+    {
+        $role = $request->session()->get('role');
+	
+		if ($role != 'lecturer' and $role != 'hod')
+		{
+	
+		return redirect('common/logout');
+	
+		}
+
+        DB::table('module')
+                ->where('id', $moduleid)
+                ->update(['endfreeze' => 1]);   
+
+	    Session::set('success_message', "Freeze grades has been ended");
+	    return redirect()->back();
+    }
+
+    public function publish(Request $request, $moduleid)
+    {
+    	
+    	$role = $request->session()->get('role');
+	
+		if ($role != 'lecturer' and $role != 'hod')
+		{
+	
+		return redirect('common/logout');
+	
+		}
+
+        DB::table('module')
+                ->where('id', $moduleid)
+                ->update(['publish' => 1]);
+
+        DB::table('grades')
+                ->where('moduleid', $moduleid)
+                ->update(['publish' => 1]); 
+
+		$students =  DB::table('grades')
+						->where('moduleid', $moduleid)
+						->get();
 		
-    } 	
+		foreach($students as $student)
+		{
+			$cgpa = $this->calculateCgpa($student->studentid);
+		}
+		Session::set('success_message', "Module Grades Published");
+		return redirect()->back();				
+    }   	
 }
