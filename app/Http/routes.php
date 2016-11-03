@@ -64,7 +64,9 @@ Route::post('common/verifyuser','CommonController@verifyUser');
         Route::get('/admin/{id}/editlecturer', 'AdminController@editLecturer');
         Route::post('/admin/{id}/editlecturer', 'AdminController@updateLecturer');
         Route::get('/admin/{id}/deletelecturer', 'AdminController@deleteLecturer');
-		
+				//for both hod and lecturer
+		Route::get('admin/{type}/{id}/resetpwd', 'AdminController@resetPassword');
+
 		Route::get('admin/admin', 'AdminController@showAdmin');
 		Route::get('/admin/addadmin', 'AdminController@showAddAdmin');
         Route::post('/admin/addadmin', 'AdminController@addAdmin');
@@ -103,6 +105,8 @@ Route::post('common/verifyuser','CommonController@verifyUser');
 		Route::get('studentinfo/{studentID}/viewAllStudents', 'StudentInfoController@archiveStudent');	
 		Route::get('studentinfo/addStudentView', 'StudentInfoController@showAddStudent');
 		Route::post('studentinfo/addStudentView', 'StudentInfoController@addStudent');
+
+		Route::get('studentinfo/{studentID}/resetpwd', 'StudentInfoController@resetPassword');
 		
 		//Grad student info
 		Route::get('graduatedStudents/viewAllGradStudents', 'GraduatedStudentsController@viewAllGradStudents');
