@@ -1,6 +1,6 @@
 <?php
 namespace App\Http\Controllers;
-
+ini_set('max_execution_time', 300);
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -319,7 +319,7 @@ class CommonController extends Controller {
 			}
 		}
 		else{
-			Session::set('error_message', "Incorrect Login Code");
+			Session::set('error_message', "Invalid Password/Token");
 			return redirect('common/login');
 		}
 		

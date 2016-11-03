@@ -16,6 +16,10 @@ textarea { width:250px !important; height:100px !important; }
         <div class="alert alert-danger">{{ Session::get('error_message') }}</div>
         {{Session::forget('error_message')}}
     @endif
+    @if(Session::has('success_message'))
+    <div class="alert alert-success">{{ Session::get('success_message') }}</div>
+    {{Session::forget('success_message')}}
+    @endif
     <br/>
  <div class="row">
     <div class="col-md-12 col-sm-12">

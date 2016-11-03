@@ -21,6 +21,7 @@ use Session;
 use DateTime;
 use ZipArchive;
 use File;
+use Mail;
 //Importing the Artisan Facade
 use Illuminate\Support\Facades\Artisan;
 
@@ -67,8 +68,10 @@ class AdminController extends Controller {
         {
             $today = (new DateTime())->format('Y-m-d');
             $expirydate = date('Y-m-d', strtotime($today. ' + 90 days'));
-            $password = substr(md5(uniqid(mt_rand(), true)) , 0, 6);
-            $password = 'demo123';
+            // $password = substr(md5(uniqid(mt_rand(), true)) , 0, 6);
+            // $password = 'demo123';
+
+            $password = $this->generatePassword(8);
             $hash = Hash::make($password);
 
             $lecturerid = DB::table('lecturer')->insertGetId([
@@ -79,7 +82,16 @@ class AdminController extends Controller {
             'address' => $input['address'],
             'password' => $hash,
             'expirydate' => $expirydate
-            ]);    
+            ]);
+
+
+            $lecturer = DB::table('lecturer')->where('lecturerid',$lecturerid)->first();
+            //set gmail email and password in .env to work
+            $data = array( 'name' => $lecturer->lecturername,'email' =>  $lecturer->lectureremail, 'password' => $password);
+            Mail::send('email.register', $data,  function ($message) use ($data) {
+            //Uncomment to work;
+            $message->to(trim($data['email']))->subject('Registration to SMS');
+            });    
         }
         else
         {
@@ -185,11 +197,13 @@ class AdminController extends Controller {
         {
             $today = (new DateTime())->format('Y-m-d');
             $expirydate = date('Y-m-d', strtotime($today. ' + 90 days'));
-            $password = substr(md5(uniqid(mt_rand(), true)) , 0, 6);
-            $password = 'demo123';
+            // $password = substr(md5(uniqid(mt_rand(), true)) , 0, 6);
+            // $password = 'demo123';
+
+            $password = $this->generatePassword(8);
             $hash = Hash::make($password);
 
-            $studentid = DB::table('hod')->insertGetId([
+            $hodid = DB::table('hod')->insertGetId([
             'hodname' => $input['name'],
             'metric' => $input['metric'],
             'hodemail' =>  $input['email'],
@@ -199,7 +213,13 @@ class AdminController extends Controller {
             'expirydate' => $expirydate
             ]);
 
-
+        $hod = DB::table('hod')->where('hodid',$hodid)->first();
+        //set gmail email and password in .env to work
+        $data = array( 'name' => $hod->hodname,'email' =>  $hod->hodemail, 'password' => $password);
+        Mail::send('email.register', $data,  function ($message) use ($data) {
+        //Uncomment to work;
+        $message->to(trim($data['email']))->subject('Registration to SMS');
+        });
                          
         }
         else
@@ -874,49 +894,49 @@ class AdminController extends Controller {
     {
         $password = $this->generatePassword(8);
 
-        // $hash = Hash::make($password);
-        // $today = (new DateTime())->format('Y-m-d');
-        // $expirydate = date('Y-m-d', strtotime($today. ' + 90 days'));
+        $hash = Hash::make($password);
+        $today = (new DateTime())->format('Y-m-d');
+        $expirydate = date('Y-m-d', strtotime($today. ' + 90 days'));
 
-        // if($type == 1)
-        // {
-        //     $user =   DB::table('lecturer')->where('lecturerid',$id)->first(); 
-        //     //set gmail email and password in .env to work
-        //     $data = array( 'email' =>  $user->lectureremail, 'password' => $password);
-        //     Mail::send('email.reset', $data,  function ($message) use ($data) {
-        //     //Uncomment to work;
-        //     $message->to(trim($user->lectureremail))->subject('Reset Password for SMS');
-        //        });
-        //     DB::table('lecturer')
-        //         ->where('lecturerid', $id)
-        //         ->update([
-        //      'password' => $hash,
-        //      'expirydate' => $expirydate,
-        //      'lockacc' => 0      
-        //      ]); 
+        if($type == 1)
+        {
+            $user =   DB::table('lecturer')->where('lecturerid',$id)->first(); 
+            //set gmail email and password in .env to work
+            $data = array( 'email' =>  $user->lectureremail, 'password' => $password);
+            Mail::send('email.reset', $data,  function ($message) use ($data) {
+            //Uncomment to work;
+            $message->to(trim($data['email']))->subject('Reset Password for SMS');
+               });
+            DB::table('lecturer')
+                ->where('lecturerid', $id)
+                ->update([
+             'password' => $hash,
+             'expirydate' => $expirydate,
+             'lockacc' => 0      
+             ]); 
 
-        // }
+        }
         
-        // else
-        // {
-        //     $user =   DB::table('hod')->where('hodid',$id)->first();
-        //     //set gmail email and password in .env to work
-        //     $data = array( 'email' =>  $user->hodemail, 'password' => $password);
-        //     Mail::send('email.reset', $data,  function ($message) use ($data) {
-        //     //Uncomment to work;
-        //     $message->to(trim($user->hodemail))->subject('Reset Password for SMS');
-        //        });
-        //     DB::table('hod')
-        //         ->where('hodid', $id)
-        //         ->update([
-        //      'password' => $hash,
-        //      'expirydate' => $expirydate,
-        //      'lockacc' => 0      
-        //      ]); 
-        // }
+        else
+        {
+            $user =   DB::table('hod')->where('hodid',$id)->first();
+            //set gmail email and password in .env to work
+            $data = array( 'email' =>  $user->hodemail, 'password' => $password);
+            Mail::send('email.reset', $data,  function ($message) use ($data) {
+            //Uncomment to work;
+            $message->to(trim($data['email']))->subject('Reset Password for SMS');
+               });
+            DB::table('hod')
+                ->where('hodid', $id)
+                ->update([
+             'password' => $hash,
+             'expirydate' => $expirydate,
+             'lockacc' => 0      
+             ]); 
+        }
 
-        // Session::set('success_message', "Password Reset");
-        // return redirect()->back();
+        Session::set('success_message', "Password Reset");
+        return redirect()->back();
 
 
         return $id;  
@@ -941,9 +961,9 @@ class AdminController extends Controller {
 
                 //set gmail email and password in .env to work
                 $data = array( 'email' =>  $student->studentemail);
-                Mail::send('email.reminder', $data,  function ($message) use ($data) {
+                Mail::send('email.remind', $data,  function ($message) use ($data) {
                 //Uncomment to work;
-                $message->to(trim($student->studentemail))->subject('Update Password');
+                $message->to(trim($data['email']))->subject('Update Password');
                 });
 
             }
@@ -958,9 +978,9 @@ class AdminController extends Controller {
                 
                 //set gmail email and password in .env to work
                 $data = array( 'email' =>  $lecturer->lectureremail);
-                Mail::send('email.reminder', $data,  function ($message) use ($data) {
+                Mail::send('email.remind', $data,  function ($message) use ($data) {
                 //Uncomment to work;
-                $message->to(trim($lecturer->lectureremail))->subject('Update Password');
+                $message->to(trim($data['email']))->subject('Update Password');
                 });  
                   
             }
@@ -975,12 +995,12 @@ class AdminController extends Controller {
                 
                 //set gmail email and password in .env to work
                 $data = array( 'email' =>  $hod->hodemail);
-                Mail::send('email.reminder', $data,  function ($message) use ($data) {
+                Mail::send('email.remind', $data,  function ($message) use ($data) {
                 //Uncomment to work;
-                $message->to(trim($hod->hodemail))->subject('Update Password');
+                $message->to(trim($data['email']))->subject('Update Password');
                 });  
             }
         }
-
+        return 'SENT';
     } 
 }

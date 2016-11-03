@@ -14,6 +14,7 @@ use Hash;
 use DB;
 use Session;
 use DateTime;
+use Mail;
 class StudentInfoController extends Controller {
 
 
@@ -68,9 +69,8 @@ class StudentInfoController extends Controller {
         {
 	        $today = (new DateTime())->format('Y-m-d');
 	        $expirydate = date('Y-m-d', strtotime($today. ' + 90 days'));
-            $password = substr(md5(uniqid(mt_rand(), true)) , 0, 6);
-            //$password = $this->generatePassword(8);
-            $password = 'demo123';
+            $password = $this->generatePassword(8);
+            //$password = 'demo123';
             $hash = Hash::make($password);
 
             $studentid = DB::table('students')->insertGetId([
@@ -84,6 +84,14 @@ class StudentInfoController extends Controller {
             'expirydate' => $expirydate
             ]);
 
+
+        $student = DB::table('students')->where('studentid',$studentid)->first();
+        //set gmail email and password in .env to work
+        $data = array( 'name' => $student->studentname,'email' =>  $student->studentemail, 'password' => $password);
+        Mail::send('email.register', $data,  function ($message) use ($data) {
+        //Uncomment to work;
+        $message->to(trim($data['email']))->subject('Registration to SMS');
+  		});
                          
         }
         else
@@ -195,30 +203,31 @@ class StudentInfoController extends Controller {
 	{
 		$password = $this->generatePassword(8);
 
-		// $student =   DB::table('students')->where('studentid',$studentID)->first();
+		$student =   DB::table('students')->where('studentid',$studentID)->first();
 
-  //       //set gmail email and password in .env to work
-  //       $data = array( 'email' =>  $student->studentemail, 'password' => $password);
-  //       Mail::send('email.reset', $data,  function ($message) use ($data) {
-  //       //Uncomment to work;
-  //       $message->to(trim($student->studentemail))->subject('Reset Password for SMS');
-  //		});
-		// $hash = Hash::make($password);
-	 //    $today = (new DateTime())->format('Y-m-d');
-	 //    $expirydate = date('Y-m-d', strtotime($today. ' + 90 days'));
+        //set gmail email and password in .env to work
+        $data = array( 'email' =>  $student->studentemail, 'password' => $password);
+        Mail::send('email.reset', $data,  function ($message) use ($data) {
+        //Uncomment to work;
+        $message->to(trim($data['email']))->subject('Reset Password for SMS');
+  		});
+  		
+		$hash = Hash::make($password);
+	    $today = (new DateTime())->format('Y-m-d');
+	    $expirydate = date('Y-m-d', strtotime($today. ' + 90 days'));
 
-		// DB::table('students')
-  //               ->where('studentid', $studentID)
-  //               ->update([
-		// 		'password' => $hash,
-		// 		'expirydate' => $expirydate,
-		// 		'lockacc' => 0		
-		// 		]);  
+		DB::table('students')
+                ->where('studentid', $studentID)
+                ->update([
+				'password' => $hash,
+				'expirydate' => $expirydate,
+				'lockacc' => 0		
+				]);  
 
 		
 
-		// Session::set('success_message', "Password Reset");
-  //       return redirect()->back();
+		Session::set('success_message', "Password Reset");
+        return redirect()->back();
 
 
         return $password;  

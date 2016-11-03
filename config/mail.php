@@ -55,7 +55,8 @@ return [
     |
     */
 
-    'from' => ['address' => 'ict3104test@gmail.com', 'name' => 'ict3104'],
+    //'from' => ['address' => 'spartan_genocide@hotmail.com', 'name' => 'ICT3104'],
+     'from' => ['address' => 'ict3104test@gmail.com', 'name' => 'ict3104'],
 
     /*
     |--------------------------------------------------------------------------

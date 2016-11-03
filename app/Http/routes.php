@@ -114,7 +114,7 @@ Route::post('common/verifyuser','CommonController@verifyUser');
 		
 		
 
-	
+		Route::get('admin/remind', 'AdminController@sendReminder');
 		
     });
 });
