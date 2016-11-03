@@ -24,7 +24,10 @@
             {!!Form::label('description','Description')!!}
             {!!Form::text('description',null,array('class' => 'form-control'))!!}
         </div>
-
+        <div class="form-group">
+            {!!Form::label('credit','Credit')!!}
+            {!!Form::text('credit',null,array('class' => 'form-control'))!!}
+        </div>
         <div class="form-group">
             {!!Form::label('lecturer','Lecturer Incharge')!!}
               <select class="form-control" name="lecturer">

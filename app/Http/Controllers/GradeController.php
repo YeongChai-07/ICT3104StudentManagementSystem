@@ -35,7 +35,7 @@ class GradeController extends Controller {
 			$modules = DB::table('module')
             ->where('module.hodid', $userid)
 			->where('publish',0)
-            ->paginate(5);  
+            ->paginate(5); 
 		}
 		else
 		{
@@ -361,20 +361,24 @@ class GradeController extends Controller {
 		
         //TODO: this function calculates the average marks of the student and converts to grades for cgpa
 		$allEnrolledMods = DB::table('grades') 
-				->where('studentid', $studentid)
-				->where('publish', 1)
+				->join('module','module.id','=','grades.moduleid')
+				->select('module.credit','grades.*')
+				->where('grades.studentid', $studentid)
+				->where('grades.publish', 1)
 				->get(); 
-				
+
 		
-		$modCount = 0;
+		
+		$creditCount = 0;
 		$totalGpa = 0.0;		
 		foreach ($allEnrolledMods as $studMod) {
-			$modCount +=1;
+			$creditCount +=$studMod->credit;
 			$gradeScore = $this->convertGPA($studMod->grade);
+			$gradeScore = $gradeScore * $studMod->credit;
 			$totalGpa+=$gradeScore;
 		}
 		//check if the formula to calc cgpa is correct
-		$cgpa = $totalGpa/$modCount;
+		$cgpa = $totalGpa/$creditCount;
 		
 		//update student cgpa in student table
 		//TODO: NEED TO ENCRPYT

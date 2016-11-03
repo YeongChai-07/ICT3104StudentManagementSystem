@@ -30,21 +30,31 @@ textarea { width:250px !important; height:100px !important; }
         <table width="100%" cellpadding="5" cellspacing="5" id="gradesList" border="1"  class="table table-striped table-bordered dt-responsive" >
             <thead>
 
-                <tr><th>Student Name</th><th>Metric Num</th><th>Email</th><th>H/P No.</th><th width="40%">Action</th>
+                <tr><th>Student Name</th><th>Metric Num</th><th>Email</th><th>H/P No.</th>
+                @if(auth()->guard('lecturer')->check())
+                <th>CGPA</th> 
+                @endif
+                <th width="40%">Action</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach($allStudentInfo as $student)
                 <tr>   
                 <td>{{  $student->studentname }}</td>
-				<td>{{  $student->metric }}</td>
+				        <td>{{  $student->metric }}</td>
                 <td>{{  $student->studentemail }}</td>
                 <td>{{  $student->contact }}</td>
-				<td>
+                @if(auth()->guard('lecturer')->check())
+                <td>{{$student->cgpa}}</td> 
+                @endif
+				        
+                <td>
                  <a class="btn btn-info" href="{{  $student->studentid }}/editStudentInfoView">Edit Info</a>
                  <a class="btn btn-danger" href="{{action('StudentInfoController@archiveStudent' , ['studentid' => $student->studentid])}}">Archive Student</a>
-                
+                 <a class="btn btn-primary" href="{{  $student->studentid }}/resetpwd">Reset Password</a>
+
                 </td>
+
                 </tr>  
                 @endforeach
             </tbody>

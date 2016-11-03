@@ -72,9 +72,11 @@ class AdminController extends Controller {
             $hash = Hash::make($password);
 
             $lecturerid = DB::table('lecturer')->insertGetId([
-            'lecturername' => $input['name'], 
+            'lecturername' => $input['name'],
+            'metric' => $input['metric'], 
             'lectureremail' =>  $input['email'],
 			'contact' =>  $input['contact'],
+            'address' => $input['address'],
             'password' => $hash,
             'expirydate' => $expirydate
             ]);    
@@ -141,7 +143,7 @@ class AdminController extends Controller {
        
        DB::table('lecturer')
                 ->where('lecturerid', $id)
-                ->update(['lecturername' => $input['name'],'lectureremail' => $input['email'], 'contact' =>  $input['contact']]);          
+                ->update(['lecturername' => $input['name'],'metric' => $input['metric'],'lectureremail' => $input['email'], 'contact' =>  $input['contact'],'address' => $input['address']]);          
           
                 Session::set('success_message', "Profile updated sucessfully."); 
                return redirect()->back();
@@ -188,9 +190,11 @@ class AdminController extends Controller {
             $hash = Hash::make($password);
 
             $studentid = DB::table('hod')->insertGetId([
-            'hodname' => $input['name'], 
+            'hodname' => $input['name'],
+            'metric' => $input['metric'],
             'hodemail' =>  $input['email'],
 			'contact' =>  $input['contact'],
+            'address' => $input['address'],
             'password' => $hash,
             'expirydate' => $expirydate
             ]);
@@ -259,7 +263,7 @@ class AdminController extends Controller {
        
        DB::table('hod')
                 ->where('hodid', $id)
-                ->update(['hodname' => $input['name'],'hodemail' => $input['email'], 'contact' =>  $input['contact']]);          
+                ->update(['hodname' => $input['name'],'metric' => $input['metric'],'hodemail' => $input['email'], 'contact' =>  $input['contact'],'address' => $input['address']]);          
           
                 Session::set('success_message', "Profile updated sucessfully."); 
                return redirect()->back();
@@ -459,6 +463,7 @@ class AdminController extends Controller {
         {        
             $moduleid = DB::table('module')->insertGetId([
             'modulename' => $input['name'], 
+            'credit' => $input['credit'],
             'description' =>  $input['description'],
             'lecturerid' => $input['lecturer'],
             'hodid' => $input['hod'],
@@ -527,7 +532,7 @@ class AdminController extends Controller {
        
        DB::table('module')
                 ->where('id', $id)
-                ->update(['modulename' => $input['name'],'description' => $input['description'],'lecturerid' => $input['lecturer'],'hodid' => $input['hod'],'editdate' => $editdate, 'freezedate' => $freezedate]);          
+                ->update(['modulename' => $input['name'],'credit' => $input['credit'],'description' => $input['description'],'lecturerid' => $input['lecturer'],'hodid' => $input['hod'],'editdate' => $editdate, 'freezedate' => $freezedate]);          
           
                 Session::set('success_message', "Module updated sucessfully."); 
                return redirect()->back();
@@ -863,5 +868,119 @@ class AdminController extends Controller {
         }
 
         return $password;       // Returns the generated Pass
+    }
+
+    public function resetPassword($type,$id)
+    {
+        $password = $this->generatePassword(8);
+
+        // $hash = Hash::make($password);
+        // $today = (new DateTime())->format('Y-m-d');
+        // $expirydate = date('Y-m-d', strtotime($today. ' + 90 days'));
+
+        // if($type == 1)
+        // {
+        //     $user =   DB::table('lecturer')->where('lecturerid',$id)->first(); 
+        //     //set gmail email and password in .env to work
+        //     $data = array( 'email' =>  $user->lectureremail, 'password' => $password);
+        //     Mail::send('email.reset', $data,  function ($message) use ($data) {
+        //     //Uncomment to work;
+        //     $message->to(trim($user->lectureremail))->subject('Reset Password for SMS');
+        //        });
+        //     DB::table('lecturer')
+        //         ->where('lecturerid', $id)
+        //         ->update([
+        //      'password' => $hash,
+        //      'expirydate' => $expirydate,
+        //      'lockacc' => 0      
+        //      ]); 
+
+        // }
+        
+        // else
+        // {
+        //     $user =   DB::table('hod')->where('hodid',$id)->first();
+        //     //set gmail email and password in .env to work
+        //     $data = array( 'email' =>  $user->hodemail, 'password' => $password);
+        //     Mail::send('email.reset', $data,  function ($message) use ($data) {
+        //     //Uncomment to work;
+        //     $message->to(trim($user->hodemail))->subject('Reset Password for SMS');
+        //        });
+        //     DB::table('hod')
+        //         ->where('hodid', $id)
+        //         ->update([
+        //      'password' => $hash,
+        //      'expirydate' => $expirydate,
+        //      'lockacc' => 0      
+        //      ]); 
+        // }
+
+        // Session::set('success_message', "Password Reset");
+        // return redirect()->back();
+
+
+        return $id;  
+    }
+
+    public function sendReminder()
+    {
+        $today = (new DateTime())->format('Y-m-d');
+        $lowDate = '';
+        $highDate = '';
+
+        $students = DB::table('students')->get();
+        $hods = DB::table('hod')->get();
+        $lecturers = DB::table('lecturer')->get();
+
+        foreach($students as $student)
+        {
+            $lowDate  = date('Y-m-d', strtotime($student->expirydate. ' - 10 days'));
+            $highDate = date('Y-m-d', strtotime($student->expirydate. ' + 10 days'));
+            if($today >= $lowDate && $today <= $highDate)
+            {
+
+                //set gmail email and password in .env to work
+                $data = array( 'email' =>  $student->studentemail);
+                Mail::send('email.reminder', $data,  function ($message) use ($data) {
+                //Uncomment to work;
+                $message->to(trim($student->studentemail))->subject('Update Password');
+                });
+
+            }
+        }
+
+        foreach($lecturers as $lecturer)
+        {
+            $lowDate  = date('Y-m-d', strtotime($lecturer->expirydate. ' - 10 days'));
+            $highDate = date('Y-m-d', strtotime($lecturer->expirydate. ' + 10 days'));
+            if($today >= $lowDate && $today <= $highDate)
+            {
+                
+                //set gmail email and password in .env to work
+                $data = array( 'email' =>  $lecturer->lectureremail);
+                Mail::send('email.reminder', $data,  function ($message) use ($data) {
+                //Uncomment to work;
+                $message->to(trim($lecturer->lectureremail))->subject('Update Password');
+                });  
+                  
+            }
+        }
+
+        foreach($hods as $hod)
+        {
+            $lowDate  = date('Y-m-d', strtotime($hod->expirydate. ' - 10 days'));
+            $highDate = date('Y-m-d', strtotime($hod->expirydate. ' + 10 days'));
+            if($today >= $lowDate && $today <= $highDate)
+            {
+                
+                //set gmail email and password in .env to work
+                $data = array( 'email' =>  $hod->hodemail);
+                Mail::send('email.reminder', $data,  function ($message) use ($data) {
+                //Uncomment to work;
+                $message->to(trim($hod->hodemail))->subject('Update Password');
+                });  
+            }
+        }
+
     } 
 }

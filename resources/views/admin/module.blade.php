@@ -24,7 +24,7 @@ textarea { width:250px !important; height:100px !important; }
         <table width="100%" cellpadding="5" cellspacing="5" id="modulesList" border="1"  class="table table-striped table-bordered dt-responsive" >
             <thead>
 
-                <tr><th>S/N</th><th>Module Name</th><th>Module Description</th><th>Lecturer Incharge</th><th>Hod Incharge</th><th>Edit Date</th><th>Freeze Date</th><th width="40%">Action</th>
+                <tr><th>S/N</th><th>Module Name</th><th>Module Description</th><th>Credits</th><th>Lecturer Incharge</th><th>Hod Incharge</th><th>Edit Date</th><th>Freeze Date</th><th width="40%">Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -33,6 +33,7 @@ textarea { width:250px !important; height:100px !important; }
                 <td>{{   $module->id }}</td>
                 <td>{{  $module->modulename }}</td>
                 <td> {{ $module->description }}</td>
+                <td>{{  $module->credit }}</td>
                 <td> {{ $module->lecturername }}</td>
                 <td> {{ $module->hodname }}</td>
                 <td> {{ $module->editdate }}</td>

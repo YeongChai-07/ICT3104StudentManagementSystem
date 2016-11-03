@@ -36,8 +36,6 @@ class StudentInfoController extends Controller {
         // 	return 'Still safe';
         // }
     
-            
-
 
         return view('studentinfo.viewAllStudents')->with([
             'allStudentInfo' => $allStudentInfo
@@ -191,5 +189,38 @@ class StudentInfoController extends Controller {
 	    }
 
 	    return $password;       // Returns the generated Pass
+	}
+
+	public function resetPassword($studentID)
+	{
+		$password = $this->generatePassword(8);
+
+		// $student =   DB::table('students')->where('studentid',$studentID)->first();
+
+  //       //set gmail email and password in .env to work
+  //       $data = array( 'email' =>  $student->studentemail, 'password' => $password);
+  //       Mail::send('email.reset', $data,  function ($message) use ($data) {
+  //       //Uncomment to work;
+  //       $message->to(trim($student->studentemail))->subject('Reset Password for SMS');
+  //		});
+		// $hash = Hash::make($password);
+	 //    $today = (new DateTime())->format('Y-m-d');
+	 //    $expirydate = date('Y-m-d', strtotime($today. ' + 90 days'));
+
+		// DB::table('students')
+  //               ->where('studentid', $studentID)
+  //               ->update([
+		// 		'password' => $hash,
+		// 		'expirydate' => $expirydate,
+		// 		'lockacc' => 0		
+		// 		]);  
+
+		
+
+		// Session::set('success_message', "Password Reset");
+  //       return redirect()->back();
+
+
+        return $password;  
 	}
 }

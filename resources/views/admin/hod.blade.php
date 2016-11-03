@@ -38,7 +38,7 @@ textarea { width:250px !important; height:100px !important; }
 
                  <a class="btn btn-info" href="{{  $hod->hodid }}/edithod">Edit</a>
                 <a class="btn btn-danger" onclick="checkDelete()" href="{{  $hod->hodid }}/deletehod">Delete</a>
-
+                <a class="btn btn-primary" href="2/{{  $hod->hodid }}/resetpwd">Reset Password</a>
                 </td>
                 </tr>  
                 @endforeach

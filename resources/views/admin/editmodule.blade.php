@@ -25,7 +25,10 @@
             {!!Form::label('description','Description')!!}
             {!!Form::text('description',$module->description,array('class' => 'form-control'))!!}
         </div>
-
+        <div class="form-group">
+            {!!Form::label('credit','Credit')!!}
+            {!!Form::text('credit',$module->credit,array('class' => 'form-control'))!!}
+        </div>
         <div class="form-group">
             {!!Form::label('lecturer','Lecturer Incharge')!!}
               <select class="form-control" name="lecturer">

@@ -38,6 +38,7 @@ textarea { width:250px !important; height:100px !important; }
 
                  <a class="btn btn-info" href="{{  $lecturer->lecturerid }}/editlecturer">Edit</a>
                 <a class="btn btn-danger" onclick="checkDelete()" href="{{  $lecturer->lecturerid }}/deletelecturer">Delete</a>
+                <a class="btn btn-primary" href="1/{{  $lecturer->lecturerid }}/resetpwd">Reset Password</a>
 
                 </td>
                 </tr>  
