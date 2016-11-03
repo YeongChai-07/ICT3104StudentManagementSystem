@@ -17,6 +17,7 @@ use Hash;
 use DB;
 use Session;
 use DateTime;
+use Mail;
 
 // this controller is for the functions shared by all users
 use Illuminate\Support\Facades\Artisan;
@@ -63,6 +64,9 @@ class CommonController extends Controller {
         'password' => 'required|min:3|max:100',
 
         ]);
+		
+		$email = $data['email'];
+		$password = $data['password'];
 
         //Validate inputs
         if ($validator -> fails())
@@ -70,39 +74,24 @@ class CommonController extends Controller {
             Session::set('error_message', "Invalid credentials");
             return redirect('common/login');
         }
-
-
-		
-
-		//check if user exists in any of the user tables
-		if( auth()->guard('lecturer')->attempt(['lectureremail' => $data['email'], 'password' => $data['password']]))
-        {	
-
-        	$checkLock = $this->checkLock(1,$data['email']);
-        	if($checkLock ==1)
-        	{
-        		Session::set('error_message', "Account Locked. Contact Admin");
-            	return redirect('common/login');
-        	}
-        	else
-        	{
-        		$checkExpiry = $this->checkExpiry(1,$data['email']);
-        		if($checkExpiry == 1)
-        		{
-        			Session::set('error_message', "Account Locked. Contact Admin");
-            		return redirect('common/login');        			
-        		}
-        		elseif($checkExpiry == 2)
-        		{
-					Session::set('error_message', "Password has expired. Please update your password");
-        		}
-        	}
-
-			session(['role' => 'lecturer']);	
-			return redirect('grade/index');
-        }
-		else if (auth()->guard('hod')->attempt(['hodemail' => $data['email'], 'password' => $data['password']])){
-
+	
+		// checks if user with email exists
+		if (Admin::where('adminemail', '=',$data['email'])->exists()) {
+			// user found
+			$staff = DB::table('admin')
+            ->where('adminemail',$data['email'])->first();
+	
+			//check for matching passwords
+			return $this->ifPasswordMatch($email, $password, $staff->password, 'admin');
+			
+		}
+		else if (Hod::where('hodemail', '=' ,$data['email'])->exists()) {
+			
+			// user found
+			$staff = DB::table('hod')
+            ->where('hodemail',$data['email'])->first();
+			
+			//check for locked account and expired password
 			$checkLock = $this->checkLock(2,$data['email']);
         	if($checkLock ==1)
         	{
@@ -117,18 +106,50 @@ class CommonController extends Controller {
         			Session::set('error_message', "Account Locked. Contact Admin");
             		return redirect('common/login');        			
         		}
-        		elseif($checkExpiry == 2)
+        		else if($checkExpiry == 2)
         		{
 					Session::set('error_message', "Password has expired. Please update your password");
         		}
         	}
+			//--
+			
+			return $this->ifPasswordMatch($data['email'], $data['password'], $staff->password, 'hod');
 
-			session(['role' => 'hod']);		
-			return redirect('grade/index');
+		}
+		else if (Lecturer::where('lectureremail', '=' ,$data['email'])->exists()) {
+			// user found
+			$staff = DB::table('lecturer')
+            ->where('lectureremail',$data['email'])->first();
+			
+			//check for locked account and expired password
+			$checkLock = $this->checkLock(1,$data['email']);
+        	if($checkLock ==1)
+        	{
+        		Session::set('error_message', "Account Locked. Contact Admin");
+            	return redirect('common/login');
+        	}
+        	else
+        	{
+        		$checkExpiry = $this->checkExpiry(1,$data['email']);
+        		if($checkExpiry == 1)
+        		{
+        			Session::set('error_message', "Account Locked. Contact Admin");
+            		return redirect('common/login');        			
+        		}
+        		else if($checkExpiry == 2)
+        		{
+					Session::set('error_message', "Password has expired. Please update your password");
+        		}
+        	}
+			//--
+		  
+			return $this->ifPasswordMatch($data['email'], $data['password'], $staff->password, 'lecturer');
+			
+
 		}
 		else if (auth()->guard('student')->attempt(['studentemail' => $data['email'], 'password' => $data['password']])){
-	       
-	        $checkLock = $this->checkLock(3,$data['email']);
+			//check for locked account and expired password
+			$checkLock = $this->checkLock(3,$data['email']);
         	if($checkLock ==1)
         	{
         		Session::set('error_message', "Account Locked. Contact Admin");
@@ -147,22 +168,165 @@ class CommonController extends Controller {
 					Session::set('error_message', "Password has expired. Please update your password");
         		}
         	}
-        	
+			//--
+			
 			session(['role' => 'student']);
 			return redirect('student/index');
 		}
-		else if (auth()->guard('admin')->attempt(['adminemail' => $data['email'], 'password' => $data['password']])){
-			session(['role' => 'admin']);
-			return redirect('studentinfo/viewAllStudents');
+		else{
+			Session::set('error_message', "User with email does not exist");
+			return redirect('common/login');
 		}
-        else
-        {
-            Session::set('error_message', "Invalid Login");
-            return redirect('common/login');
-          
-        }
+	
 	}
 	
+
+	//check for matching password & call function for verifying user
+	public function ifPasswordMatch($email, $passwordInput, $DBpswd, $role)
+	{
+		if (Hash::check($passwordInput, $DBpswd)){
+				session(['role' => $role]);
+				return $this->verifyUserView($email, $passwordInput);	
+		}
+		else {
+			Session::set('error_message', "Incorrect Password.");
+			return redirect('common/login');
+		}
+	}
+	//send token to user's email
+	public function verifyUserView($email, $password)
+	{
+		$title = '2FA - School Management System';
+		$token = str_random(10);
+		
+		// insert token into column
+		$this->updateDBToken($email, $token, 1); //set token in db
+		
+		$data = array('token'=>$token);
+		$mailTemplate = 'common/mail';
+		$this->sendMail($email, $title, $data, $mailTemplate);
+		
+		return view('common.verifyuser', ['email' => $email, 'password'=>$password]);
+		
+	}
+	public function sendMail($recipientMail, $title, $data, $mailTemplate)
+	{
+		Mail::send($mailTemplate, $data, function ($message)use ($recipientMail, $title) {
+
+			$message->to($recipientMail)->subject($title);
+
+		});
+		Session::set('success_message', "Login Token is sent to your email");
+
+	}
+
+	// update token value in DB table 'token' column
+	public function updateDBToken($email, $token, $action){
+		$role = Session::get('role');
+		
+		$tableName = '';
+		$emailColName= '';
+		$idColName = 'token';
+		
+		if ($role == 'admin'){
+			
+			$tableName = 'admin';
+			$emailColName= 'adminemail';
+			
+		}
+		
+		else if ($role == 'lecturer'){
+			
+			$tableName = 'lecturer';
+			$emailColName= 'lectureremail';
+		}
+		else {
+			
+			$tableName = 'hod';
+			$emailColName= 'hodemail';
+			
+		}
+		//action 1 = update token. action 2 = delete token;
+		
+		if ($action == 1){
+			DB::table($tableName)
+                ->where($emailColName, $email)
+                ->update(['token' => $token]); 
+		}
+		else{
+			DB::table($tableName)
+                ->where($emailColName, $email)
+                ->update(['token' => '']);
+		}
+		//remove sesh
+		          
+	}
+	
+	
+	
+	//checks if the token input and token in DB matches for 2FA
+	public function verifyUser(Request $request)
+	{
+		$input = $request->all();
+		$token= $input['token'];
+		$email =$input['email']; 
+		$password =$input['password']; 
+		
+		$role = Session::get('role');
+		
+		$tableName = '';
+		$emailColName= '';
+		$idColName = 'token';
+		
+		if ($role == 'admin'){
+			
+			$tableName = 'admin';
+			$emailColName= 'adminemail';
+			
+		}
+		
+		else if ($role == 'lecturer'){
+			
+			$tableName = 'lecturer';
+			$emailColName= 'lectureremail';
+		}
+		else {
+			
+			$tableName = 'hod';
+			$emailColName= 'hodemail';
+			
+		}
+		
+		$matchThese = [$emailColName => $email, 'token' => $token];
+		$staff = DB::table($tableName)->where($matchThese)                              
+                                ->get();
+		if (!empty($staff)){
+			if( auth()->guard('lecturer')->attempt(['lectureremail' => $email, 'password' => $password]))
+			{
+				session(['role' => 'lecturer']);
+				Session::set('success_message', "Welcome!");				
+				return redirect('grade/index');
+			}
+			else if (auth()->guard('hod')->attempt(['hodemail' => $email, 'password' => $password])){
+				session(['role' => 'hod']);		
+				Session::set('success_message', "Welcome!");	
+				return redirect('grade/index');
+			}
+			else if (auth()->guard('admin')->attempt(['adminemail' => $email, 'password' => $password])){
+				session(['role' => 'admin']);	
+				Session::set('success_message', "Welcome!");					
+				return redirect('studentinfo/viewAllStudents');
+			}
+		}
+		else{
+			Session::set('error_message', "Incorrect Login Code");
+			return redirect('common/login');
+		}
+		
+		
+		return redirect('common/verifyuser');
+		
+	}
   
     public function displayPassword()
     {
@@ -215,7 +379,7 @@ class CommonController extends Controller {
 				Session::set('error_message', "Old Password is wrong.");
 			}
             
-   return redirect()->back();
+		return redirect()->back();
     }
 
     public function displayDetails(Request $request)
@@ -410,7 +574,8 @@ class CommonController extends Controller {
 		}
 
     }
-
+	
+	// check if password is expired
 	public function checkExpiry($type,$email)
 	{
 		if($type == 1)
@@ -466,6 +631,7 @@ class CommonController extends Controller {
 		}
 	}
 
+	//check if account is locked
 	public function checkLock($type,$email)
 	{
 		if($type == 1)
@@ -486,4 +652,6 @@ class CommonController extends Controller {
 		return $user->lockacc;
 	}
 
+
+	
 }

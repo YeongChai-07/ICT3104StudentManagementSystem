@@ -44,6 +44,9 @@ Route::group(['middleware' => ['admin']], function () {
 Route::get('common/login', 'CommonController@displayLogin');
 Route::post('common/login', 'CommonController@login');
 Route::get('common/logout', 'CommonController@logout');
+//email
+Route::get('common/verifyuser','CommonController@verifyUserView');
+Route::post('common/verifyuser','CommonController@verifyUser');
 
 
 	Route::group(['middleware' =>['adminauth']], function(){
@@ -117,6 +120,9 @@ Route::group(['middleware' => ['lecturer']], function () {
 Route::get('common/login', 'CommonController@displayLogin');
 Route::post('common/login', 'CommonController@login');
 Route::get('common/logout', 'CommonController@logout');
+//email
+Route::get('common/verifyuser','CommonController@verifyUserView');
+Route::post('common/verifyuser','CommonController@verifyUser');
 
 
 	Route::group(['middleware' =>['lecturerauth']], function(){
@@ -164,6 +170,9 @@ Route::group(['middleware' => ['hod']], function () {
 Route::get('common/login', 'CommonController@displayLogin');
 Route::post('common/login', 'CommonController@login');
 Route::get('common/logout', 'CommonController@logout');
+//email
+Route::get('common/verifyuser','CommonController@verifyUserView');
+Route::post('common/verifyuser','CommonController@verifyUser');
 
 
 	Route::group(['middleware' =>['hodauth']], function(){
