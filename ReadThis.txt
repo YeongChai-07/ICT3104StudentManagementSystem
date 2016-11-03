@@ -1,0 +1,5 @@
+if you experience error with the SSL cert
+
+You can refer to these websites to fix it:
+http://stackoverflow.com/questions/30556773/how-to-fix-stream-socket-enable-crypto-ssl-operation-failed-with-code-1
+http://stackoverflow.com/questions/32019623/openssl-error-messages-error14090086ssl-routinesssl3-get-server-certificate
