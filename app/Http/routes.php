@@ -102,7 +102,8 @@ Route::post('common/verifyuser','CommonController@verifyUser');
 		Route::get('studentinfo/viewAllStudents', ['as' => 'view_students', 'uses' => 'StudentInfoController@viewAllStudents']);
 		Route::get('studentinfo/{studentID}/editStudentInfoView', 'StudentInfoController@editStudentInfoView');
 		Route::post('studentinfo/{studentID}/editStudentInfoView', 'StudentInfoController@updateStudentInfo');		
-		Route::get('studentinfo/{studentID}/viewAllStudents', 'StudentInfoController@archiveStudent');	
+		Route::get('studentinfo/{archive}/viewAllStudents', 'StudentInfoController@archiveStudent');
+			
 		Route::get('studentinfo/addStudentView', 'StudentInfoController@showAddStudent');
 		Route::post('studentinfo/addStudentView', 'StudentInfoController@addStudent');
 
@@ -110,7 +111,7 @@ Route::post('common/verifyuser','CommonController@verifyUser');
 		
 		//Grad student info
 		Route::get('graduatedStudents/viewAllGradStudents', 'GraduatedStudentsController@viewAllGradStudents');
-		Route::get('graduatedStudents/viewGradStudentsMetaInfo', 'GraduatedStudentsController@viewMetaInfo');
+		Route::get('graduatedStudents/{studentID}/viewGradStudentsMetaInfo', 'GraduatedStudentsController@viewMetaInfo');
 		
 		
 
@@ -161,7 +162,8 @@ Route::post('common/verifyuser','CommonController@verifyUser');
 		Route::get('studentinfo/viewAllStudents', ['as' => 'view_students', 'uses' => 'StudentInfoController@viewAllStudents']);
 		Route::get('studentinfo/{studentID}/editStudentInfoView', 'StudentInfoController@editStudentInfoView');
 		Route::post('studentinfo/{studentID}/editStudentInfoView', 'StudentInfoController@updateStudentInfo');
-		Route::get('studentinfo/{studentID}/viewAllStudents', 'StudentInfoController@archiveStudent');
+		Route::get('studentinfo/{archive}/viewAllStudents', 'StudentInfoController@archiveStudent');
+		Route::get('graduatedStudents/{studentID}/viewGradStudentsMetaInfo', 'GraduatedStudentsController@viewMetaInfo');//meta
 		Route::get('studentinfo/addStudentView', 'StudentInfoController@showAddStudent');
 		Route::post('studentinfo/addStudentView', 'StudentInfoController@addStudent');
 

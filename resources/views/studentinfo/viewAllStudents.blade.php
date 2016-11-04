@@ -25,6 +25,12 @@ textarea { width:250px !important; height:100px !important; }
     <div class="col-md-12 col-sm-12">
 		<br>
 		<a class="btn btn-info" href="addStudentView">Add student</a>
+		<!-- do if else to check if there are students to archive -->
+		@if($ifGraduating == 'yes')
+			<a class="btn btn-warning" href="{{action('StudentInfoController@archiveStudent', ['archive' => 'yes'])}}">Archive Students</a>
+		@else 
+			<a class="btn btn-warning disabled" href="#">All Archived</a>
+		@endif
         <br><br>
 		
         <table width="100%" cellpadding="5" cellspacing="5" id="gradesList" border="1"  class="table table-striped table-bordered dt-responsive" >
@@ -49,9 +55,9 @@ textarea { width:250px !important; height:100px !important; }
                 @endif
 				        
                 <td>
-                 <a class="btn btn-info" href="{{  $student->studentid }}/editStudentInfoView">Edit Info</a>
-                 <a class="btn btn-danger" href="{{action('StudentInfoController@archiveStudent' , ['studentid' => $student->studentid])}}">Archive Student</a>
-                 <a class="btn btn-primary" href="{{  $student->studentid }}/resetpwd">Reset Password</a>
+                 <a class="btn btn-primary" href="{{  $student->studentid }}/editStudentInfoView">Edit Info</a>
+               
+                 <a class="btn btn-success" href="{{  $student->studentid }}/resetpwd">Reset Password</a>
 
                 </td>
 

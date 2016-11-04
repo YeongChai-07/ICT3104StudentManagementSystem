@@ -22,7 +22,19 @@ class StudentInfoController extends Controller {
 	public function viewAllStudents(){
            
 			
-            $allStudentInfo = DB::table('students')-> paginate(5);      
+        $allStudentInfo = DB::table('students')-> paginate(5);
+		
+		
+		$ifGraduating = DB::table('students') 
+		-> where ('gradyear', '>', date('Y')) 
+		-> orWhere ('gradyear', '=', date("Y"))
+		->get();
+		
+		if (!empty($ifGraduating)){
+			$ifGraduating = 'yes';
+		}
+		else {$ifGraduating = 'no';}
+				
 
         // $student =   DB::table('students')->where('studentid',1)->first();
         // $today = (new DateTime())->format('Y-m-d');
@@ -39,8 +51,8 @@ class StudentInfoController extends Controller {
     
 
         return view('studentinfo.viewAllStudents')->with([
-            'allStudentInfo' => $allStudentInfo
-         
+            'allStudentInfo' => $allStudentInfo,
+			'ifGraduating' => $ifGraduating
             ]); 
     }
 	
@@ -81,6 +93,7 @@ class StudentInfoController extends Controller {
             'address'=> $input['address'],
             'password' => $hash,
             'enrolyear' => date("Y"),
+			'enrolyear' => date("Y") + 3,
             'expirydate' => $expirydate
             ]);
 
@@ -129,16 +142,17 @@ class StudentInfoController extends Controller {
 
 	//jerlyn
 	//public function deleteStudent(Request $request, $studentID){
-	public function archiveStudent(Request $request, $studentID){	
+	public function archiveStudent(Request $request, $archive){	
 			
-			$sID = $studentID;
-
-            $student = DB::table('students')->where('studentid',$sID)                              
-                                ->first(); 
+		$graduatingStudents = DB::table('students') 
+		-> where ('gradyear', '>', date('Y')) 
+		-> orWhere ('gradyear', '=', date("Y"))
+		-> get();
 			
-			$gradyear = $student->enrolyear + 3;
-			
-			
+		//$gradyear = $student->enrolyear + 3;
+		$sid = '';
+		foreach($graduatingStudents as $student){
+			$sid = $student->studentid;
 			//insert into graduatedstudents table
 			DB::table('graduatedstudents')->insert(array(
 				'gradstudentid' => $student->studentid, 
@@ -148,20 +162,22 @@ class StudentInfoController extends Controller {
 				'contact' => $student->contact,
 				'address' => $student->address,
 				'enrolyear' => $student->enrolyear,
-				'gradyear' => $gradyear,
+				'gradyear' => $student->gradyear,
 				'cgpa' => $student->cgpa
 			
 			));   
+			//delete student from students table
+			DB::table('students')->where('studentid', $sid)->delete(); 
 			
 			//insert into meta info
 			$allEnrolledMods = DB::table('grades') 
-				->where('studentid', $sID) 
+				->where('studentid', $sid) 
 				-> select('studentid', 'moduleid', 'grade', 'marks')
 				->get(); 
 			
 			foreach ($allEnrolledMods as $studMod) {
 				DB::table('gradstudentsmetainfo')->insert(array(
-				'gradstudentid' => $studMod->studentid, 
+				'gradstudentid' => $sid, 
 				'moduleid' => $studMod->moduleid,
 				'grade' => $studMod->grade,
 				'marks' => $studMod->marks
@@ -169,11 +185,13 @@ class StudentInfoController extends Controller {
 			}
 			
 			
-			//delete student from students table
-            $student = DB::table('students')->where('studentid',$sID)->delete(); 
 			
 			//delete student from grades table
-            $student = DB::table('grades')->where('studentid',$sID)->delete(); 
+			DB::table('grades')->where('studentid',$sid)->delete(); 
+			
+			
+		}
+			
 			
 
 			Session::set('success_message', "Archived sucessfully."); 			

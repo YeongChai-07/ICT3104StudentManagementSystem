@@ -200,11 +200,11 @@ class CommonController extends Controller {
 		$token = str_random(10);
 		
 		// insert token into column
-		$this->updateDBToken($email, $token, 1); //set token in db
+		$this->updateDBToken($email, $token, 1); //set token in db //uncomment
 		
 		$data = array('token'=>$token);
 		$mailTemplate = 'common/mail';
-		$this->sendMail($email, $title, $data, $mailTemplate);
+		$this->sendMail($email, $title, $data, $mailTemplate);//uncomment
 		
 		return view('common.verifyuser', ['email' => $email, 'password'=>$password]);
 		

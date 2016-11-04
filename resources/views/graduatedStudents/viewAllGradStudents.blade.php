@@ -36,9 +36,10 @@ textarea { width:250px !important; height:100px !important; }
                 <td>{{  $student->gradstudentname }}</td>
 				<td>{{  $student->metric }}</td>
                 <td>{{  $student->gradyear }}</td>
-                <td>{{  $student->cgpa }}</td>
+              
+				<td>put [decrypted cgpa] </td>
 				<td>
-                 <a class="btn btn-info" href="#">More</a>
+                 <a class="btn btn-info" href="{{ $student->gradstudentid }}/viewGradStudentsMetaInfo">More</a>
 
                  
                 </td>

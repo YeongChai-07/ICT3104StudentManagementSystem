@@ -3,9 +3,9 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 04, 2016 at 11:06 AM
+-- Generation Time: Nov 04, 2016 at 08:01 PM
 -- Server version: 10.1.16-MariaDB
--- PHP Version: 7.0.9
+-- PHP Version: 5.6.24
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -44,7 +44,8 @@ CREATE TABLE `admin` (
 
 INSERT INTO `admin` (`adminid`, `adminname`, `adminemail`, `password`, `token`, `contact`, `address`, `remember_token`, `updated_at`) VALUES
 (1, 'admin1', 'admin@admin.com', '$2y$10$ADd3MMvLklcRfOb1oC5JD.xF8.h3P6rfogkETuf8/z.1cnmqYu4wi', NULL, 66655544, 'block 123', 'xqgSy8NjBqV9ClXHsqr5bWXUuexvCJ91o9p60gGQU6pnbfySUBgcopa7u25e', '2016-11-02 06:00:28'),
-(2, 'admin2', 'spartan_genocide@hotmail.com', '$2y$10$ADd3MMvLklcRfOb1oC5JD.xF8.h3P6rfogkETuf8/z.1cnmqYu4wi', 'EFrn8Gpk49', 11112222, 'block555', 'XATJQYMiOGWGrufh1hiuBECJ7oGO8KNIFB8Pwx2sONGKfhDACnF7tj2PWiCc', '2016-11-04 01:27:17');
+(2, 'admin2', 'spartan_genocide@hotmail.com', '$2y$10$ADd3MMvLklcRfOb1oC5JD.xF8.h3P6rfogkETuf8/z.1cnmqYu4wi', 'EFrn8Gpk49', 11112222, 'block555', 'XATJQYMiOGWGrufh1hiuBECJ7oGO8KNIFB8Pwx2sONGKfhDACnF7tj2PWiCc', '2016-11-04 01:27:17'),
+(3, 'admin3', 'jerlyn.peh_2014@sit.singaporetech.edu.sg', '$2y$10$ADd3MMvLklcRfOb1oC5JD.xF8.h3P6rfogkETuf8/z.1cnmqYu4wi', 'wqI22AmP15', 11112222, 'block555', '6nhQbaeDJaVw1mV1ncXptBn9Rgkn6aA1GlmhTWAKkTsfWE2ccjjAoMGOQkuQ', '2016-11-04 10:56:54');
 
 -- --------------------------------------------------------
 
@@ -66,7 +67,10 @@ INSERT INTO `enroll` (`id`, `moduleid`, `studentid`) VALUES
 (1, 1, 1),
 (2, 2, 2),
 (3, 1, 2),
-(4, 4, 1);
+(4, 4, 1),
+(5, 1, 4),
+(6, 2, 4),
+(7, 4, 6);
 
 -- --------------------------------------------------------
 
@@ -92,9 +96,10 @@ CREATE TABLE `grades` (
 INSERT INTO `grades` (`id`, `grade`, `marks`, `moduleid`, `studentid`, `lecturerid`, `hodid`, `publish`) VALUES
 (1, NULL, NULL, 1, 1, 2, 1, 0),
 (2, NULL, NULL, 2, 1, 2, 1, 0),
-(3, NULL, NULL, 1, 4, 2, 1, 0),
-(4, NULL, NULL, 2, 4, 2, 1, 0),
-(6, 'D', 'eyJpdiI6ImNIS3BKNU42ZFwvRWN4N1liTHZFMzNnPT0iLCJ2YWx1ZSI6Ilg0eE00ZVAzRDUzXC92KzNPbHFcL1wvd3c9PSIsIm1hYyI6ImNlNGQ0YzNkOWNhOGUzMDJkN2E0ZmI3ODE4NjMzN2Y1YTFlMGQxYjcxYmJlZDVjM2NkYTc2MGUyNWE0ZWY5NjQifQ==', 4, 1, 1, 1, 1);
+(5, 'D', 'eyJpdiI6ImNIS3BKNU42ZFwvRWN4N1liTHZFMzNnPT0iLCJ2YWx1ZSI6Ilg0eE00ZVAzRDUzXC92KzNPbHFcL1wvd3c9PSIsIm1hYyI6ImNlNGQ0YzNkOWNhOGUzMDJkN2E0ZmI3ODE4NjMzN2Y1YTFlMGQxYjcxYmJlZDVjM2NkYTc2MGUyNWE0ZWY5NjQifQ==', 6, 6, 1, 1, 1),
+(6, 'D', 'eyJpdiI6ImNIS3BKNU42ZFwvRWN4N1liTHZFMzNnPT0iLCJ2YWx1ZSI6Ilg0eE00ZVAzRDUzXC92KzNPbHFcL1wvd3c9PSIsIm1hYyI6ImNlNGQ0YzNkOWNhOGUzMDJkN2E0ZmI3ODE4NjMzN2Y1YTFlMGQxYjcxYmJlZDVjM2NkYTc2MGUyNWE0ZWY5NjQifQ==', 4, 1, 1, 1, 1),
+(7, 'D', 'eyJpdiI6ImNIS3BKNU42ZFwvRWN4N1liTHZFMzNnPT0iLCJ2YWx1ZSI6Ilg0eE00ZVAzRDUzXC92KzNPbHFcL1wvd3c9PSIsIm1hYyI6ImNlNGQ0YzNkOWNhOGUzMDJkN2E0ZmI3ODE4NjMzN2Y1YTFlMGQxYjcxYmJlZDVjM2NkYTc2MGUyNWE0ZWY5NjQifQ==', 4, 7, 1, 1, 1),
+(8, 'D', 'eyJpdiI6ImNIS3BKNU42ZFwvRWN4N1liTHZFMzNnPT0iLCJ2YWx1ZSI6Ilg0eE00ZVAzRDUzXC92KzNPbHFcL1wvd3c9PSIsIm1hYyI6ImNlNGQ0YzNkOWNhOGUzMDJkN2E0ZmI3ODE4NjMzN2Y1YTFlMGQxYjcxYmJlZDVjM2NkYTc2MGUyNWE0ZWY5NjQifQ==', 4, 6, 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -114,8 +119,9 @@ CREATE TABLE `gradstudentsmetainfo` (
 --
 
 INSERT INTO `gradstudentsmetainfo` (`gradstudentid`, `moduleid`, `grade`, `marks`) VALUES
-(4, 1, 'B', '61.20'),
-(4, 2, 'A', '79.50');
+(4, 1, 'B', '0.00'),
+(4, 2, 'A', '0.00'),
+(6, 4, 'D', '0.00');
 
 -- --------------------------------------------------------
 
@@ -132,7 +138,7 @@ CREATE TABLE `graduatedstudents` (
   `address` varchar(255) NOT NULL,
   `enrolyear` int(5) NOT NULL,
   `gradyear` int(5) NOT NULL,
-  `cgpa` decimal(3,2) NOT NULL
+  `cgpa` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -140,8 +146,10 @@ CREATE TABLE `graduatedstudents` (
 --
 
 INSERT INTO `graduatedstudents` (`gradstudentid`, `gradstudentname`, `gradstudentemail`, `metric`, `contact`, `address`, `enrolyear`, `gradyear`, `cgpa`) VALUES
-(4, 'izzat23', 'izzat23@izzat.com', 123456, 99938354, 'CCK 123', 2002, 2005, '3.45'),
-(10, 'mavis', 'mavis@123.com', 1010, 66655544, 'Block 100', 2000, 2003, '4.30');
+(4, 'student4', 'student@student.com', 0, 0, '', 2001, 2016, 'eyJpdiI6IlgyRVNxdTNuNG14T1liZ3IwalNiR1E9PSIsInZhbHVlIjoibWNSTXlpcDRyVnpJMDR5TjIraThjQT09IiwibWFjIjoiOTFmMjFkOGI3OWJiYzQ2OTM1NjdlYjE5M2Y0NDA1MjczYTA3ZGY5YmEwYzFhMThmYTc5OGRhZTg3ZjQ4ZGMwNSJ9'),
+(6, 'student6', 'student@student.com', 0, 0, '', 2001, 2017, 'eyJpdiI6IlgyRVNxdTNuNG14T1liZ3IwalNiR1E9PSIsInZhbHVlIjoibWNSTXlpcDRyVnpJMDR5TjIraThjQT09IiwibWFjIjoiOTFmMjFkOGI3OWJiYzQ2OTM1NjdlYjE5M2Y0NDA1MjczYTA3ZGY5YmEwYzFhMThmYTc5OGRhZTg3ZjQ4ZGMwNSJ9'),
+(10, 'mavis', 'mavis@123.com', 1010, 66655544, 'Block 100', 2000, 2003, '4eyJpdiI6IlgyRVNxdTNuNG14T1liZ3IwalNiR1E9PSIsInZhbHVlIjoibWNSTXlpcDRyVnpJMDR5TjIraThjQT09IiwibWFjIjoiOTFmMjFkOGI3OWJiYzQ2OTM1NjdlYjE5M2Y0NDA1MjczYTA3ZGY5YmEwYzFhMThmYTc5OGRhZTg3ZjQ4ZGMwNSJ9'),
+(11, 'izzat23', 'izzat23@izzat.com', 123456, 99938354, 'CCK 123', 2002, 2005, 'eyJpdiI6IlgyRVNxdTNuNG14T1liZ3IwalNiR1E9PSIsInZhbHVlIjoibWNSTXlpcDRyVnpJMDR5TjIraThjQT09IiwibWFjIjoiOTFmMjFkOGI3OWJiYzQ2OTM1NjdlYjE5M2Y0NDA1MjczYTA3ZGY5YmEwYzFhMThmYTc5OGRhZTg3ZjQ4ZGMwNSJ9');
 
 -- --------------------------------------------------------
 
@@ -271,6 +279,7 @@ CREATE TABLE `students` (
   `studentemail` varchar(255) NOT NULL,
   `metric` varchar(255) DEFAULT NULL,
   `enrolyear` int(5) NOT NULL,
+  `gradyear` int(5) NOT NULL,
   `cgpa` varchar(255) DEFAULT NULL,
   `contact` varchar(255) DEFAULT NULL,
   `address` varchar(255) DEFAULT NULL,
@@ -286,11 +295,11 @@ CREATE TABLE `students` (
 -- Dumping data for table `students`
 --
 
-INSERT INTO `students` (`studentid`, `studentname`, `studentemail`, `metric`, `enrolyear`, `cgpa`, `contact`, `address`, `password`, `remember_token`, `created_at`, `updated_at`, `expirydate`, `lockacc`) VALUES
-(1, 'student2', 'student@student.com', 'Hello Panda', 2001, 'eyJpdiI6IlgyRVNxdTNuNG14T1liZ3IwalNiR1E9PSIsInZhbHVlIjoibWNSTXlpcDRyVnpJMDR5TjIraThjQT09IiwibWFjIjoiOTFmMjFkOGI3OWJiYzQ2OTM1NjdlYjE5M2Y0NDA1MjczYTA3ZGY5YmEwYzFhMThmYTc5OGRhZTg3ZjQ4ZGMwNSJ9', '', '', '$2y$10$.zNUS.sRY060bL0c1Uovxu9PeFlUHD8oFkOxTK5n6zkeSz3iwF9y2', 'C987yvNabrA8enLEzJk3VtsZqMXNyiZz2BnkIvmFA6QTsLGyAzjmgI0PWZj0', NULL, '2016-11-04 02:02:00', '2017-01-31', 0),
-(2, 'izzat', 'izzat@izzat.com', '123456', 2002, 'eyJpdiI6IlgyRVNxdTNuNG14T1liZ3IwalNiR1E9PSIsInZhbHVlIjoibWNSTXlpcDRyVnpJMDR5TjIraThjQT09IiwibWFjIjoiOTFmMjFkOGI3OWJiYzQ2OTM1NjdlYjE5M2Y0NDA1MjczYTA3ZGY5YmEwYzFhMThmYTc5OGRhZTg3ZjQ4ZGMwNSJ9', '96938354', 'CCK 123', '$2y$10$NC2Gz.ouF6MEnZMwuavdROvE8ZMYdkdxhSFSwP06na12KRRkCruFG', 'npRKgofeQ33MGVw6SmXwAC4U8QuDq7cvTeAeVT4KRNvMQO8oa3gOVqIugHmd', NULL, '2016-10-02 00:39:06', '2017-01-31', 0),
-(3, 'testing', 'test@test.com', NULL, 2003, 'eyJpdiI6IlgyRVNxdTNuNG14T1liZ3IwalNiR1E9PSIsInZhbHVlIjoibWNSTXlpcDRyVnpJMDR5TjIraThjQT09IiwibWFjIjoiOTFmMjFkOGI3OWJiYzQ2OTM1NjdlYjE5M2Y0NDA1MjczYTA3ZGY5YmEwYzFhMThmYTc5OGRhZTg3ZjQ4ZGMwNSJ9', NULL, NULL, '$2y$10$ADd3MMvLklcRfOb1oC5JD.xF8.h3P6rfogkETuf8/z.1cnmqYu4wi', NULL, NULL, NULL, '2017-01-31', 0),
-(5, 'izzat234', 'test2@test.com', '123456', 2002, 'eyJpdiI6IlgyRVNxdTNuNG14T1liZ3IwalNiR1E9PSIsInZhbHVlIjoibWNSTXlpcDRyVnpJMDR5TjIraThjQT09IiwibWFjIjoiOTFmMjFkOGI3OWJiYzQ2OTM1NjdlYjE5M2Y0NDA1MjczYTA3ZGY5YmEwYzFhMThmYTc5OGRhZTg3ZjQ4ZGMwNSJ9', '99938354', 'CCK 123', '$2y$10$7SFFNzhswXphAxSD9WSZ9uNDqnxW03S5qMNcfqgY/2bkflElHvPPu', 'sYQlOWEd4bheYID6DmyGjWSBkTPXX871RrKZBMAu5OI3Sa0hdFx5a5c4YVP9', NULL, '2016-11-02 23:30:35', '2017-01-31', 0);
+INSERT INTO `students` (`studentid`, `studentname`, `studentemail`, `metric`, `enrolyear`, `gradyear`, `cgpa`, `contact`, `address`, `password`, `remember_token`, `created_at`, `updated_at`, `expirydate`, `lockacc`) VALUES
+(1, 'student2', 'student@student.com', 'Hello Panda', 2001, 2010, 'eyJpdiI6IlgyRVNxdTNuNG14T1liZ3IwalNiR1E9PSIsInZhbHVlIjoibWNSTXlpcDRyVnpJMDR5TjIraThjQT09IiwibWFjIjoiOTFmMjFkOGI3OWJiYzQ2OTM1NjdlYjE5M2Y0NDA1MjczYTA3ZGY5YmEwYzFhMThmYTc5OGRhZTg3ZjQ4ZGMwNSJ9', '', '', '$2y$10$.zNUS.sRY060bL0c1Uovxu9PeFlUHD8oFkOxTK5n6zkeSz3iwF9y2', 'pgZrrCKeYuT97jmUfI4UN4MV94xABc98HksjKcA9aOgrxPpLHQWZXcE2ICdu', NULL, '2016-11-04 08:27:46', '2017-01-31', 0),
+(2, 'izzat', 'izzat@izzat.com', '123456', 2002, 0, 'eyJpdiI6IlgyRVNxdTNuNG14T1liZ3IwalNiR1E9PSIsInZhbHVlIjoibWNSTXlpcDRyVnpJMDR5TjIraThjQT09IiwibWFjIjoiOTFmMjFkOGI3OWJiYzQ2OTM1NjdlYjE5M2Y0NDA1MjczYTA3ZGY5YmEwYzFhMThmYTc5OGRhZTg3ZjQ4ZGMwNSJ9', '96938354', 'CCK 123', '$2y$10$NC2Gz.ouF6MEnZMwuavdROvE8ZMYdkdxhSFSwP06na12KRRkCruFG', 'npRKgofeQ33MGVw6SmXwAC4U8QuDq7cvTeAeVT4KRNvMQO8oa3gOVqIugHmd', NULL, '2016-10-02 00:39:06', '2017-01-31', 0),
+(3, 'testing', 'test@test.com', NULL, 2003, 0, 'eyJpdiI6IlgyRVNxdTNuNG14T1liZ3IwalNiR1E9PSIsInZhbHVlIjoibWNSTXlpcDRyVnpJMDR5TjIraThjQT09IiwibWFjIjoiOTFmMjFkOGI3OWJiYzQ2OTM1NjdlYjE5M2Y0NDA1MjczYTA3ZGY5YmEwYzFhMThmYTc5OGRhZTg3ZjQ4ZGMwNSJ9', NULL, NULL, '$2y$10$ADd3MMvLklcRfOb1oC5JD.xF8.h3P6rfogkETuf8/z.1cnmqYu4wi', NULL, NULL, NULL, '2017-01-31', 0),
+(5, 'izzat234', 'test2@test.com', '123456', 2002, 0, 'eyJpdiI6IlgyRVNxdTNuNG14T1liZ3IwalNiR1E9PSIsInZhbHVlIjoibWNSTXlpcDRyVnpJMDR5TjIraThjQT09IiwibWFjIjoiOTFmMjFkOGI3OWJiYzQ2OTM1NjdlYjE5M2Y0NDA1MjczYTA3ZGY5YmEwYzFhMThmYTc5OGRhZTg3ZjQ4ZGMwNSJ9', '99938354', 'CCK 123', '$2y$10$7SFFNzhswXphAxSD9WSZ9uNDqnxW03S5qMNcfqgY/2bkflElHvPPu', 'sYQlOWEd4bheYID6DmyGjWSBkTPXX871RrKZBMAu5OI3Sa0hdFx5a5c4YVP9', NULL, '2016-11-02 23:30:35', '2017-01-31', 0);
 
 --
 -- Indexes for dumped tables
@@ -364,17 +373,17 @@ ALTER TABLE `students`
 -- AUTO_INCREMENT for table `admin`
 --
 ALTER TABLE `admin`
-  MODIFY `adminid` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `adminid` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `enroll`
 --
 ALTER TABLE `enroll`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT for table `grades`
 --
 ALTER TABLE `grades`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT for table `graduatedstudents`
 --
@@ -384,12 +393,12 @@ ALTER TABLE `graduatedstudents`
 -- AUTO_INCREMENT for table `hod`
 --
 ALTER TABLE `hod`
-  MODIFY `hodid` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `hodid` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `lecturer`
 --
 ALTER TABLE `lecturer`
-  MODIFY `lecturerid` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `lecturerid` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `module`
 --
@@ -404,7 +413,7 @@ ALTER TABLE `recommendation`
 -- AUTO_INCREMENT for table `students`
 --
 ALTER TABLE `students`
-  MODIFY `studentid` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `studentid` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

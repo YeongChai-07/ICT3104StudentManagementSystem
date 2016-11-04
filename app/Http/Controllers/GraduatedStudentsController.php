@@ -34,16 +34,30 @@ class GraduatedStudentsController extends Controller {
 	public function viewMetaInfo(Request $request, $studentID){
 			$sID = $studentID;
 			
-			$gradstudent = DB::table('graduatedstudents')->where('studentid',$sID)                              
+			$gradstudent = DB::table('graduatedstudents')->where('gradstudentid',$sID)                              
                                 ->first();  
 			$metainfo = DB::table('gradstudentsmetainfo')-> paginate(5);  
 			
             //$allStudentInfo = DB::table('graduatedstudents')-> paginate(5);      
+			
+		//$arrayobj = new ArrayObject();
 
+		//does grad student's grade
+       $modules = DB::table('gradstudentsmetainfo')
+            ->join('module','module.id', '=', 'gradstudentsmetainfo.moduleid')
+            ->join('grades', 'grades.moduleid','=','gradstudentsmetainfo.moduleid')         
+            ->select('module.*','grades.*', 'gradstudentsmetainfo.*')
+            ->where('gradstudentsmetainfo.gradstudentid', $sID) 
+            ->paginate(5);
+
+        $student = DB::table('graduatedstudents')
+                    ->where('gradstudentid' , $sID)
+                    ->first();
+			
            
         return view('graduatedStudents.viewGradStudentsMetaInfo')->with([
-            'gradstudent' => $gradstudent, 'metainfo' => $metainfo
-         
+           'modules' => $modules,
+            'student' => $student
             ]); 
     }
 	

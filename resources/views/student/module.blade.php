@@ -1,4 +1,4 @@
-\@extends('layouts.Layout')
+@extends('layouts.Layout')
 
 @section('title','View All Modules')
 
