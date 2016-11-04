@@ -340,6 +340,8 @@ class CommonController extends Controller {
 		$role = $request->session()->get('role');
 		$input= $request->all();
 		
+		$checker = '/^(?=.*\d)(?=.*[@#\-_$%^&+=§!\?])(?=.*[a-z])(?=.*[A-Z])[0-9A-Za-z@#\-_$%^&+=§!\?]{8,20}$/';
+
 		$validator = validator($request->all(),[
         'old-password' => 'required',
         'password' => 'required|min:3|confirmed',
@@ -369,15 +371,27 @@ class CommonController extends Controller {
 			$user = auth()->guard('student')->user();
 		}
 		
-		 if (Hash::check($input['old-password'], $user->password)) {
-			$hash = Hash::make($input['password']);
-			$user->password = $hash;
-			$user->save();
+		 if (Hash::check($input['old-password'], $user->password)) 
+		 {
+		 	if(preg_match($checker,$input['password']))
+		 	{
 
-			Session::set('success_message', "Password updated sucessfully.");
-			} else {
-				Session::set('error_message', "Old Password is wrong.");
+
+				$hash = Hash::make($input['password']);
+				$user->password = $hash;
+				$user->save();
+
+				Session::set('success_message', "Password updated sucessfully.");
 			}
+			else
+			{
+				Session::set('error_message', "New Password don't conform to the standard.");
+			}	
+		}
+		else 
+		{
+			Session::set('error_message', "Old Password is wrong.");
+		}
             
 		return redirect()->back();
     }

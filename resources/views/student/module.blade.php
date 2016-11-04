@@ -24,7 +24,7 @@ textarea { width:250px !important; height:100px !important; }
         <table width="100%" cellpadding="5" cellspacing="5" id="modulesList" border="1"  class="table table-striped table-bordered dt-responsive" >
             <thead>
 
-                <tr><th>S/N</th><th>Module Name</th><th>Module Description</th><th>Lecturer Incharge</th>
+                <tr><th>S/N</th><th>Module Name</th><th>Module Description</th><th>Lecturer Incharge</th><th>GPA</th>
                 </tr>
             </thead>
             <tbody>
@@ -34,12 +34,18 @@ textarea { width:250px !important; height:100px !important; }
                 <td>{{  $module->modulename }}</td>
                 <td> {{ $module->description }}</td>
                 <td> {{ $module->lecturername }}</td>
-
+                <td> 
+                @if(isset($module->grade))
+                {{ $module->grade }}
+                @else
+                Grade Not published
+                @endif
+                </td>
                 </tr>  
                 @endforeach
             </tbody>
         </table>
-        {!! $modules->render() !!}
+        <h3 align="right">Your CGPA is {{ decrypt($student->cgpa)}}</h3>
     </div>
 </div>   
 

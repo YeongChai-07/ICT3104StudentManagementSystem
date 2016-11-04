@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 03, 2016 at 09:10 AM
+-- Generation Time: Nov 04, 2016 at 11:06 AM
 -- Server version: 10.1.16-MariaDB
 -- PHP Version: 7.0.9
 
@@ -44,7 +44,7 @@ CREATE TABLE `admin` (
 
 INSERT INTO `admin` (`adminid`, `adminname`, `adminemail`, `password`, `token`, `contact`, `address`, `remember_token`, `updated_at`) VALUES
 (1, 'admin1', 'admin@admin.com', '$2y$10$ADd3MMvLklcRfOb1oC5JD.xF8.h3P6rfogkETuf8/z.1cnmqYu4wi', NULL, 66655544, 'block 123', 'xqgSy8NjBqV9ClXHsqr5bWXUuexvCJ91o9p60gGQU6pnbfySUBgcopa7u25e', '2016-11-02 06:00:28'),
-(2, 'admin2', 'spartan_genocide@hotmail.com', '$2y$10$ADd3MMvLklcRfOb1oC5JD.xF8.h3P6rfogkETuf8/z.1cnmqYu4wi', 'g0bvKjw8rm', 11112222, 'block555', '5LX6zbuEGUYIGPHKFudJLLjPiGeQAXeuxE4phUUWC7oZUx7mOToBLo8kt4uN', '2016-11-02 23:24:07');
+(2, 'admin2', 'spartan_genocide@hotmail.com', '$2y$10$ADd3MMvLklcRfOb1oC5JD.xF8.h3P6rfogkETuf8/z.1cnmqYu4wi', 'EFrn8Gpk49', 11112222, 'block555', 'XATJQYMiOGWGrufh1hiuBECJ7oGO8KNIFB8Pwx2sONGKfhDACnF7tj2PWiCc', '2016-11-04 01:27:17');
 
 -- --------------------------------------------------------
 
@@ -170,7 +170,7 @@ CREATE TABLE `hod` (
 --
 
 INSERT INTO `hod` (`hodid`, `hodname`, `hodemail`, `metric`, `contact`, `address`, `password`, `token`, `remember_token`, `created_at`, `updated_at`, `expirydate`, `lockacc`) VALUES
-(1, 'hod', 'hod@hod.com', NULL, '2637238', 'Block 112', '$2y$10$ADd3MMvLklcRfOb1oC5JD.xF8.h3P6rfogkETuf8/z.1cnmqYu4wi', NULL, 'PMdaBpZDRNajXFOudvtuC5xW2qdwjOnhc0FbmttiLiJd9ezIh7c0QFVQFPL7', NULL, '2016-11-01 21:50:12', '2017-01-31', 0),
+(1, 'hod', 'hod@hod.com', NULL, '2637238', 'Block 112', '$2y$10$ADd3MMvLklcRfOb1oC5JD.xF8.h3P6rfogkETuf8/z.1cnmqYu4wi', 'ZfdYoOx7if', 'pO2IinvDalTRjDeF64qtOvI0pgKJ6nlNk4cOFEnY5NPKh7r7NROaghPXxqPz', NULL, '2016-11-04 02:01:47', '2017-01-31', 0),
 (2, 'izzat', 'izzathod@hod.com', NULL, '96938353', '', '$2y$10$qG8n6uZuDdGnVrOTSS5evOgUgoy0AJDPnzBM2pxFg8Gw50vZFwEu2', NULL, '4hcvUdxJGfw5OK4tHZ9uTsbq9zeu5rYcpy707i2g4GxnFyVbZMrZqUG46EoO', NULL, '2016-11-01 23:20:23', '2017-01-31', 0),
 (3, 'test', 'test@test.com', '123qweasd123', '12345678123', '123qwe123qwe', '$2y$10$LQTk0iQox.pu1yVixRUgm.c3.bhU4kfEgAfcNCky0KDDJJ2aesdRy', NULL, NULL, NULL, NULL, '2017-01-31', 0);
 
@@ -202,9 +202,9 @@ CREATE TABLE `lecturer` (
 
 INSERT INTO `lecturer` (`lecturerid`, `lecturername`, `lectureremail`, `metric`, `contact`, `address`, `password`, `token`, `remember_token`, `created_at`, `updated_at`, `expirydate`, `lockacc`) VALUES
 (1, 'lecturer2', 'lecturer2@lecturer2.com', NULL, NULL, NULL, '$2y$10$ZgaDz0DwyxdnJOoJ3PLEv.jK4POSe9iR0N/Ax8nWJJgF7PkmCVr2q', NULL, NULL, NULL, NULL, '2017-01-31', 0),
-(2, 'lecturertest', 'lecturer@lecturer.com', NULL, NULL, NULL, '$2y$10$ADd3MMvLklcRfOb1oC5JD.xF8.h3P6rfogkETuf8/z.1cnmqYu4wi', NULL, 'svbKTDjl0lTWerbKgRARccRcJi4GhAlwpDpXtwphKPYg2MpI3TOnxX3yMrce', NULL, '2016-11-02 04:31:02', '2017-01-31', 0),
+(2, 'lecturertest', 'lecturer@lecturer.com', NULL, NULL, NULL, '$2y$10$ADd3MMvLklcRfOb1oC5JD.xF8.h3P6rfogkETuf8/z.1cnmqYu4wi', '0zLDEItehP', 'svbKTDjl0lTWerbKgRARccRcJi4GhAlwpDpXtwphKPYg2MpI3TOnxX3yMrce', NULL, '2016-11-02 04:31:02', '2017-01-31', 0),
 (3, 'izzat', '14sic044y@sit.singaporetech.edu.eg', NULL, '96938353', NULL, '$2y$10$Zcq1VPQvKXahJCm7zoqR3ul0ustT0l7VY8z7vqN99/Mbo4/hjL4Nm', NULL, 'K1CMA1i7bHCodZ4XtN1AbzNUdsM8NSIUWdxJEy38S7nWVWX87p4dvj6reqku', NULL, '2016-11-01 23:18:57', '2017-01-31', 0),
-(4, 'test2', 'izzatgeno@gmail.com', '123qwe123asfafa', '123qweasd123asdas', '123qwegwgwqwea12e1', '$2y$10$Zcq1VPQvKXahJCm7zoqR3ul0ustT0l7VY8z7vqN99/Mbo4/hjL4Nm', NULL, NULL, NULL, NULL, '2016-11-10', 0);
+(4, 'test2', 'izzatgeno@gmail.com', '123qwe123asfafa', '123qweasd123asdas', '123qwegwgwqwea12e1', '$2y$10$KVsgbEzzflgLHlvcEbeBC.WtK9LL3XoCbeDnxn/5w8QMCmiGu.arq', '4B0J6IiY3s', 'VpeSqV5a75sm5fW6jdR1N3U0fFgS7jVImrrhxDtD4SrlM9Q9l5nVClzIryyG', NULL, '2016-11-04 01:23:33', '2016-11-10', 0);
 
 -- --------------------------------------------------------
 
@@ -287,10 +287,10 @@ CREATE TABLE `students` (
 --
 
 INSERT INTO `students` (`studentid`, `studentname`, `studentemail`, `metric`, `enrolyear`, `cgpa`, `contact`, `address`, `password`, `remember_token`, `created_at`, `updated_at`, `expirydate`, `lockacc`) VALUES
-(1, 'student2', 'student@student.com', 'Hello Panda', 2001, '2', '', '', '$2y$10$.zNUS.sRY060bL0c1Uovxu9PeFlUHD8oFkOxTK5n6zkeSz3iwF9y2', '9nnwls2hX345Mpfd9RnevPO6tiqOOYCAukX5N5OdekII6LLSG7VnXxqLBboc', NULL, '2016-10-16 08:01:26', '2017-01-31', 0),
-(2, 'izzat', 'izzat@izzat.com', '123456', 2002, '2.40', '96938354', 'CCK 123', '$2y$10$NC2Gz.ouF6MEnZMwuavdROvE8ZMYdkdxhSFSwP06na12KRRkCruFG', 'npRKgofeQ33MGVw6SmXwAC4U8QuDq7cvTeAeVT4KRNvMQO8oa3gOVqIugHmd', NULL, '2016-10-02 00:39:06', '2017-01-31', 0),
-(3, 'testing', 'test@test.com', NULL, 2003, '3.30', NULL, NULL, '$2y$10$ADd3MMvLklcRfOb1oC5JD.xF8.h3P6rfogkETuf8/z.1cnmqYu4wi', NULL, NULL, NULL, '2017-01-31', 0),
-(5, 'izzat234', 'test2@test.com', '123456', 2002, '3.45', '99938354', 'CCK 123', '$2y$10$7SFFNzhswXphAxSD9WSZ9uNDqnxW03S5qMNcfqgY/2bkflElHvPPu', 'sYQlOWEd4bheYID6DmyGjWSBkTPXX871RrKZBMAu5OI3Sa0hdFx5a5c4YVP9', NULL, '2016-11-02 23:30:35', '2017-01-31', 0);
+(1, 'student2', 'student@student.com', 'Hello Panda', 2001, 'eyJpdiI6IlgyRVNxdTNuNG14T1liZ3IwalNiR1E9PSIsInZhbHVlIjoibWNSTXlpcDRyVnpJMDR5TjIraThjQT09IiwibWFjIjoiOTFmMjFkOGI3OWJiYzQ2OTM1NjdlYjE5M2Y0NDA1MjczYTA3ZGY5YmEwYzFhMThmYTc5OGRhZTg3ZjQ4ZGMwNSJ9', '', '', '$2y$10$.zNUS.sRY060bL0c1Uovxu9PeFlUHD8oFkOxTK5n6zkeSz3iwF9y2', 'C987yvNabrA8enLEzJk3VtsZqMXNyiZz2BnkIvmFA6QTsLGyAzjmgI0PWZj0', NULL, '2016-11-04 02:02:00', '2017-01-31', 0),
+(2, 'izzat', 'izzat@izzat.com', '123456', 2002, 'eyJpdiI6IlgyRVNxdTNuNG14T1liZ3IwalNiR1E9PSIsInZhbHVlIjoibWNSTXlpcDRyVnpJMDR5TjIraThjQT09IiwibWFjIjoiOTFmMjFkOGI3OWJiYzQ2OTM1NjdlYjE5M2Y0NDA1MjczYTA3ZGY5YmEwYzFhMThmYTc5OGRhZTg3ZjQ4ZGMwNSJ9', '96938354', 'CCK 123', '$2y$10$NC2Gz.ouF6MEnZMwuavdROvE8ZMYdkdxhSFSwP06na12KRRkCruFG', 'npRKgofeQ33MGVw6SmXwAC4U8QuDq7cvTeAeVT4KRNvMQO8oa3gOVqIugHmd', NULL, '2016-10-02 00:39:06', '2017-01-31', 0),
+(3, 'testing', 'test@test.com', NULL, 2003, 'eyJpdiI6IlgyRVNxdTNuNG14T1liZ3IwalNiR1E9PSIsInZhbHVlIjoibWNSTXlpcDRyVnpJMDR5TjIraThjQT09IiwibWFjIjoiOTFmMjFkOGI3OWJiYzQ2OTM1NjdlYjE5M2Y0NDA1MjczYTA3ZGY5YmEwYzFhMThmYTc5OGRhZTg3ZjQ4ZGMwNSJ9', NULL, NULL, '$2y$10$ADd3MMvLklcRfOb1oC5JD.xF8.h3P6rfogkETuf8/z.1cnmqYu4wi', NULL, NULL, NULL, '2017-01-31', 0),
+(5, 'izzat234', 'test2@test.com', '123456', 2002, 'eyJpdiI6IlgyRVNxdTNuNG14T1liZ3IwalNiR1E9PSIsInZhbHVlIjoibWNSTXlpcDRyVnpJMDR5TjIraThjQT09IiwibWFjIjoiOTFmMjFkOGI3OWJiYzQ2OTM1NjdlYjE5M2Y0NDA1MjczYTA3ZGY5YmEwYzFhMThmYTc5OGRhZTg3ZjQ4ZGMwNSJ9', '99938354', 'CCK 123', '$2y$10$7SFFNzhswXphAxSD9WSZ9uNDqnxW03S5qMNcfqgY/2bkflElHvPPu', 'sYQlOWEd4bheYID6DmyGjWSBkTPXX871RrKZBMAu5OI3Sa0hdFx5a5c4YVP9', NULL, '2016-11-02 23:30:35', '2017-01-31', 0);
 
 --
 -- Indexes for dumped tables

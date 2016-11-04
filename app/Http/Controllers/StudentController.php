@@ -11,7 +11,8 @@ use Auth;
 use Hash;
 use DB;
 use Session;
-
+use stdClass;
+use ArrayObject;
 class StudentController extends Controller {
 
 
@@ -67,6 +68,7 @@ class StudentController extends Controller {
             ->select('module.*','grades.*')
             ->where('grades.publish', 1)
             ->where('grades.studentid', $studentId)->paginate(5);    
+
 
 
         return view('student.index')->with([
@@ -198,21 +200,71 @@ class StudentController extends Controller {
     public function showModule(){
     
     $studentId = auth()->guard('student')->user()->studentid;
-
+    $arrayobj = new ArrayObject();
 
        $modules = DB::table('module')
             ->join('lecturer','lecturer.lecturerid', '=', 'module.lecturerid')
             ->join('enroll','enroll.moduleid', '=', 'module.id')
-            ->join('students', 'students.studentid', '=', 'enroll.studentid')         
-            ->select('module.*','lecturer.*','students.*')
+            ->join('students', 'students.studentid', '=', 'enroll.studentid')
+            ->join('grades', 'grades.moduleid','=','module.id')         
+            ->select('module.*','lecturer.*','students.*','grades.grade')
             ->where('enroll.studentid', $studentId) 
             ->paginate(5);
+
+        $student = DB::table('students')
+                    ->where('studentid' , $studentId)
+                    ->first();
+
+        foreach($modules as $grade)
+        {
+            if(!empty($grade->grade))
+            {
+                $gpa = $this->convertGPA($grade->grade);
+                
+                $grade->grade = $gpa;
+            }
+            $arrayobj->append($grade);
+
+        }
+
+        
+
             return view('student.module')->with([
-            'modules' => $modules
+            'modules' => $arrayobj,
+            'student' => $student
             ]);
     }
 
 
+    public function convertGPA($grade)
+    {
+        //TODO: this function converts the marks into grades (alphabets) and store into grades table
+        if (strcmp($grade,'A') == 0)
+        {
+            $gradeScore = '4.0';
+        }
+        elseif (strcmp($grade,'B+') == 0)
+        {
+            $gradeScore = '3.5';
+        }
+        elseif (strcmp($grade,'B') == 0)
+        {
+            $gradeScore = '3.0';
+        }
+        elseif (strcmp($grade,'C') == 0)
+        {
+            $gradeScore = '2.5';
+        }
+        elseif (strcmp($grade,'D') == 0)
+        {
+            $gradeScore = '2.0';
+        }
+        elseif(strcmp($grade,'Fail') == 0)
+        {
+            $gradeScore = '1.0';
+        }
 
+        return $gradeScore;
+    } 
 }
 

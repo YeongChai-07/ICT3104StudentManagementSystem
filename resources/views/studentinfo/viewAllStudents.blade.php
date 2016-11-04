@@ -45,7 +45,7 @@ textarea { width:250px !important; height:100px !important; }
                 <td>{{  $student->studentemail }}</td>
                 <td>{{  $student->contact }}</td>
                 @if(auth()->guard('lecturer')->check())
-                <td>{{$student->cgpa}}</td> 
+                <td>{{decrypt($student->cgpa)}}</td> 
                 @endif
 				        
                 <td>

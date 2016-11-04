@@ -377,6 +377,7 @@ class GradeController extends Controller {
 			$gradeScore = $gradeScore * $studMod->credit;
 			$totalGpa+=$gradeScore;
 		}
+
 		//check if the formula to calc cgpa is correct
 		$cgpa = $totalGpa/$creditCount;
 		
@@ -385,7 +386,7 @@ class GradeController extends Controller {
 		DB::table('students')
                 ->where('studentid', $studentid)
                 ->update([
-				'cgpa' => $cgpa
+				'cgpa' => encrypt($cgpa)
 							
 				]);     
 		return $cgpa;
