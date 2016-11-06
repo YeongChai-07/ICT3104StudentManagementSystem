@@ -207,8 +207,9 @@ class StudentController extends Controller {
             ->join('enroll','enroll.moduleid', '=', 'module.id')
             ->join('students', 'students.studentid', '=', 'enroll.studentid')
             ->join('grades', 'grades.moduleid','=','module.id')         
-            ->select('module.*','lecturer.*','students.*','grades.grade')
-            ->where('enroll.studentid', $studentId) 
+            ->select('module.*','lecturer.lecturername','students.cgpa','grades.grade')
+            ->where('enroll.studentid', $studentId)
+            ->where('grades.studentid', $studentId) 
             ->paginate(5);
 
         $student = DB::table('students')
