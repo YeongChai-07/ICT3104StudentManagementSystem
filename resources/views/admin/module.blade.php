@@ -16,6 +16,10 @@ textarea { width:250px !important; height:100px !important; }
         <div class="alert alert-danger">{{ Session::get('error_message') }}</div>
         {{Session::forget('error_message')}}
     @endif
+    @if(Session::has('success_message'))
+    <div class="alert alert-success">{{ Session::get('success_message') }}</div>
+    {{Session::forget('success_message')}}
+    @endif
     <br/>
  <div class="row">
     <div class="col-md-12 col-sm-12">
@@ -24,13 +28,13 @@ textarea { width:250px !important; height:100px !important; }
         <table width="100%" cellpadding="5" cellspacing="5" id="modulesList" border="1"  class="table table-striped table-bordered dt-responsive" >
             <thead>
 
-                <tr><th>S/N</th><th>Module Name</th><th>Module Description</th><th>Credits</th><th>Lecturer Incharge</th><th>Hod Incharge</th><th>Edit Date</th><th>Freeze Date</th><th width="40%">Action</th>
+                <tr><th>Module Name</th><th>Module Description</th><th>Credits</th><th>Lecturer Incharge</th><th>Hod Incharge</th><th>Edit Date</th><th>Freeze Date</th><th width="40%">Action</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach($modules as $key=>$module)
                 <tr>
-                <td>{{   $module->id }}</td>
+                
                 <td>{{  $module->modulename }}</td>
                 <td> {{ $module->description }}</td>
                 <td>{{  $module->credit }}</td>
@@ -44,6 +48,9 @@ textarea { width:250px !important; height:100px !important; }
                 <a class="btn btn-info" href="{{  $module->id }}/enrollstudent">Enroll Student</a>
                 <a class="btn btn-primary" href="{{  $module->id }}/moderate">Moderate Grades</a>
                 <a class="btn btn-danger" onclick="checkDelete()" href="{{  $module->id }}/deletemodule">Delete module</a>
+                @if($module->endedit == 1 || $module->endfreeze==1)
+                <a class="btn btn-success" href="{{  $module->id }}/resetmodule">Reset Module</a>
+                @endif
                 </td>
                 </tr>  
                 @endforeach

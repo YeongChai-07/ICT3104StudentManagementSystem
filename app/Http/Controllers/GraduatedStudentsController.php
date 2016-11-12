@@ -44,9 +44,8 @@ class GraduatedStudentsController extends Controller {
 
 		//does grad student's grade
        $modules = DB::table('gradstudentsmetainfo')
-            ->join('module','module.id', '=', 'gradstudentsmetainfo.moduleid')
-            ->join('grades', 'grades.moduleid','=','gradstudentsmetainfo.moduleid')         
-            ->select('module.*','grades.*', 'gradstudentsmetainfo.*')
+            ->join('module','module.id', '=', 'gradstudentsmetainfo.moduleid')        
+            ->select('module.*', 'gradstudentsmetainfo.*')
             ->where('gradstudentsmetainfo.gradstudentid', $sID) 
             ->paginate(5);
 

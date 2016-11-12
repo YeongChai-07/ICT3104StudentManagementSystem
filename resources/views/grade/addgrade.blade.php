@@ -17,7 +17,7 @@
 </div>
 <?php echo Form::open(array('url' => 'grade/'.$moduleid.'/'.$gradeid.'/addgrade', 'method' => 'post')) ?>
  <div class="form-group">
-            {!!Form::label('grade','Grade')!!}
+            {!!Form::label('grade','Marks')!!}
             {!!Form::text('grade',null,array('class' => 'form-control', 'required' => 'required'))!!}
         </div>
         <div class="form-group">

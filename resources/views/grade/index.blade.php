@@ -49,7 +49,9 @@ textarea { width:250px !important; height:100px !important; }
                       @endif
                   @endif
                 @else
+                  @if(strcmp($role,'lecturer') == 0)
                   <a class="btn btn-info" href="{{  $module->id }}/managegrade">Manage Grade</a>
+                  @endif
                   <a class="btn btn-primary" href="{{  $module->id }}/endedit">End Edit</a>
                 @endif
 

@@ -197,7 +197,7 @@ class CommonController extends Controller {
 	public function verifyUserView($email, $password)
 	{
 		$title = '2FA - School Management System';
-		$token = str_random(10);
+		$token = mt_rand(100000,999999); 
 		
 		// insert token into column
 		$this->updateDBToken($email, $token, 1); //set token in db //uncomment

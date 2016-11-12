@@ -569,7 +569,15 @@ class AdminController extends Controller {
         return redirect()->back();
     }
 
-	
+	public function resetModule($id)
+    {
+                DB::table('module')
+                ->where('id', $id)
+                ->update(['endfreeze' => 0,'endedit'=> 0]);
+
+        Session::set('success_message', "Module resetted.");  
+        return redirect()->back();       
+    }
 	/** --- ENROL CONTROL --- */
     public function displayStudent($id)
     {
@@ -653,7 +661,11 @@ class AdminController extends Controller {
 	{
         $input = $request->all();
         $option = $input['option'];
-        $duration = $input['duration'];
+        // $duration = $input['duration'];
+
+        $adminId = auth()->guard('admin')->user()->adminid;
+        $admin = Admin::where('adminid',$adminId)                              
+                                ->first(); 
 
         //Download zip.dll AND PLACE IN xampp/php/ext
         //Use it at the top
@@ -688,7 +700,7 @@ class AdminController extends Controller {
                 $zipper->make($dirname . '\\'. $date);
                 $zipper->zip($dirname . '\\'. $date)->add($input['file'] . '\ict3104.sql');
 
-                if(strcmp($duration,"Monthly") == 0)
+                if($admin->backupsettings == 1)
                 {
 
                 //Zip up to the intended location
@@ -723,7 +735,7 @@ class AdminController extends Controller {
                 $zipper->make($dirname . '\\'. $date);
                 $zipper->zip($dirname . '\\'. $date)->add($input['file'] . '\xampp\htdocs\ict3104');
 
-                if(strcmp($duration,"Monthly") == 0)
+                if($admin->backupsettings == 1)
                 {
 
                     //Zip up to the intended location
@@ -1001,6 +1013,27 @@ class AdminController extends Controller {
                 });  
             }
         }
-        return 'SENT';
+        Session::set('success_message', "Reminder Sent");
+        return redirect()->back();
+    }
+
+
+    public function displayBackupSettings()
+    {
+        return view('admin.backupsettings');
+    }
+    public function backupSettings(Request $request)
+    {
+        $adminId = auth()->guard('admin')->user()->adminid;
+        $input = $request->all();
+
+        $settings = $input['settings'];
+            DB::table('admin')
+            ->where('adminid', $adminId)
+            ->update(['backupsettings' => $input['settings']]);
+
+
+        Session::set('success_message', "Preference Saved");
+        return redirect()->back(); 
     } 
 }

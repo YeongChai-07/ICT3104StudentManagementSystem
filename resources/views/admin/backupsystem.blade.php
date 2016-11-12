@@ -26,11 +26,11 @@
      	{{ Form::radio('option', 'Database',true) }} Database<br>
 		{{ Form::radio('option', 'Web Application') }} Web Application
 		</div>
-        <div class="form-group">
+<!--         <div class="form-group">
 		{!!Form::label('duration','Choose Daily or Monthly Backup')!!}<br>
      	{{ Form::radio('duration', 'Daily',true) }} Daily<br>
 		{{ Form::radio('duration', 'Monthly') }} Monthly
-		</div>
+		</div> -->
         {!!Form::submit('Perform Backup', array('class' => 'btn btn-success'))!!}
         {!! Form::close() !!}
 @stop

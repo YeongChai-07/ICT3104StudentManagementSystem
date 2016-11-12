@@ -245,7 +245,15 @@ class GradeController extends Controller {
 		        }
 		}         
     }
-    
+    else
+    {
+    	if(isset($recommendation->recommendation))
+    	{
+    		DB::table('recommendation')
+    		->where('id', $recommendation->id)
+    		->delete();
+    	}
+    }
 
 	    Session::set('success_message', "Student Grade added sucessfully."); 
 	    return redirect()->route('manage_grade', $moduleid);    	

@@ -80,7 +80,7 @@ Route::post('common/verifyuser','CommonController@verifyUser');
         Route::get('/admin/{id}/editmodule', 'AdminController@editModule');
         Route::post('/admin/{id}/editmodule', 'AdminController@updateModule');
         Route::get('/admin/{id}/deletemodule', 'AdminController@deleteModule');
-		
+		Route::get('/admin/{id}/resetmodule', 'AdminController@resetModule');
 		
 		
         Route::get('/admin/{id}/enrollstudent', 'AdminController@displayStudent');
@@ -116,6 +116,8 @@ Route::post('common/verifyuser','CommonController@verifyUser');
 		
 
 		Route::get('admin/remind', 'AdminController@sendReminder');
+		Route::get('admin/backupsettings', 'AdminController@displayBackupSettings');
+		Route::post('admin/backupsettings', 'AdminController@backupSettings');
 		
     });
 });

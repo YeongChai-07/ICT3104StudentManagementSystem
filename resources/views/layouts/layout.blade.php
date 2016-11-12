@@ -59,6 +59,7 @@
 									<li><a href="{{URL::asset('common/showdetails')}}">View Details</a></li><!--// added-->
 									<li><a href="{{URL::asset('common/change')}}">Change Password</a></li>
                                     <li><a href="{{URL::asset('admin/remind')}}">Send Password Reminder</a></li>
+                                    <li><a href="{{URL::asset('admin/backupsettings')}}">Set Backup Preference</a></li>
 									<li><a href="{{URL::asset('common/logout')}}">Log Out</a></li>
 									<!-- <li><a href="{{URL::asset('pretest/change')}}">Change Password</a></li> -->
 								</ul>
