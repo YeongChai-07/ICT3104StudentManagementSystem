@@ -144,6 +144,8 @@ Route::post('common/verifyuser','CommonController@verifyUser');
   		Route::post('grade/{moduleid}/{id}/editgrade', 'GradeController@editGrade');
 
   		Route::get('grade/{moduleid}/approval', 'GradeController@showRecommendation');
+		Route::get('grade/{moduleid}/moderation', 'GradeController@showModerateGrade');
+		Route::post('grade/{moduleid}/moderation', 'GradeController@moderation');
 
   		Route::get('grade/{moduleid}/{recommendationid}/approveRec', 'GradeController@approveRec');
   		Route::get('grade/{moduleid}/{recommendationid}/rejectRec', 'GradeController@rejectRec');  		

@@ -35,7 +35,7 @@ textarea { width:250px !important; height:100px !important; }
                 <td> {{ $module->description }}</td>
                 <td> {{ $module->lecturername }}</td>
                 <td> 
-                @if(isset($module->grade))
+                @if($module->publish == 1)
                 {{ $module->grade }}
                 @else
                 Grade Not published
@@ -45,7 +45,9 @@ textarea { width:250px !important; height:100px !important; }
                 @endforeach
             </tbody>
         </table>
+        @if(isset($student->cgpa))
         <h3 align="right">Your CGPA is {{ decrypt($student->cgpa)}}</h3>
+        @endif
     </div>
 </div>   
 

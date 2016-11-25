@@ -25,15 +25,8 @@
             {!!Form::textarea('recommendation',null,array('class' => 'form-control'))!!}
         </div>
         <div class="form-group">
-            {!!Form::label('Moderation','Select Moderation')!!}
-            <select id="moderation" name="moderation">
-            <option value="0.0" selected="true">Select If applicable</option>                      
-            <option value="1">1.0</option>
-            <option value="2">2.0</option>
-            <option value="3">3.0</option>
-            <option value="4">4.0</option>
-            <option value="5">5.0</option>
-            </select>
+            {!!Form::label('recomended Marks','Recommended Marks')!!}
+            {!!Form::text('moderation',null,array('class' => 'form-control'))!!}
         </div>
        <a href="{{URL::asset('grade/index')}}" class="btn btn-danger" style="float:right;">Back to Grades list</a>
         {!!Form::submit('Add Grade', array('class' => 'btn btn-success'))!!}

@@ -112,6 +112,12 @@ class GradeController extends Controller {
 	
 		}  
 
+		if($input['moderation'] + $input['grade'] > 100)
+		{
+			Session::set('error_message', "Total cannot be more than 100."); 
+	        return redirect()->back();
+		}
+
         $input= $request->all();
         $student = Grade::findorFail($gradeid);
         $recommendation = $request->only(['recommendation']);
@@ -483,6 +489,10 @@ class GradeController extends Controller {
 
         DB::table('module')
                 ->where('id', $moduleid)
+                ->update(['endfreeze' => 1]); 
+
+        DB::table('module')
+                ->where('id', $moduleid)
                 ->update(['publish' => 1]);
 
         DB::table('grades')
@@ -499,5 +509,71 @@ class GradeController extends Controller {
 		}
 		Session::set('success_message', "Module Grades Published");
 		return redirect()->back();				
-    }   	
+    }
+
+   	public function showModerateGrade(Request $request, $id){
+	        
+	        $role = $request->session()->get('role');
+    	
+   			if ($role != 'lecturer' and $role != 'hod')
+   			{
+			
+				return redirect('common/logout');
+			
+			}
+
+            $moduleid = $id;
+     
+            $module = Module::findorFail($id);
+
+
+            $grades = DB::table('module')
+            ->join('grades', 'grades.moduleid', '=', 'module.id')
+            ->join('students','students.studentid', '=', 'grades.studentid')
+            ->select('module.*','grades.*','students.*')
+            ->where('grades.moduleid', $moduleid)->paginate(5);    
+
+        return view('grade.moderation')->with([
+            'grades' => $grades,
+            'module' => $module
+            ]); 
+    }
+
+    public function moderation(Request $request, $id)
+    {
+    		$role = $request->session()->get('role');
+    	
+   			if ($role != 'lecturer' and $role != 'hod')
+   			{
+			
+				return redirect('common/logout');
+			
+			}
+
+        	$input= $request->all();
+
+        	$grades = DB::table('grades')
+        				->where('moduleid', $id)
+        				->get();
+
+        	$moderate = $input['moderate'];	
+
+
+        	foreach ($grades as $grade) 
+        	{
+        		$tempgrade = decrypt($grade->marks);
+        		$moderategrade = ($moderate / 100) * $tempgrade;
+        		$final = $moderategrade + $tempgrade;
+        		$grade->marks = $final;
+        		$gradeScore = $this->calculateIndivGrade($grade->marks);
+   				$encryptedGrade = encrypt($grade->marks);
+
+        		DB::table('grades')
+                ->where('id', $grade->id)
+                ->update(['grade' => $gradeScore,'marks' => $encryptedGrade]);
+			}		
+			
+			Session::set('success_message', "Module Grades have been moderated");
+			return redirect()->back();	
+    } 	
 }

@@ -42,10 +42,11 @@ textarea { width:250px !important; height:100px !important; }
                   @if(strcmp($role,'hod') == 0)
                       @if($today > $module->freezedate || $module->endfreeze ==1)
 
-                        <a class="btn btn-info" href="{{  $module->id }}/publish" >Publish Grades</a>
+                        
                       @else
-                        <a class="btn btn-info" href="{{  $module->id }}/approval">Approve Recommendations</a>
-                        <a class="btn btn-primary" href="{{  $module->id }}/endfreeze">End Freeze</a>
+                        <a class="btn btn-primary" href="{{  $module->id }}/approval">Approve Recommendations</a>
+                        <a class="btn btn-info" href="{{  $module->id }}/moderation">Moderate Grades</a>
+                        <a class="btn btn-success" href="{{  $module->id }}/publish" >Publish Grades</a>
                       @endif
                   @endif
                 @else
