@@ -20,16 +20,14 @@ class StudentInfoController extends Controller {
 
 	//jerlyn
 	public function viewAllStudents(){
-           
-			
         $allStudentInfo = DB::table('students')-> paginate(5);
 		
 		
 		$ifGraduating = DB::table('students') 
-		-> where ('gradyear', '>', date('Y')) 
-		-> orWhere ('gradyear', '=', date("Y"))
+		-> Where ('gradyear', '<=', date('Y'))
 		->get();
 		
+
 		if (!empty($ifGraduating)){
 			$ifGraduating = 'yes';
 		}
@@ -93,7 +91,7 @@ class StudentInfoController extends Controller {
             'address'=> $input['address'],
             'password' => $hash,
             'enrolyear' => date("Y"),
-			'enrolyear' => date("Y") + 3,
+			'gradyear' => date("Y") + 3,
             'expirydate' => $expirydate
             ]);
 
@@ -145,8 +143,7 @@ class StudentInfoController extends Controller {
 	public function archiveStudent(Request $request, $archive){	
 			
 		$graduatingStudents = DB::table('students') 
-		-> where ('gradyear', '>', date('Y')) 
-		-> orWhere ('gradyear', '=', date("Y"))
+		-> Where ('gradyear', '<=', date('Y'))
 		-> get();
 			
 		//$gradyear = $student->enrolyear + 3;

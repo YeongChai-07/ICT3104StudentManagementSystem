@@ -573,7 +573,7 @@ class AdminController extends Controller {
     {
                 DB::table('module')
                 ->where('id', $id)
-                ->update(['endfreeze' => 0,'endedit'=> 0]);
+                ->update(['endfreeze' => 0,'endedit'=> 0,'publish' => 0]);
 
         Session::set('success_message', "Module resetted.");  
         return redirect()->back();       

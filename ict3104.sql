@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 25, 2016 at 01:27 PM
+-- Generation Time: Nov 27, 2016 at 09:34 AM
 -- Server version: 10.1.16-MariaDB
 -- PHP Version: 7.0.9
 
@@ -44,7 +44,7 @@ CREATE TABLE `admin` (
 --
 
 INSERT INTO `admin` (`adminid`, `adminname`, `adminemail`, `password`, `token`, `contact`, `address`, `remember_token`, `updated_at`, `backupsettings`) VALUES
-(1, 'admin1', 'admin@admin.com', '$2y$10$ADd3MMvLklcRfOb1oC5JD.xF8.h3P6rfogkETuf8/z.1cnmqYu4wi', '687415', 66655544, 'block 12345', 'Ndhl4dLoSoUHYjQQqsQHokdBRB1McudHQ514pOtQzoDZ928UMqQ0hbuwciUK', '2016-11-25 04:26:38', 1);
+(1, 'admin1', 'admin@admin.com', '$2y$10$ADd3MMvLklcRfOb1oC5JD.xF8.h3P6rfogkETuf8/z.1cnmqYu4wi', '807178', 66655544, 'block 12345', 'd2d4RQcnMk3zp1PCuk3Lb0penip4b5G3Ob4l6RLglzc63nHC4XTKBAjrH3tB', '2016-11-27 00:20:03', 1);
 
 -- --------------------------------------------------------
 
@@ -63,7 +63,9 @@ CREATE TABLE `enroll` (
 --
 
 INSERT INTO `enroll` (`id`, `moduleid`, `studentid`) VALUES
-(9, 5, 4);
+(12, 8, 8),
+(13, 8, 9),
+(14, 5, 7);
 
 -- --------------------------------------------------------
 
@@ -87,7 +89,7 @@ CREATE TABLE `grades` (
 --
 
 INSERT INTO `grades` (`id`, `grade`, `marks`, `moduleid`, `studentid`, `lecturerid`, `hodid`, `publish`) VALUES
-(12, 'B', 'eyJpdiI6IlV4alVIc3lnQUJhblwvXC91aElBb0FKdz09IiwidmFsdWUiOiJDclF4MVlMWnRYYSs1OW5KSnUxUTVRPT0iLCJtYWMiOiI1NzAwMmY1ZGNjMzkxNmUxMjRkMWQ0YjEzODVlZWM3NjU3ZWI2YmM4ZDFjYTk1YzZiY2E4Mzc2YmE0NzI5NTM3In0=', 5, 4, 5, 4, 1);
+(17, NULL, NULL, 5, 7, 5, 4, 0);
 
 -- --------------------------------------------------------
 
@@ -99,8 +101,16 @@ CREATE TABLE `gradstudentsmetainfo` (
   `gradstudentid` int(11) NOT NULL,
   `moduleid` int(11) NOT NULL,
   `grade` varchar(3) NOT NULL,
-  `marks` decimal(5,2) NOT NULL
+  `marks` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `gradstudentsmetainfo`
+--
+
+INSERT INTO `gradstudentsmetainfo` (`gradstudentid`, `moduleid`, `grade`, `marks`) VALUES
+(8, 8, 'B', 'eyJpdiI6Im1qcldwT1M4TXU1bzVxT1dSbXdHTUE9PSIsInZhbHVlIjoibW5OWlwvNEZRV2R5c1Y2dDlxd1dlMXc9PSIsIm1hYyI6IjJmNzlkMjVlZDE1ZjJjZTgzZDY5MDljMjNhYzAwZGYwYzQ0NTA0NjczMWY5MTk2MmQzMTVmNTUzMjhhNTMxN2EifQ=='),
+(9, 8, 'A', 'eyJpdiI6IkNBazA5dldFa25BdXEwRFZOZndFU2c9PSIsInZhbHVlIjoiU2JDUjFvQitHMUt5blZIa2E4V0RaUT09IiwibWFjIjoiODM1Y2NiZDJjYzBiNTBlMzQ3MmU4Y2Q4ZGQ1MzcyZWMxZTU3NDlkNGFiYmFmMjAxNTAxNmQwYmQyNTlkN2M0MiJ9');
 
 -- --------------------------------------------------------
 
@@ -119,6 +129,14 @@ CREATE TABLE `graduatedstudents` (
   `gradyear` int(5) NOT NULL,
   `cgpa` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `graduatedstudents`
+--
+
+INSERT INTO `graduatedstudents` (`gradstudentid`, `gradstudentname`, `gradstudentemail`, `metric`, `contact`, `address`, `enrolyear`, `gradyear`, `cgpa`) VALUES
+(8, 'GraduateStudent', 'graduate@student.com', 123456, 12345678, 'cck 64', 2013, 2016, 'eyJpdiI6IlQ1TVBveUlOOHVyTk5vUVwveFU1QjFRPT0iLCJ2YWx1ZSI6Ik42dW5xcFYxUXh1YTZmUjhmQkc5Q0E9PSIsIm1hYyI6ImU1Y2MxN2E2ZTNkOWE2NmY1YzU4OWQ2NTA1YjcxNWZiYzhmNzhjMTUwZjkzMjI2NjBjN2FlYTliZTM1ZGI1MWIifQ=='),
+(9, 'GraduateStudent2', 'graduate2@student.com', 123, 5123, '123t', 2013, 2016, 'eyJpdiI6InBsb0NqR3ZpaytSVk5iTkVTYlpjZ1E9PSIsInZhbHVlIjoiMDlaNGk0REFiS3dIRmRmU25tXC85YWc9PSIsIm1hYyI6ImYwZDE1ZTEyZDQyMGRiYjk1ODRkNGZjYTM0MmY3Y2RjYzViZDFhZjM4OGRlN2MxNmQ0NTczMDZjOGNmMGRkNmIifQ==');
 
 -- --------------------------------------------------------
 
@@ -147,7 +165,8 @@ CREATE TABLE `hod` (
 --
 
 INSERT INTO `hod` (`hodid`, `hodname`, `hodemail`, `metric`, `contact`, `address`, `password`, `token`, `remember_token`, `created_at`, `updated_at`, `expirydate`, `lockacc`) VALUES
-(4, 'hod', 'hod@hod.com', '123qweasd', '96938353', '123qweCC', '$2y$10$ADd3MMvLklcRfOb1oC5JD.xF8.h3P6rfogkETuf8/z.1cnmqYu4wi', '853110', 'L79z4IsccoDXM9UoVqOXiKH2pbALuD5ZgJ8Roa1HbqzTiavOowSk7es7x7xQ', NULL, '2016-11-25 04:26:58', '2017-02-23', 0);
+(4, 'hod', 'hod@hod.com', '123qweasd', '96938353', '123qweCC', '$2y$10$ADd3MMvLklcRfOb1oC5JD.xF8.h3P6rfogkETuf8/z.1cnmqYu4wi', '836542', '5ThtsWz5ivNFISCngAUKp1mlGcyEUJci0UcZJiEHvfod0rtMmCtjOtA3zGsk', NULL, '2016-11-27 00:22:56', '2017-02-23', 0),
+(5, 'hod2', 'izzatgeno@gmail.com', 'hod123', '0987654', 'hod house', '$2y$10$ADd3MMvLklcRfOb1oC5JD.xF8.h3P6rfogkETuf8/z.1cnmqYu4wi', NULL, NULL, NULL, NULL, '2016-12-01', 0);
 
 -- --------------------------------------------------------
 
@@ -176,7 +195,8 @@ CREATE TABLE `lecturer` (
 --
 
 INSERT INTO `lecturer` (`lecturerid`, `lecturername`, `lectureremail`, `metric`, `contact`, `address`, `password`, `token`, `remember_token`, `created_at`, `updated_at`, `expirydate`, `lockacc`) VALUES
-(5, 'lecturer', 'lecturer@lecturer.com', '12345678', '96938353', 'cc', '$2y$10$ADd3MMvLklcRfOb1oC5JD.xF8.h3P6rfogkETuf8/z.1cnmqYu4wi', '852523', '9GiC2CxS2aiQZfJSYr9IssOlYS5orP1BUXi3WT7XtsQiWEZtUsGpnR5cy6s3', NULL, '2016-11-25 03:59:26', '2017-02-23', 0);
+(5, 'lecturer', 'lecturer@lecturer.com', '12345678', '96938353', 'cc', '$2y$10$ADd3MMvLklcRfOb1oC5JD.xF8.h3P6rfogkETuf8/z.1cnmqYu4wi', '932509', 'ieczTrQa56trIbmKiKagdXpBULWemaEDAq0JP5FsVutsA5gj8Vp4u6veMcna', NULL, '2016-11-27 00:22:12', '2017-02-23', 0),
+(6, 'lecturer2', 'spartan_genocide@hotmail.com', 'lec 123', '96938354', 'lecturer house', '$2y$10$ez0qJNZXed9riE0/Y8AtgOVhUNI5/VIakiVuEo4PJ/rbuvuTdL/zy', NULL, NULL, NULL, NULL, '2016-10-03', 1);
 
 -- --------------------------------------------------------
 
@@ -203,7 +223,10 @@ CREATE TABLE `module` (
 --
 
 INSERT INTO `module` (`id`, `modulename`, `description`, `lecturerid`, `hodid`, `editdate`, `freezedate`, `endedit`, `endfreeze`, `publish`, `credit`) VALUES
-(5, 'Maths', 'E Maths', 5, 4, '2016-12-17', '2017-01-06', 1, 1, 1, 5);
+(5, 'Maths', 'E Maths', 5, 4, '2016-12-17', '2017-01-06', 0, 0, 0, 5),
+(6, 'English', 'English', 5, 4, '2016-12-22', '2017-01-20', 0, 0, 0, 5),
+(7, 'Science', 'Science', 5, 4, '2016-12-16', '2017-01-12', 0, 0, 0, 5),
+(8, 'Phys Ed', 'Phys Ed', 5, 4, '2016-12-30', '2017-01-20', 1, 1, 1, 5);
 
 -- --------------------------------------------------------
 
@@ -221,13 +244,6 @@ CREATE TABLE `recommendation` (
   `moderation` varchar(255) DEFAULT NULL,
   `status` int(10) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `recommendation`
---
-
-INSERT INTO `recommendation` (`id`, `recommendation`, `studentid`, `lecturerid`, `hodid`, `moduleid`, `moderation`, `status`) VALUES
-(17, 'test', 4, 5, 4, 5, '10', 3);
 
 -- --------------------------------------------------------
 
@@ -258,7 +274,7 @@ CREATE TABLE `students` (
 --
 
 INSERT INTO `students` (`studentid`, `studentname`, `studentemail`, `metric`, `enrolyear`, `gradyear`, `cgpa`, `contact`, `address`, `password`, `remember_token`, `created_at`, `updated_at`, `expirydate`, `lockacc`) VALUES
-(4, 'student', 'student@student.com', '14sic044y', 2019, NULL, 'eyJpdiI6Ijc0eEQwaUtrQXVFREIrMDU3SkNEeHc9PSIsInZhbHVlIjoiRFBOQzdaS3VpXC9jb0MzOXJCWmZsa0E9PSIsIm1hYyI6IjM2NmM1NDZmZGUzMGMxYWZjOWJhZWYwMTU4NDRlMWM4MmYyODIwZmYxYTZkOTE0OWQwZDE4ZTFlMTgwYjE0NWQifQ==', '96938353', 'cck123', '$2y$10$ADd3MMvLklcRfOb1oC5JD.xF8.h3P6rfogkETuf8/z.1cnmqYu4wi', 'C0MfsTszBCyg2ZIA6pKkZFtVeMXIC3RYBrczwLepy5czRXb5zTWAwn573UTV', NULL, '2016-11-25 04:24:50', '2017-02-23', 0);
+(7, 'Izzat', 'izzat@izzat.com', '14sic980E', 2016, 2020, NULL, '65429876', 'yeww yeeee', '$2y$10$ADd3MMvLklcRfOb1oC5JD.xF8.h3P6rfogkETuf8/z.1cnmqYu4wi', NULL, NULL, NULL, '2017-02-25', 0);
 
 --
 -- Indexes for dumped tables
@@ -337,42 +353,42 @@ ALTER TABLE `admin`
 -- AUTO_INCREMENT for table `enroll`
 --
 ALTER TABLE `enroll`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 --
 -- AUTO_INCREMENT for table `grades`
 --
 ALTER TABLE `grades`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 --
 -- AUTO_INCREMENT for table `graduatedstudents`
 --
 ALTER TABLE `graduatedstudents`
-  MODIFY `gradstudentid` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `gradstudentid` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 --
 -- AUTO_INCREMENT for table `hod`
 --
 ALTER TABLE `hod`
-  MODIFY `hodid` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `hodid` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `lecturer`
 --
 ALTER TABLE `lecturer`
-  MODIFY `lecturerid` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `lecturerid` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT for table `module`
 --
 ALTER TABLE `module`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT for table `recommendation`
 --
 ALTER TABLE `recommendation`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 --
 -- AUTO_INCREMENT for table `students`
 --
 ALTER TABLE `students`
-  MODIFY `studentid` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `studentid` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

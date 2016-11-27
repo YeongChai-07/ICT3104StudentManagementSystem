@@ -38,7 +38,7 @@ textarea { width:250px !important; height:100px !important; }
                 @endforeach
             </tbody>
         </table>
-        <h3 align="right">Your CGPA is {{ decrypt($student->cgpa)}}</h3>
+        <h3 align="right">Student CGPA is {{ decrypt($student->cgpa)}}</h3>
 		<a class="btn btn-primary" style="float:right" href="{{URL::asset('graduatedStudents/viewAllGradStudents')}}">Back</a>
     </div>
 </div>   

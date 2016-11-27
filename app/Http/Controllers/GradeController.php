@@ -112,11 +112,15 @@ class GradeController extends Controller {
 	
 		}  
 
-		if($input['moderation'] + $input['grade'] > 100)
+		if(!empty($input['moderation']))
 		{
-			Session::set('error_message', "Total cannot be more than 100."); 
-	        return redirect()->back();
+			if($input['moderation'] + $input['grade'] > 100)
+			{
+				Session::set('error_message', "Total cannot be more than 100."); 
+		        return redirect()->back();
+			}
 		}
+
 
         $input= $request->all();
         $student = Grade::findorFail($gradeid);
@@ -136,7 +140,7 @@ class GradeController extends Controller {
             if (empty($input['recommendation']) != 1)
             {
 
-	            if($input['moderation'] != 0.0)
+	            if(empty($input['moderation']) != 1)
 	            {	
 		            $recommendationid = DB::table('recommendation')->insertGetId([
 		            'recommendation' => $input['recommendation'], 
@@ -150,7 +154,7 @@ class GradeController extends Controller {
 	            }
 	            else
 	            {
-	            	Session::set('error_message', "Please select recommendation."); 
+	            	Session::set('error_message', "Please enter recommendation marks."); 
 	            	return redirect()->back();
 	            }
             }    
@@ -197,7 +201,19 @@ class GradeController extends Controller {
 	
 		}  
 
+
+
         $input= $request->all();
+
+        if(!empty($input['moderation']))
+		{
+			if($input['moderation'] + $input['grade'] > 100)
+			{
+				Session::set('error_message', "Total cannot be more than 100."); 
+		        return redirect()->back();
+			}
+		}
+		
    		$gradeScore = $this->calculateIndivGrade($input['grade']);
    		$encryptedGrade = encrypt($input['grade']);
         $student = Grade::findorFail($gradeid);
@@ -214,7 +230,7 @@ class GradeController extends Controller {
     {            
         if(isset($recommendation->recommendation))
         {
-       		if($input['moderation'] != 0.0)
+       		if(empty($input['moderation']) != 1)
        		{
         		DB::table('recommendation')
                 	->where('id', $recommendation->id)
@@ -233,7 +249,7 @@ class GradeController extends Controller {
         }
         else
         {
-		        if($input['moderation'] != 0.0)
+		        if(empty($input['moderation']) != 1)
 		       	{
 		            $recommendationid = DB::table('recommendation')->insertGetId([
 		            'recommendation' => $input['recommendation'], 

@@ -33,7 +33,13 @@
         </div>
         <div class="form-group">
             {!!Form::label('recomended Marks','Recommended Marks')!!}
-            {!!Form::text('moderation',$recommendations->moderation,array('class' => 'form-control'))!!}
+            @if(!isset($recommendations->moderation))
+           
+             {!!Form::text('moderation',null,array('class' => 'form-control'))!!}
+            @else
+     
+             {!!Form::text('moderation',$recommendations->moderation,array('class' => 'form-control'))!!} 
+            @endif
         </div>
        <a href="{{URL::asset('grade/index')}}" class="btn btn-danger" style="float:right;">Back to Grades list</a>
         {!!Form::submit('Edit Grade', array('class' => 'btn btn-success'))!!}

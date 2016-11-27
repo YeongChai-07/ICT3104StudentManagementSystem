@@ -8,7 +8,7 @@ textarea { width:250px !important; height:100px !important; }
 </style>
 
 <div class="generalHeader">
-    Student
+    Enroll Student
 </div>
 <body>
    
