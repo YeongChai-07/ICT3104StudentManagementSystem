@@ -80,7 +80,7 @@
                         <!-- Lecturer-->
                          @elseif(auth()->guard('lecturer')->check())
                             <li><a href="{{URL::asset('grade/index')}}">Modules</a></li>
-							<li><a href="{{URL::asset('studentinfo/viewAllStudents')}}">Students</a></li>
+							<!-- <li><a href="{{URL::asset('studentinfo/viewAllStudents')}}">Students</a></li> -->
 							<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">{{ auth()->guard('lecturer')->user()->lecturername }} <span class="glyphicon glyphicon-cog"></span></a>
 								<ul class="dropdown-menu">
 									<li><a href="{{URL::asset('common/editdetails')}}">Edit Details</a></li>

@@ -44,7 +44,7 @@ textarea { width:250px !important; height:100px !important; }
 
                         
                       @else
-                        <a class="btn btn-primary" href="{{  $module->id }}/approval">Approve Recommendations</a>
+                        <a class="btn btn-primary" href="{{  $module->id }}/approval">View Recommendations</a>
                         <a class="btn btn-info" href="{{  $module->id }}/moderation">Moderate Grades</a>
                         <a class="btn btn-success" href="{{  $module->id }}/publish" >Publish Grades</a>
                       @endif

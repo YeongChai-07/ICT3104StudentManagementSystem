@@ -19,7 +19,7 @@
  <!-- form --> 
  <div class="form-group">
     {!! Form::label('name', 'Student Name:', ['class' => 'control-label']) !!}
-	{!!Form::text('name',null, array('class' => 'form-control'))!!}
+	{!!Form::text('name',null, array('class' => 'form-control','required' => 'required'))!!}
    
 </div>
 
@@ -28,7 +28,7 @@
 		
  <div class="form-group">
     {!! Form::label('title', 'Metric Number:', ['class' => 'control-label']) !!}
-	{!!Form::text('metric', null, array('class' => 'form-control'))!!}
+	{!!Form::text('metric', null, array('class' => 'form-control','required' => 'required'))!!}
 	
 
    
@@ -38,19 +38,19 @@
 
 <div class="form-group">
     {!! Form::label('email', 'Email:', ['class' => 'control-label']) !!}
-	{!!Form::text('email',null, array('class' => 'form-control'))!!}
+	{!!Form::text('email',null, array('class' => 'form-control','required' => 'required'))!!}
    
 </div>
 
 <div class="form-group">
     {!! Form::label('contact', 'Contact Number:', ['class' => 'control-label']) !!}
-	{!!Form::text('contact', null, array('class' => 'form-control'))!!}
+	{!!Form::text('contact', null, array('class' => 'form-control','required' => 'required'))!!}
    
 </div>
 
 <div class="form-group">
     {!! Form::label('address', 'Address:', ['class' => 'control-label']) !!}
-	{!!Form::text('address',null, array('class' => 'form-control'))!!}
+	{!!Form::text('address',null, array('class' => 'form-control','required' => 'required'))!!}
    
 </div>
 		
